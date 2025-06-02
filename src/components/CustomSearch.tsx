@@ -20,8 +20,12 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
   const [size, setSize] = useState('');
   const [material, setMaterial] = useState('');
   const [additionalDetails, setAdditionalDetails] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
+    setIsSearching(true);
+    
+    // Build comprehensive search query
     const searchTerms = [
       itemType,
       color,
@@ -34,6 +38,23 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
     ].filter(Boolean);
 
     const searchQuery = searchTerms.join(', ') || 'fashion item';
+    
+    console.log('Custom search initiated with query:', searchQuery);
+    console.log('Search parameters:', {
+      itemType,
+      color,
+      brand,
+      style,
+      priceRange,
+      size,
+      material,
+      additionalDetails
+    });
+
+    // Simulate search processing time
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    setIsSearching(false);
     onSearchComplete(searchQuery);
   };
 
@@ -78,6 +99,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setItemType(e.target.value)}
               placeholder="e.g., T-shirt, Dress, Shoes..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {quickItems.slice(0, 8).map((item) => (
@@ -86,6 +108,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setItemType(item)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   {item}
@@ -103,6 +126,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setColor(e.target.value)}
               placeholder="e.g., Navy blue, Bright red..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {quickColors.slice(0, 8).map((colorOption) => (
@@ -111,6 +135,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setColor(colorOption)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   {colorOption}
@@ -128,6 +153,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setBrand(e.target.value)}
               placeholder="e.g., Nike, Zara, H&M..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {quickBrands.slice(0, 6).map((brandOption) => (
@@ -136,6 +162,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setBrand(brandOption)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   {brandOption}
@@ -153,6 +180,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setStyle(e.target.value)}
               placeholder="e.g., Casual, Formal, Vintage..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {quickStyles.slice(0, 6).map((styleOption) => (
@@ -161,6 +189,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setStyle(styleOption)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   {styleOption}
@@ -181,6 +210,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setPriceRange(e.target.value)}
               placeholder="e.g., $50, $100..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {['$25', '$50', '$100', '$200'].map((price) => (
@@ -189,6 +219,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setPriceRange(price)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   Under {price}
@@ -206,6 +237,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setSize(e.target.value)}
               placeholder="e.g., M, L, XL, 8, 10..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((sizeOption) => (
@@ -214,6 +246,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setSize(sizeOption)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   {sizeOption}
@@ -231,6 +264,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setMaterial(e.target.value)}
               placeholder="e.g., Cotton, Denim, Leather..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
               {['Cotton', 'Denim', 'Leather', 'Silk', 'Wool'].map((materialOption) => (
@@ -239,6 +273,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => setMaterial(materialOption)}
+                  disabled={isSearching}
                   className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
                 >
                   {materialOption}
@@ -256,6 +291,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               onChange={(e) => setAdditionalDetails(e.target.value)}
               placeholder="Any other details like patterns, occasion, fit..."
               className="border-purple-200 focus:border-purple-400"
+              disabled={isSearching}
               rows={3}
             />
           </div>
@@ -265,11 +301,20 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
       <div className="mt-6 pt-6 border-t border-gray-200">
         <Button
           onClick={handleSearch}
-          disabled={!itemType && !additionalDetails}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3"
+          disabled={(!itemType && !additionalDetails) || isSearching}
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3 disabled:opacity-50"
         >
-          <Sparkles className="w-4 h-4 mr-2" />
-          Search Fashion Items
+          {isSearching ? (
+            <>
+              <div className="animate-spin w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full"></div>
+              Searching...
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4 mr-2" />
+              Search Fashion Items
+            </>
+          )}
         </Button>
       </div>
     </Card>
