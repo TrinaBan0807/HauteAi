@@ -1,15 +1,17 @@
 
 import { useState } from 'react';
-import { Camera, Upload, Search, Sparkles, Zap, Eye, Target } from 'lucide-react';
+import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
 import { ImageSelector } from '@/components/ImageSelector';
 import { SearchResults } from '@/components/SearchResults';
 import { OutfitDescriptor } from '@/components/OutfitDescriptor';
+import { CustomSearch } from '@/components/CustomSearch';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 const Index = () => {
-  const [currentStep, setCurrentStep] = useState<'capture' | 'select' | 'describe' | 'search'>('capture');
+  const [currentStep, setCurrentStep] = useState<'capture' | 'select' | 'describe' | 'search' | 'custom-search'>('capture');
+  const [searchMode, setSearchMode] = useState<'image' | 'text'>('image');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [selectedArea, setSelectedArea] = useState<any>(null);
   const [outfitDescription, setOutfitDescription] = useState<string>('');
@@ -29,11 +31,27 @@ const Index = () => {
     setCurrentStep('search');
   };
 
+  const handleCustomSearch = (searchQuery: string) => {
+    setOutfitDescription(searchQuery);
+    setCurrentStep('search');
+  };
+
   const resetApp = () => {
     setCurrentStep('capture');
+    setSearchMode('image');
     setCapturedImage(null);
     setSelectedArea(null);
     setOutfitDescription('');
+  };
+
+  const switchToCustomSearch = () => {
+    setSearchMode('text');
+    setCurrentStep('custom-search');
+  };
+
+  const switchToImageSearch = () => {
+    setSearchMode('image');
+    setCurrentStep('capture');
   };
 
   const steps = [
@@ -42,6 +60,13 @@ const Index = () => {
     { id: 'describe', title: 'Describe', icon: Eye, description: 'Describe the Item' },
     { id: 'search', title: 'Search', icon: Search, description: 'Search Results' }
   ];
+
+  const customSteps = [
+    { id: 'custom-search', title: 'Describe', icon: Type, description: 'Describe What You Want' },
+    { id: 'search', title: 'Search', icon: Search, description: 'Search Results' }
+  ];
+
+  const currentSteps = searchMode === 'text' ? customSteps : steps;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 relative overflow-hidden">
@@ -69,7 +94,7 @@ const Index = () => {
                 <p className="text-sm text-gray-500 font-medium">AI-Powered Fashion Search</p>
               </div>
             </div>
-            {currentStep !== 'capture' && (
+            {(currentStep !== 'capture' && currentStep !== 'custom-search') && (
               <Button
                 onClick={resetApp}
                 variant="outline"
@@ -98,59 +123,119 @@ const Index = () => {
                 Fashion Match
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
               Upload any fashion photo and let our AI identify and find similar items from thousands of online stores. 
-              Discover your style, instantly.
+              Or describe what you're looking for and discover your style, instantly.
             </p>
+            
+            {/* Search Mode Toggle */}
+            <div className="flex justify-center mb-8">
+              <div className="bg-white/60 backdrop-blur-lg rounded-2xl p-2 border border-purple-100/50 shadow-lg">
+                <div className="flex space-x-2">
+                  <Button
+                    onClick={switchToImageSearch}
+                    variant={searchMode === 'image' ? 'default' : 'ghost'}
+                    className={`px-6 py-3 rounded-xl transition-all duration-300 ${
+                      searchMode === 'image'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                        : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
+                    }`}
+                  >
+                    <Camera className="w-4 h-4 mr-2" />
+                    Search by Image
+                  </Button>
+                  <Button
+                    onClick={switchToCustomSearch}
+                    variant={searchMode === 'text' ? 'default' : 'ghost'}
+                    className={`px-6 py-3 rounded-xl transition-all duration-300 ${
+                      searchMode === 'text'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                        : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
+                    }`}
+                  >
+                    <Type className="w-4 h-4 mr-2" />
+                    Search by Description
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Custom Search Hero */}
+        {currentStep === 'custom-search' && (
+          <div className="text-center mb-8 animate-fade-in">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full mb-6">
+              <Type className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-semibold text-purple-700">Text-Based Search</span>
+            </div>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4 leading-tight">
+              Describe Your
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent block">
+                Perfect Item
+              </span>
+            </h2>
+            <div className="flex justify-center mb-6">
+              <Button
+                onClick={switchToImageSearch}
+                variant="outline"
+                className="border-purple-200 text-purple-600 hover:bg-purple-50"
+              >
+                <Camera className="w-4 h-4 mr-2" />
+                Switch to Image Search
+              </Button>
+            </div>
           </div>
         )}
 
         {/* Enhanced Progress Indicator */}
-        <div className="mb-12">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between relative">
-              {/* Progress line */}
-              <div className="absolute top-6 left-0 right-0 h-1 bg-gray-200 rounded-full">
-                <div 
-                  className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-700 ease-out"
-                  style={{
-                    width: `${(steps.findIndex(s => s.id === currentStep) / (steps.length - 1)) * 100}%`
-                  }}
-                />
-              </div>
-              
-              {steps.map((step, index) => {
-                const isActive = currentStep === step.id;
-                const isCompleted = index < steps.findIndex(s => s.id === currentStep);
-                const StepIcon = step.icon;
+        {(currentStep !== 'capture' && currentStep !== 'custom-search') && (
+          <div className="mb-12">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center justify-between relative">
+                {/* Progress line */}
+                <div className="absolute top-6 left-0 right-0 h-1 bg-gray-200 rounded-full">
+                  <div 
+                    className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-700 ease-out"
+                    style={{
+                      width: `${(currentSteps.findIndex(s => s.id === currentStep) / (currentSteps.length - 1)) * 100}%`
+                    }}
+                  />
+                </div>
                 
-                return (
-                  <div key={step.id} className="flex flex-col items-center relative z-10">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg scale-110'
-                        : isCompleted
-                        ? 'bg-purple-200 text-purple-700 scale-105'
-                        : 'bg-white text-gray-400 border-2 border-gray-200'
-                    }`}>
-                      <StepIcon className="w-5 h-5" />
-                    </div>
-                    <div className="mt-3 text-center">
-                      <p className={`text-sm font-semibold ${
-                        isActive ? 'text-purple-700' : isCompleted ? 'text-purple-600' : 'text-gray-400'
+                {currentSteps.map((step, index) => {
+                  const isActive = currentStep === step.id;
+                  const isCompleted = index < currentSteps.findIndex(s => s.id === currentStep);
+                  const StepIcon = step.icon;
+                  
+                  return (
+                    <div key={step.id} className="flex flex-col items-center relative z-10">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        isActive 
+                          ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg scale-110'
+                          : isCompleted
+                          ? 'bg-purple-200 text-purple-700 scale-105'
+                          : 'bg-white text-gray-400 border-2 border-gray-200'
                       }`}>
-                        {step.title}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1 max-w-20">
-                        {step.description}
-                      </p>
+                        <StepIcon className="w-5 h-5" />
+                      </div>
+                      <div className="mt-3 text-center">
+                        <p className={`text-sm font-semibold ${
+                          isActive ? 'text-purple-700' : isCompleted ? 'text-purple-600' : 'text-gray-400'
+                        }`}>
+                          {step.title}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1 max-w-20">
+                          {step.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Step Content */}
         <div className="max-w-6xl mx-auto">
@@ -184,6 +269,12 @@ const Index = () => {
                   <p className="text-gray-600 text-sm">Discover items that match your unique style preferences</p>
                 </Card>
               </div>
+            </div>
+          )}
+
+          {currentStep === 'custom-search' && (
+            <div className="animate-fade-in">
+              <CustomSearch onSearchComplete={handleCustomSearch} />
             </div>
           )}
 
