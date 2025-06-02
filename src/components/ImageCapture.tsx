@@ -1,6 +1,6 @@
 
 import { useState, useRef } from 'react';
-import { Camera, Upload, Image } from 'lucide-react';
+import { Camera, Upload, Image, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -86,45 +86,63 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {!isCapturing ? (
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Camera Option */}
-          <Card className="p-8 hover:shadow-lg transition-all duration-300 border-purple-100 hover:border-purple-200">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto">
-                <Camera className="w-8 h-8 text-white" />
+          <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="relative p-8 text-center space-y-6">
+              <div className="relative">
+                <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Camera className="w-10 h-10 text-white" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800">Take Photo</h3>
-              <p className="text-gray-600 text-sm">
-                Use your camera to capture an outfit or fashion item
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-gray-800">Take Photo</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Capture fashion items in real-time with your camera for instant AI analysis
+                </p>
+              </div>
               <Button 
                 onClick={startCamera}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                size="lg"
+                className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
               >
-                <Camera className="w-4 h-4 mr-2" />
+                <Camera className="w-5 h-5 mr-3" />
                 Start Camera
               </Button>
             </div>
           </Card>
 
           {/* Upload Option */}
-          <Card className="p-8 hover:shadow-lg transition-all duration-300 border-purple-100 hover:border-purple-200">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto">
-                <Upload className="w-8 h-8 text-white" />
+          <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="relative p-8 text-center space-y-6">
+              <div className="relative">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Upload className="w-10 h-10 text-white" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+                  <Zap className="w-3 h-3 text-white" />
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800">Upload Image</h3>
-              <p className="text-gray-600 text-sm">
-                Select an existing photo from your device
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-gray-800">Upload Image</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Select an existing photo from your device to discover similar fashion items
+                </p>
+              </div>
               <Button 
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
-                className="w-full border-purple-200 text-purple-600 hover:bg-purple-50"
+                size="lg"
+                className="w-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-semibold py-4 rounded-xl transition-all duration-300 group-hover:scale-105"
               >
-                <Upload className="w-4 h-4 mr-2" />
+                <Upload className="w-5 h-5 mr-3" />
                 Choose File
               </Button>
               <input
@@ -138,26 +156,43 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
           </Card>
         </div>
       ) : (
-        <Card className="p-6 bg-black rounded-xl">
-          <div className="space-y-4">
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              className="w-full rounded-lg"
-            />
+        <Card className="max-w-4xl mx-auto overflow-hidden bg-gradient-to-br from-gray-900 to-black shadow-2xl border-0">
+          <div className="p-8 space-y-6">
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-semibold text-white">Camera Active</h3>
+              <p className="text-gray-300">Position your fashion item in the frame</p>
+            </div>
+            
+            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full h-auto max-h-96 object-cover"
+              />
+              
+              {/* Overlay guide */}
+              <div className="absolute inset-4 border-2 border-white/50 border-dashed rounded-xl pointer-events-none">
+                <div className="absolute top-4 left-4 text-white text-sm bg-black/50 px-2 py-1 rounded">
+                  Position item here
+                </div>
+              </div>
+            </div>
+            
             <div className="flex justify-center space-x-4">
               <Button
                 onClick={capturePhoto}
-                className="bg-white text-black hover:bg-gray-100"
+                size="lg"
+                className="bg-white text-black hover:bg-gray-100 font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
-                <Image className="w-4 h-4 mr-2" />
+                <Image className="w-5 h-5 mr-3" />
                 Capture Photo
               </Button>
               <Button
                 onClick={stopCamera}
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-black"
+                size="lg"
+                className="border-2 border-white text-white hover:bg-white hover:text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300"
               >
                 Cancel
               </Button>
