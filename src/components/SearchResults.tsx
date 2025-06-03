@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Search, ExternalLink, Heart, RefreshCw } from 'lucide-react';
+import { SearchService } from '@/services/SearchService';
 
 interface SearchResultsProps {
   selectedImage: string | null;
@@ -26,165 +27,59 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
   const [isLoading, setIsLoading] = useState(true);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
-  const performImageSearch = async (imageData: string, area: any, desc: string) => {
-    console.log('Starting image-based search...');
+  const performDynamicSearch = async (imageData: string | null, area: any, desc: string) => {
+    console.log('Starting dynamic search...');
     console.log('Image data:', imageData ? 'Image provided' : 'No image');
     console.log('Selected area:', area);
     console.log('Description:', desc);
 
     setIsLoading(true);
+    setError(null);
+    setSearchQuery('Processing...');
     
     try {
-      // Simulate processing the uploaded image and selected area
-      const processedQuery = generateSearchQuery(imageData, area, desc);
-      setSearchQuery(processedQuery);
-      
-      // Simulate API delay for image processing
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Generate results based on the processed image and description
-      const searchResults = await generateSearchResults(processedQuery);
+      let searchResults: SearchResult[] = [];
+
+      if (imageData && desc) {
+        // Combined image and text search
+        setSearchQuery('Analyzing image and description...');
+        searchResults = await SearchService.searchByImageAndDescription(imageData, area, desc);
+        setSearchQuery(`Image + Text: "${desc}"`);
+      } else if (imageData) {
+        // Image-only search
+        setSearchQuery('Analyzing image...');
+        const imageAnalysis = await SearchService.analyzeImage(imageData, area);
+        const analysisQuery = [...imageAnalysis.detectedItems, ...imageAnalysis.dominantColors].join(' ');
+        searchResults = await SearchService.searchByQuery(analysisQuery);
+        setSearchQuery(`Image Analysis: ${analysisQuery}`);
+      } else if (desc) {
+        // Text-only search
+        setSearchQuery(`Text Search: "${desc}"`);
+        searchResults = await SearchService.searchByQuery(desc);
+      }
+
       setResults(searchResults);
       
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error('Dynamic search failed:', error);
+      setError('Search failed. Please try again.');
       setResults([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const generateSearchQuery = (imageData: string, area: any, desc: string) => {
-    // Extract key terms from description
-    const descriptionTerms = desc.toLowerCase().split(/[,\s]+/).filter(term => 
-      term.length > 2 && !['the', 'and', 'for', 'with'].includes(term)
-    );
-    
-    // Simulate image analysis results
-    const imageAnalysis = {
-      dominantColors: ['blue', 'white', 'black'],
-      detectedItems: ['shirt', 'clothing', 'apparel'],
-      style: ['casual', 'modern']
-    };
-    
-    // Combine description terms with simulated image analysis
-    const combinedTerms = [...new Set([...descriptionTerms, ...imageAnalysis.detectedItems])];
-    return combinedTerms.join(' ');
-  };
-
-  const generateSearchResults = async (query: string): Promise<SearchResult[]> => {
-    // Simulate different result sets based on query content
-    const baseResults = [
-      {
-        id: '1',
-        title: 'Cotton Basic T-Shirt',
-        price: '$24.99',
-        store: 'Fashion Store',
-        imageUrl: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop',
-        link: '#',
-        similarity: 95
-      },
-      {
-        id: '2',
-        title: 'Premium Cotton Tee',
-        price: '$35.00',
-        store: 'Style Hub',
-        imageUrl: 'https://images.unsplash.com/photo-1583743814966-8936f37f4eb6?w=300&h=300&fit=crop',
-        link: '#',
-        similarity: 88
-      },
-      {
-        id: '3',
-        title: 'Organic Cotton T-Shirt',
-        price: '$28.50',
-        store: 'Eco Fashion',
-        imageUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=300&h=300&fit=crop',
-        link: '#',
-        similarity: 82
-      }
-    ];
-
-    // Customize results based on query terms
-    if (query.includes('dress')) {
-      return [
-        {
-          id: '4',
-          title: 'Summer Floral Dress',
-          price: '$45.99',
-          store: 'Dress Boutique',
-          imageUrl: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=300&h=300&fit=crop',
-          link: '#',
-          similarity: 92
-        },
-        {
-          id: '5',
-          title: 'Casual Midi Dress',
-          price: '$38.50',
-          store: 'Fashion Forward',
-          imageUrl: 'https://images.unsplash.com/photo-1566479179817-c0ae1ff3e0c0?w=300&h=300&fit=crop',
-          link: '#',
-          similarity: 87
-        },
-        ...baseResults.slice(0, 2)
-      ];
-    }
-
-    if (query.includes('shoes') || query.includes('sneakers')) {
-      return [
-        {
-          id: '6',
-          title: 'Classic White Sneakers',
-          price: '$79.99',
-          store: 'Shoe Palace',
-          imageUrl: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&fit=crop',
-          link: '#',
-          similarity: 94
-        },
-        {
-          id: '7',
-          title: 'Running Sports Shoes',
-          price: '$120.00',
-          store: 'Athletic Gear',
-          imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop',
-          link: '#',
-          similarity: 89
-        },
-        ...baseResults.slice(0, 2)
-      ];
-    }
-
-    return baseResults.concat([
-      {
-        id: '8',
-        title: 'Designer Cotton Top',
-        price: '$65.00',
-        store: 'Luxury Brands',
-        imageUrl: 'https://images.unsplash.com/photo-1571455786673-9d9d6c194f90?w=300&h=300&fit=crop',
-        link: '#',
-        similarity: 75
-      },
-      {
-        id: '9',
-        title: 'Casual Cotton Shirt',
-        price: '$32.00',
-        store: 'Everyday Wear',
-        imageUrl: 'https://images.unsplash.com/photo-1622445275576-721325763afe?w=300&h=300&fit=crop',
-        link: '#',
-        similarity: 70
-      }
-    ]);
-  };
-
   const retrySearch = () => {
-    if (selectedImage && description) {
-      performImageSearch(selectedImage, selectedArea, description);
+    if (selectedImage || description) {
+      performDynamicSearch(selectedImage, selectedArea, description);
     }
   };
 
   useEffect(() => {
     if (selectedImage || description) {
-      performImageSearch(selectedImage || '', selectedArea, description);
+      performDynamicSearch(selectedImage, selectedArea, description);
     }
   }, [selectedImage, selectedArea, description]);
 
@@ -203,11 +98,31 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
       <Card className="p-8">
         <div className="text-center space-y-4">
           <div className="animate-spin w-12 h-12 border-4 border-purple-200 border-t-purple-500 rounded-full mx-auto"></div>
-          <h3 className="text-lg font-semibold text-gray-800">Analyzing your image...</h3>
-          <p className="text-gray-600">Processing image data and finding similar fashion items</p>
+          <h3 className="text-lg font-semibold text-gray-800">Searching fashion items...</h3>
+          <p className="text-gray-600">Processing your request and finding similar items</p>
           <div className="text-sm text-purple-600 font-medium">
-            Search Query: {searchQuery || 'Generating...'}
+            Status: {searchQuery}
           </div>
+        </div>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="p-8">
+        <div className="text-center space-y-4">
+          <Search className="w-16 h-16 text-red-300 mx-auto" />
+          <h3 className="text-lg font-semibold text-gray-800">Search Error</h3>
+          <p className="text-red-600 mb-4">{error}</p>
+          <Button
+            onClick={retrySearch}
+            variant="outline"
+            className="border-purple-200 text-purple-600 hover:bg-purple-50"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Try Again
+          </Button>
         </div>
       </Card>
     );
@@ -232,11 +147,11 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
             </div>
           )}
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-800 mb-1">Search Analysis</h3>
+            <h3 className="font-semibold text-gray-800 mb-1">Dynamic Search Results</h3>
             <p className="text-sm text-gray-600 mb-2">{description}</p>
             {searchQuery && (
               <p className="text-xs text-purple-600 font-medium mb-2">
-                Processed Query: {searchQuery}
+                Search Query: {searchQuery}
               </p>
             )}
             <div className="flex items-center space-x-2">
@@ -250,7 +165,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
                 className="h-6 px-2 text-xs border-purple-200 text-purple-600 hover:bg-purple-50"
               >
                 <RefreshCw className="w-3 h-3 mr-1" />
-                Retry
+                New Search
               </Button>
             </div>
           </div>
@@ -267,6 +182,10 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
                   src={result.imageUrl}
                   alt={result.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop`;
+                  }}
                 />
                 <button
                   onClick={() => toggleFavorite(result.id)}
@@ -307,7 +226,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
       )}
 
       {/* No Results */}
-      {results.length === 0 && !isLoading && (
+      {results.length === 0 && !isLoading && !error && (
         <Card className="p-8">
           <div className="text-center space-y-4">
             <Search className="w-16 h-16 text-gray-300 mx-auto" />
@@ -321,7 +240,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
               className="border-purple-200 text-purple-600 hover:bg-purple-50"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
-              Try Again
+              Try Different Search
             </Button>
           </div>
         </Card>

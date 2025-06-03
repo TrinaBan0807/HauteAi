@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -6,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Search, Sparkles } from 'lucide-react';
+import { SearchService } from '@/services/SearchService';
 
 interface CustomSearchProps {
   onSearchComplete: (searchQuery: string) => void;
@@ -25,37 +25,37 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
   const handleSearch = async () => {
     setIsSearching(true);
     
-    // Build comprehensive search query
-    const searchTerms = [
-      itemType,
-      color,
-      brand,
-      style,
-      priceRange && `under ${priceRange}`,
-      size && `size ${size}`,
-      material,
-      additionalDetails
-    ].filter(Boolean);
+    try {
+      // Build comprehensive search query from user inputs
+      const searchTerms = [
+        itemType,
+        color,
+        brand,
+        style,
+        priceRange && `under ${priceRange}`,
+        size && `size ${size}`,
+        material,
+        additionalDetails
+      ].filter(Boolean);
 
-    const searchQuery = searchTerms.join(', ') || 'fashion item';
-    
-    console.log('Custom search initiated with query:', searchQuery);
-    console.log('Search parameters:', {
-      itemType,
-      color,
-      brand,
-      style,
-      priceRange,
-      size,
-      material,
-      additionalDetails
-    });
+      const searchQuery = searchTerms.join(', ') || 'fashion item';
+      
+      console.log('Custom search initiated with dynamic query:', searchQuery);
+      console.log('Search parameters:', {
+        itemType, color, brand, style, priceRange, size, material, additionalDetails
+      });
 
-    // Simulate search processing time
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSearching(false);
-    onSearchComplete(searchQuery);
+      // Use the dynamic search service
+      await SearchService.searchByQuery(searchQuery);
+      
+      // Pass the query to the parent component
+      onSearchComplete(searchQuery);
+      
+    } catch (error) {
+      console.error('Custom search failed:', error);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const quickItems = [
@@ -83,8 +83,8 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
         <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <Search className="w-8 h-8 text-white" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Custom Search</h2>
-        <p className="text-gray-600">Describe what you're looking for and we'll find it</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Dynamic Fashion Search</h2>
+        <p className="text-gray-600">Describe what you're looking for and we'll search dynamically</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -307,7 +307,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
           {isSearching ? (
             <>
               <div className="animate-spin w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full"></div>
-              Searching...
+              Searching Dynamically...
             </>
           ) : (
             <>
