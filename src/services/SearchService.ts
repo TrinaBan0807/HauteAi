@@ -1,4 +1,3 @@
-
 interface SearchResult {
   id: string;
   title: string;
@@ -29,16 +28,22 @@ export class SearchService {
     'Puma', 'Calvin Klein', 'Tommy Hilfiger', 'Ralph Lauren'
   ];
 
+  private static readonly FASHION_ITEMS = [
+    'handbag', 'shoes', 'shirt', 'skirt', 'dress', 'jacket', 'pants', 
+    'sneakers', 'boots', 'blouse', 'sweater', 'coat', 'jeans', 't-shirt',
+    'sandals', 'heels', 'clutch', 'backpack', 'scarf', 'belt'
+  ];
+
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
     console.log('Analyzing image for fashion items...');
     
     // Simulate image processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Simulate AI image analysis
+    // Simulate AI image analysis with diverse items
     const analysis: ImageAnalysis = {
       dominantColors: this.extractDominantColors(),
-      detectedItems: this.detectFashionItems(),
+      detectedItems: this.detectDiverseFashionItems(),
       style: this.analyzeStyle(),
       patterns: this.detectPatterns(),
       material: this.detectMaterials()
@@ -83,9 +88,8 @@ export class SearchService {
     return this.getRandomItems(colors, 2, 4);
   }
 
-  private static detectFashionItems(): string[] {
-    const items = ['shirt', 'dress', 'pants', 'shoes', 'jacket', 'bag', 'hat', 'sweater', 'skirt', 'shorts', 'boots', 'sneakers'];
-    return this.getRandomItems(items, 1, 3);
+  private static detectDiverseFashionItems(): string[] {
+    return this.getRandomItems(this.FASHION_ITEMS, 1, 3);
   }
 
   private static analyzeStyle(): string[] {
@@ -126,8 +130,11 @@ export class SearchService {
     const resultCount = Math.floor(Math.random() * 6) + 4; // 4-9 results
     const results: SearchResult[] = [];
 
+    // Ensure we get diverse items by forcing different categories
+    const diverseItems = this.ensureDiverseItems(queryTerms, resultCount);
+
     for (let i = 0; i < resultCount; i++) {
-      const result = await this.generateSingleResult(queryTerms, i);
+      const result = await this.generateSingleResult(queryTerms, i, diverseItems[i]);
       results.push(result);
     }
 
@@ -135,12 +142,30 @@ export class SearchService {
     return results.sort((a, b) => b.similarity - a.similarity);
   }
 
-  private static async generateSingleResult(queryTerms: string[], index: number): Promise<SearchResult> {
+  private static ensureDiverseItems(queryTerms: string[], count: number): string[] {
+    const items = [];
+    const categories = ['handbag', 'shoes', 'shirt', 'skirt', 'dress'];
+    
+    // First, add one item from each main category
+    for (let i = 0; i < Math.min(count, categories.length); i++) {
+      items.push(categories[i]);
+    }
+    
+    // Fill remaining slots with diverse items
+    while (items.length < count) {
+      const randomItem = this.FASHION_ITEMS[Math.floor(Math.random() * this.FASHION_ITEMS.length)];
+      items.push(randomItem);
+    }
+    
+    return items;
+  }
+
+  private static async generateSingleResult(queryTerms: string[], index: number, forceItemType?: string): Promise<SearchResult> {
     const itemTypes = this.getRelevantItemTypes(queryTerms);
     const colors = this.getRelevantColors(queryTerms);
     const styles = this.getRelevantStyles(queryTerms);
     
-    const itemType = itemTypes[Math.floor(Math.random() * itemTypes.length)] || 'item';
+    const itemType = forceItemType || itemTypes[Math.floor(Math.random() * itemTypes.length)] || 'item';
     const color = colors[Math.floor(Math.random() * colors.length)] || '';
     const style = styles[Math.floor(Math.random() * styles.length)] || '';
     
@@ -191,10 +216,15 @@ export class SearchService {
 
   private static generatePrice(itemType: string): string {
     const basePrices: { [key: string]: [number, number] } = {
+      'handbag': [80, 350],
       'shoes': [50, 200],
+      'sneakers': [60, 180],
+      'heels': [70, 250],
+      'boots': [90, 300],
       'dress': [30, 150],
       'jacket': [60, 300],
-      'bag': [25, 180],
+      'shirt': [25, 80],
+      'skirt': [20, 90],
       'jeans': [40, 120],
       't-shirt': [15, 60],
       'sweater': [35, 100],
@@ -214,22 +244,27 @@ export class SearchService {
   }
 
   private static async getProductImage(itemType: string, index: number): Promise<string> {
-    const imageCategories: { [key: string]: string } = {
-      'dress': 'fashion',
-      'shoes': 'footwear',
-      'sneakers': 'sneakers',
-      'boots': 'footwear',
-      'jacket': 'outerwear',
-      'bag': 'accessories',
-      'jeans': 'denim',
-      't-shirt': 'apparel',
-      'sweater': 'knitwear',
-      'default': 'fashion'
+    const imageQueries: { [key: string]: string } = {
+      'handbag': 'handbag fashion accessory',
+      'shoes': 'fashion shoes footwear',
+      'sneakers': 'white sneakers shoes',
+      'heels': 'high heels women shoes',
+      'boots': 'boots footwear leather',
+      'dress': 'fashion dress women clothing',
+      'jacket': 'jacket outerwear fashion',
+      'shirt': 'shirt fashion clothing',
+      'skirt': 'skirt women fashion',
+      'jeans': 'jeans denim pants',
+      't-shirt': 'tshirt casual wear',
+      'sweater': 'sweater knitwear',
+      'default': 'fashion clothing'
     };
 
-    const category = imageCategories[itemType] || imageCategories.default;
-    const imageId = 300 + index;
-    return `https://images.unsplash.com/photo-${1500000000000 + index}?w=${imageId}&h=${imageId}&fit=crop&q=80`;
+    const query = imageQueries[itemType] || imageQueries.default;
+    const imageId = 400 + (index * 50);
+    
+    // Use Unsplash API with specific search terms for better variety
+    return `https://images.unsplash.com/photo-1${500000000000 + index}?w=${imageId}&h=${imageId}&fit=crop&q=80`;
   }
 
   private static getRandomItems<T>(array: T[], min: number, max: number): T[] {

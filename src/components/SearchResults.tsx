@@ -135,19 +135,22 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
         <div className="flex items-start space-x-4">
           {selectedImage && selectedArea && (
             <div className="flex-shrink-0">
-              <div 
-                className="w-16 h-16 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100"
-                style={{
-                  backgroundImage: `url(${selectedImage})`,
-                  backgroundPosition: `-${selectedArea.x * 0.25}px -${selectedArea.y * 0.25}px`,
-                  backgroundSize: '25%',
-                  backgroundRepeat: 'no-repeat'
-                }}
-              />
+              <div className="w-20 h-20 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100">
+                <div 
+                  className="w-full h-full"
+                  style={{
+                    backgroundImage: `url(${selectedImage})`,
+                    backgroundPosition: `-${selectedArea.x * (80 / selectedArea.width)}px -${selectedArea.y * (80 / selectedArea.height)}px`,
+                    backgroundSize: `${(selectedImage ? 400 : 80)}px auto`,
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                />
+              </div>
+              <p className="text-xs text-gray-500 mt-1 text-center">Selected Item</p>
             </div>
           )}
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-800 mb-1">Dynamic Search Results</h3>
+            <h3 className="font-semibold text-gray-800 mb-1">Search Result</h3>
             <p className="text-sm text-gray-600 mb-2">{description}</p>
             {searchQuery && (
               <p className="text-xs text-purple-600 font-medium mb-2">

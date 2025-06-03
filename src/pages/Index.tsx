@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
@@ -91,7 +90,7 @@ const Index = () => {
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   HauteAi
                 </h1>
-                <p className="text-sm text-gray-500 font-medium">AI-Powered Fashion Search</p>
+                <p className="text-sm text-gray-500 font-medium">Your Personal Stylist with Vision & Vogue</p>
               </div>
             </div>
             {(currentStep !== 'capture' && currentStep !== 'custom-search') && (
@@ -113,10 +112,6 @@ const Index = () => {
         {/* Hero Section - only show on capture step */}
         {currentStep === 'capture' && (
           <div className="text-center mb-12 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full mb-6">
-              <Sparkles className="w-4 h-4 text-purple-600" />
-              <span className="text-sm font-semibold text-purple-700">Powered by Advanced AI</span>
-            </div>
             <h2 className="text-5xl font-bold text-gray-800 mb-6 leading-tight">
               Find Your Perfect
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent block">
