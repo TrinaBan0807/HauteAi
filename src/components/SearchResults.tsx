@@ -93,6 +93,27 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
     setFavorites(newFavorites);
   };
 
+  const renderCroppedImage = () => {
+    if (!selectedImage || !selectedArea) return null;
+
+    return (
+      <div className="flex-shrink-0">
+        <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: `url(${selectedImage})`,
+              backgroundPosition: `-${selectedArea.x * (96 / selectedArea.width)}px -${selectedArea.y * (96 / selectedArea.height)}px`,
+              backgroundSize: `${selectedArea.width * (96 / selectedArea.width)}px ${selectedArea.height * (96 / selectedArea.height)}px`,
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+        </div>
+        <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
+      </div>
+    );
+  };
+
   if (isLoading) {
     return (
       <Card className="p-8">
@@ -133,22 +154,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
       {/* Search Summary */}
       <Card className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100">
         <div className="flex items-start space-x-4">
-          {selectedImage && selectedArea && (
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100">
-                <div 
-                  className="w-full h-full"
-                  style={{
-                    backgroundImage: `url(${selectedImage})`,
-                    backgroundPosition: `-${selectedArea.x * (80 / selectedArea.width)}px -${selectedArea.y * (80 / selectedArea.height)}px`,
-                    backgroundSize: `${(selectedImage ? 400 : 80)}px auto`,
-                    backgroundRepeat: 'no-repeat'
-                  }}
-                />
-              </div>
-              <p className="text-xs text-gray-500 mt-1 text-center">Selected Item</p>
-            </div>
-          )}
+          {renderCroppedImage()}
           <div className="flex-1">
             <h3 className="font-semibold text-gray-800 mb-1">Search Result</h3>
             <p className="text-sm text-gray-600 mb-2">{description}</p>
