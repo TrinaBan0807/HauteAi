@@ -1,4 +1,3 @@
-
 interface SearchResult {
   id: string;
   title: string;
@@ -29,6 +28,24 @@ export class SearchService {
     'sneakers', 'boots', 'blouse', 'sweater', 'coat', 'jeans', 't-shirt',
     'sandals', 'heels', 'clutch', 'backpack', 'scarf', 'belt', 'cap', 'fedora',
     'maxi dress', 'mini skirt', 'leather jacket', 'denim jacket', 'cargo pants'
+  ];
+
+  private static readonly DIVERSE_FASHION_IMAGES = [
+    'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop&q=80', // Fashion store
+    'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=400&fit=crop&q=80', // Clothing rack
+    'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop&q=80', // White sneakers
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80', // Red shoes
+    'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=400&fit=crop&q=80', // Fashion accessories
+    'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&q=80', // Sneakers collection
+    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80', // Handbag
+    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=400&fit=crop&q=80', // Fashion model
+    'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80', // Denim jacket
+    'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&h=400&fit=crop&q=80', // Summer dress
+    'https://images.unsplash.com/photo-1485968612651-46e6e0622dde?w=400&h=400&fit=crop&q=80', // Hat collection
+    'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80', // Leather boots
+    'https://images.unsplash.com/photo-1582142306909-195724d2b26d?w=400&h=400&fit=crop&q=80', // Colorful clothing
+    'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80', // Casual wear
+    'https://images.unsplash.com/photo-1494790108755-2616c2e19687?w=400&h=400&fit=crop&q=80', // Fashion portrait
   ];
 
   private static readonly UNSPLASH_KEYWORDS = {
@@ -209,7 +226,7 @@ export class SearchService {
     const price = this.generatePrice(itemType);
     const store = this.DEMO_STORES[Math.floor(Math.random() * this.DEMO_STORES.length)];
     const similarity = this.calculateSimilarity(queryTerms, title);
-    const imageUrl = await this.getProductImage(itemType, index);
+    const imageUrl = this.getProductImage(index);
 
     return {
       id: `dynamic_${Date.now()}_${index}`,
@@ -275,18 +292,9 @@ export class SearchService {
     return similarity;
   }
 
-  private static async getProductImage(itemType: string, index: number): Promise<string> {
-    const keyword = this.UNSPLASH_KEYWORDS[itemType] || 'fashion-clothing';
-    const imageId = Math.floor(Math.random() * 1000) + 1000;
-    
-    // Use different image sources for better variety
-    const sources = [
-      `https://images.unsplash.com/photo-${1500000000000 + imageId}?w=400&h=400&fit=crop&q=80`,
-      `https://images.unsplash.com/photo-${1600000000000 + imageId}?w=400&h=400&fit=crop&q=80`,
-      `https://images.unsplash.com/photo-${1700000000000 + imageId}?w=400&h=400&fit=crop&q=80`
-    ];
-    
-    return sources[index % sources.length];
+  private static getProductImage(index: number): string {
+    // Use the diverse fashion images array to ensure different images
+    return this.DIVERSE_FASHION_IMAGES[index % this.DIVERSE_FASHION_IMAGES.length];
   }
 
   private static getRandomItems<T>(array: T[], min: number, max: number): T[] {
