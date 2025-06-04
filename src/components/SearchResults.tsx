@@ -133,7 +133,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
 
   const renderReferenceItem = () => {
     if (croppedImageUrl) {
-      // Show cropped image when available (image search)
+      // Show cropped image for image search
       return (
         <div className="flex-shrink-0">
           <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
@@ -146,7 +146,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
           <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
         </div>
       );
-    } else if (results.length > 0 && !selectedImage) {
+    } else if (results.length > 0 && !croppedImageUrl) {
       // Show first result's image for text search
       return (
         <div className="flex-shrink-0">
