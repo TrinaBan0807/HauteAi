@@ -133,7 +133,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
 
   const renderReferenceItem = () => {
     if (croppedImageUrl) {
-      // Show cropped image when available
+      // Show cropped image when available (image search)
       return (
         <div className="flex-shrink-0">
           <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
@@ -146,8 +146,26 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
           <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
         </div>
       );
+    } else if (results.length > 0 && !selectedImage) {
+      // Show first result's image for text search
+      return (
+        <div className="flex-shrink-0">
+          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
+            <img 
+              src={results[0].imageUrl}
+              alt="Reference from search results"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&q=80';
+              }}
+            />
+          </div>
+          <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
+        </div>
+      );
     } else {
-      // Show placeholder reference item based on description
+      // Show placeholder reference item
       const defaultImage = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&q=80';
       return (
         <div className="flex-shrink-0">
