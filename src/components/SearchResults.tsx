@@ -27,6 +27,45 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
+
+  // Create cropped image when selectedImage and selectedArea change
+  useEffect(() => {
+    if (selectedImage && selectedArea) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
+        // Calculate the scale factor between displayed image and actual image
+        const displayedWidth = Math.min(img.naturalWidth, 600); // Assuming max display width
+        const displayedHeight = (img.naturalHeight / img.naturalWidth) * displayedWidth;
+        
+        const scaleX = img.naturalWidth / displayedWidth;
+        const scaleY = img.naturalHeight / displayedHeight;
+        
+        // Scale the selected area to match the actual image dimensions
+        const actualX = selectedArea.x * scaleX;
+        const actualY = selectedArea.y * scaleY;
+        const actualWidth = selectedArea.width * scaleX;
+        const actualHeight = selectedArea.height * scaleY;
+        
+        canvas.width = actualWidth;
+        canvas.height = actualHeight;
+        
+        if (ctx) {
+          ctx.drawImage(
+            img,
+            actualX, actualY, actualWidth, actualHeight,
+            0, 0, actualWidth, actualHeight
+          );
+          setCroppedImageUrl(canvas.toDataURL('image/jpeg', 0.8));
+        }
+      };
+      
+      img.src = selectedImage;
+    }
+  }, [selectedImage, selectedArea]);
 
   const performDynamicSearch = async (imageData: string | null, area: any, desc: string) => {
     console.log('Starting dynamic search...');
@@ -93,19 +132,15 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
   };
 
   const renderReferenceItem = () => {
-    if (selectedImage && selectedArea) {
+    if (croppedImageUrl) {
       // Show cropped image when available
       return (
         <div className="flex-shrink-0">
           <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: `url(${selectedImage})`,
-                backgroundPosition: `-${selectedArea.x * (96 / selectedArea.width)}px -${selectedArea.y * (96 / selectedArea.height)}px`,
-                backgroundSize: `${selectedArea.width * (96 / selectedArea.width)}px ${selectedArea.height * (96 / selectedArea.height)}px`,
-                backgroundRepeat: 'no-repeat'
-              }}
+            <img 
+              src={croppedImageUrl}
+              alt="Selected reference item"
+              className="w-full h-full object-cover"
             />
           </div>
           <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
