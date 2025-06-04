@@ -1,6 +1,5 @@
 
-# HauteAi - AI-Powered Fashion Search
-
+# HauteAi - Your Personal Stylist with Vision & Vogue
 ## Overview
 
 HauteAi is a modern web application that enables users to find fashion items using AI-powered visual search. Users can either take photos with their camera or upload existing images, select specific items within those images, describe them for better accuracy, and get search results for similar fashion items from online stores.
