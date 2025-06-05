@@ -313,11 +313,6 @@ export class SearchService {
     return similarity;
   }
 
-  private static getProductImage(index: number): string {
-    // Use the diverse fashion images array to ensure different images
-    return this.DIVERSE_FASHION_IMAGES[index % this.DIVERSE_FASHION_IMAGES.length];
-  }
-
   private static getRandomItems<T>(array: T[], min: number, max: number): T[] {
     const count = Math.floor(Math.random() * (max - min + 1)) + min;
     const shuffled = [...array].sort(() => 0.5 - Math.random());
