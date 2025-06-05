@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -134,56 +135,35 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
   };
 
   const renderReferenceItem = () => {
-    // For image search - show the cropped image
-    if (selectedImage && selectedArea && croppedImageUrl) {
+    // Show the cropped image from the selected area
+    if (croppedImageUrl) {
       return (
         <div className="flex-shrink-0">
           <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
             <img 
               src={croppedImageUrl}
-              alt="Selected reference item"
+              alt="Selected item from your photo"
               className="w-full h-full object-cover"
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
+          <p className="text-xs text-gray-500 mt-1 text-center">Your Selection</p>
         </div>
       );
     }
     
-    // For text search - show first result image if available
-    if (!selectedImage && results.length > 0) {
+    // For text search - show placeholder
+    if (!selectedImage && description) {
       return (
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
-            <img 
-              src={results[0].imageUrl}
-              alt="Reference from search results"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&q=80';
-              }}
-            />
+          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center">
+            <Search className="w-8 h-8 text-purple-400" />
           </div>
-          <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
+          <p className="text-xs text-gray-500 mt-1 text-center">Text Search</p>
         </div>
       );
     }
     
-    // Fallback placeholder
-    const defaultImage = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&q=80';
-    return (
-      <div className="flex-shrink-0">
-        <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
-          <img 
-            src={defaultImage}
-            alt="Reference fashion item"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
-      </div>
-    );
+    return null;
   };
 
   if (isLoading) {
@@ -228,11 +208,11 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
         <div className="flex items-start space-x-4">
           {renderReferenceItem()}
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-800 mb-1">Search Result</h3>
-            <p className="text-sm text-gray-600 mb-2">{description}</p>
+            <h3 className="font-semibold text-gray-800 mb-1">Search Results</h3>
+            <p className="text-sm text-gray-600 mb-2">{description || 'Image-based search'}</p>
             {searchQuery && (
               <p className="text-xs text-purple-600 font-medium mb-2">
-                Search Query: {searchQuery}
+                Query: {searchQuery}
               </p>
             )}
             <div className="flex items-center space-x-2">
@@ -265,7 +245,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop`;
+                    target.src = `https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=300&fit=crop&q=80`;
                   }}
                 />
                 <button
