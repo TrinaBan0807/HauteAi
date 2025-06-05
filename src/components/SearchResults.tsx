@@ -64,6 +64,8 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
       };
       
       img.src = selectedImage;
+    } else {
+      setCroppedImageUrl(null);
     }
   }, [selectedImage, selectedArea]);
 
@@ -132,8 +134,8 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
   };
 
   const renderReferenceItem = () => {
-    if (croppedImageUrl) {
-      // Show cropped image for image search
+    // For image search - show the cropped image
+    if (selectedImage && selectedArea && croppedImageUrl) {
       return (
         <div className="flex-shrink-0">
           <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
@@ -146,8 +148,10 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
           <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
         </div>
       );
-    } else if (results.length > 0 && !croppedImageUrl) {
-      // Show first result's image for text search
+    }
+    
+    // For text search - show first result image if available
+    if (!selectedImage && results.length > 0) {
       return (
         <div className="flex-shrink-0">
           <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
@@ -164,22 +168,22 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
           <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
         </div>
       );
-    } else {
-      // Show placeholder reference item
-      const defaultImage = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&q=80';
-      return (
-        <div className="flex-shrink-0">
-          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
-            <img 
-              src={defaultImage}
-              alt="Reference fashion item"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
-        </div>
-      );
     }
+    
+    // Fallback placeholder
+    const defaultImage = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&q=80';
+    return (
+      <div className="flex-shrink-0">
+        <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
+          <img 
+            src={defaultImage}
+            alt="Reference fashion item"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <p className="text-xs text-gray-500 mt-1 text-center">Reference Item</p>
+      </div>
+    );
   };
 
   if (isLoading) {

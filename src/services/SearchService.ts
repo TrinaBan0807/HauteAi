@@ -23,60 +23,57 @@ export class SearchService {
     'Everyday Wear', 'Trendy Closet', 'Vintage Finds', 'Modern Wear'
   ];
 
-  private static readonly FASHION_ITEMS = [
-    'hawaiian shirt', 'hat', 'skirt', 'handbag', 'shoes', 'dress', 'jacket', 'pants', 
-    'sneakers', 'boots', 'blouse', 'sweater', 'coat', 'jeans', 't-shirt',
-    'sandals', 'heels', 'clutch', 'backpack', 'scarf', 'belt', 'cap', 'fedora',
-    'maxi dress', 'mini skirt', 'leather jacket', 'denim jacket', 'cargo pants'
-  ];
-
-  private static readonly DIVERSE_FASHION_IMAGES = [
-    'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop&q=80', // Fashion store
-    'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=400&fit=crop&q=80', // Clothing rack
-    'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop&q=80', // White sneakers
-    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80', // Red shoes
-    'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=400&fit=crop&q=80', // Fashion accessories
-    'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&q=80', // Sneakers collection
-    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80', // Handbag
-    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=400&fit=crop&q=80', // Fashion model
-    'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80', // Denim jacket
-    'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&h=400&fit=crop&q=80', // Summer dress
-    'https://images.unsplash.com/photo-1485968612651-46e6e0622dde?w=400&h=400&fit=crop&q=80', // Hat collection
-    'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80', // Leather boots
-    'https://images.unsplash.com/photo-1582142306909-195724d2b26d?w=400&h=400&fit=crop&q=80', // Colorful clothing
-    'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80', // Casual wear
-    'https://images.unsplash.com/photo-1494790108755-2616c2e19687?w=400&h=400&fit=crop&q=80', // Fashion portrait
-  ];
-
-  private static readonly UNSPLASH_KEYWORDS = {
-    'hawaiian shirt': 'hawaiian-shirt-tropical-pattern',
-    'hat': 'fashion-hat-style',
-    'skirt': 'fashion-skirt-women',
-    'handbag': 'leather-handbag-fashion',
-    'shoes': 'fashion-shoes-footwear',
-    'dress': 'fashion-dress-elegant',
-    'jacket': 'fashion-jacket-outerwear',
-    'pants': 'fashion-pants-trousers',
-    'sneakers': 'sneakers-shoes-fashion',
-    'boots': 'boots-leather-fashion',
-    'blouse': 'blouse-fashion-women',
-    'sweater': 'sweater-knitwear-fashion',
-    'coat': 'coat-fashion-outerwear',
-    'jeans': 'jeans-denim-fashion',
-    't-shirt': 'tshirt-casual-fashion',
-    'sandals': 'sandals-summer-shoes',
-    'heels': 'high-heels-shoes',
-    'clutch': 'clutch-bag-evening',
-    'backpack': 'backpack-fashion-bag',
-    'scarf': 'scarf-fashion-accessory',
-    'belt': 'belt-leather-accessory',
-    'cap': 'cap-hat-fashion',
-    'fedora': 'fedora-hat-style',
-    'maxi dress': 'maxi-dress-long',
-    'mini skirt': 'mini-skirt-fashion',
-    'leather jacket': 'leather-jacket-black',
-    'denim jacket': 'denim-jacket-blue',
-    'cargo pants': 'cargo-pants-utility'
+  private static readonly ITEM_IMAGE_MAPPING = {
+    'hawaiian shirt': [
+      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=400&fit=crop&q=80'
+    ],
+    't-shirt': [
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=400&fit=crop&q=80'
+    ],
+    'shirt': [
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop&q=80'
+    ],
+    'dress': [
+      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80'
+    ],
+    'handbag': [
+      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
+    ],
+    'shoes': [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
+    ],
+    'sneakers': [
+      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80'
+    ],
+    'hat': [
+      'https://images.unsplash.com/photo-1485968612651-46e6e622dde?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
+    ],
+    'skirt': [
+      'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1582142306909-195724d2b26d?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1494790108755-2616c2e19687?w=400&h=400&fit=crop&q=80'
+    ],
+    'jacket': [
+      'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
+    ]
   };
 
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
@@ -194,25 +191,39 @@ export class SearchService {
     const resultCount = Math.floor(Math.random() * 4) + 6; // 6-9 results
     const results: SearchResult[] = [];
 
-    // Force diverse items including the requested ones
-    const mustHaveItems = ['hawaiian shirt', 'hat', 'skirt', 'handbag', 'shoes'];
-    const diverseItems = [...mustHaveItems];
+    // Extract the main item type from query terms
+    const mainItem = this.extractMainItemType(queryTerms);
     
-    // Add more random items to fill the rest
-    while (diverseItems.length < resultCount) {
-      const randomItem = this.FASHION_ITEMS[Math.floor(Math.random() * this.FASHION_ITEMS.length)];
-      if (!diverseItems.includes(randomItem)) {
-        diverseItems.push(randomItem);
-      }
-    }
-
+    // Generate results focused on the main item type
     for (let i = 0; i < resultCount; i++) {
-      const result = await this.generateSingleResult(queryTerms, i, diverseItems[i]);
+      const result = await this.generateSingleResult(queryTerms, i, mainItem || 'shirt');
       results.push(result);
     }
 
     // Sort by similarity (highest first)
     return results.sort((a, b) => b.similarity - a.similarity);
+  }
+
+  private static extractMainItemType(queryTerms: string[]): string | null {
+    const itemTypes = Object.keys(this.ITEM_IMAGE_MAPPING);
+    
+    // Look for exact matches first
+    for (const term of queryTerms) {
+      if (itemTypes.includes(term)) {
+        return term;
+      }
+    }
+    
+    // Look for partial matches
+    for (const term of queryTerms) {
+      for (const itemType of itemTypes) {
+        if (term.includes(itemType) || itemType.includes(term)) {
+          return itemType;
+        }
+      }
+    }
+    
+    return null;
   }
 
   private static async generateSingleResult(queryTerms: string[], index: number, itemType: string): Promise<SearchResult> {
@@ -226,7 +237,7 @@ export class SearchService {
     const price = this.generatePrice(itemType);
     const store = this.DEMO_STORES[Math.floor(Math.random() * this.DEMO_STORES.length)];
     const similarity = this.calculateSimilarity(queryTerms, title);
-    const imageUrl = this.getProductImage(index);
+    const imageUrl = this.getItemSpecificImage(itemType, index);
 
     return {
       id: `dynamic_${Date.now()}_${index}`,
@@ -237,6 +248,16 @@ export class SearchService {
       link: `#product_${index}`,
       similarity
     };
+  }
+
+  private static getItemSpecificImage(itemType: string, index: number): string {
+    const images = this.ITEM_IMAGE_MAPPING[itemType as keyof typeof this.ITEM_IMAGE_MAPPING];
+    if (images && images.length > 0) {
+      return images[index % images.length];
+    }
+    
+    // Fallback to generic fashion image
+    return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop&q=80';
   }
 
   private static getRelevantColors(queryTerms: string[]): string[] {
