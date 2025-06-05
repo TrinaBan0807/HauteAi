@@ -39,6 +39,16 @@ export class SearchService {
       'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop&q=80'
     ],
+    'sweater': [
+      'https://images.unsplash.com/photo-1564257577-bbf9c2912d34?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1620799140188-3b2a7e95e8c4?w=400&h=400&fit=crop&q=80'
+    ],
+    'jeans': [
+      'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=400&fit=crop&q=80'
+    ],
     'dress': [
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
@@ -73,7 +83,56 @@ export class SearchService {
       'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
+    ],
+    'scarf': [
+      'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&q=80'
     ]
+  };
+
+  // Item type mapping for better detection
+  private static readonly ITEM_TYPE_MAPPING = {
+    'sweater': 'sweater',
+    'pullover': 'sweater',
+    'jumper': 'sweater',
+    'cardigan': 'sweater',
+    'jeans': 'jeans',
+    'denim': 'jeans',
+    'pants': 'jeans',
+    'trousers': 'jeans',
+    'scarf': 'scarf',
+    'wrap': 'scarf',
+    'shawl': 'scarf',
+    'hawaiian shirt': 'hawaiian shirt',
+    'aloha shirt': 'hawaiian shirt',
+    'tropical shirt': 'hawaiian shirt',
+    't-shirt': 't-shirt',
+    'tee': 't-shirt',
+    'tshirt': 't-shirt',
+    'shirt': 'shirt',
+    'blouse': 'shirt',
+    'top': 'shirt',
+    'dress': 'dress',
+    'frock': 'dress',
+    'gown': 'dress',
+    'handbag': 'handbag',
+    'bag': 'handbag',
+    'purse': 'handbag',
+    'clutch': 'handbag',
+    'shoes': 'shoes',
+    'footwear': 'shoes',
+    'sneakers': 'sneakers',
+    'trainers': 'sneakers',
+    'kicks': 'sneakers',
+    'hat': 'hat',
+    'cap': 'hat',
+    'beanie': 'hat',
+    'skirt': 'skirt',
+    'miniskirt': 'skirt',
+    'jacket': 'jacket',
+    'blazer': 'jacket',
+    'coat': 'jacket'
   };
 
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
@@ -133,11 +192,11 @@ export class SearchService {
   private static detectDiverseFashionItems(): string[] {
     // Ensure we get diverse items by selecting from different categories
     const categories = {
-      tops: ['hawaiian shirt', 't-shirt', 'blouse', 'sweater'],
-      bottoms: ['skirt', 'pants', 'jeans', 'mini skirt'],
-      accessories: ['handbag', 'hat', 'scarf', 'belt', 'clutch'],
-      footwear: ['shoes', 'sneakers', 'boots', 'heels', 'sandals'],
-      outerwear: ['jacket', 'coat', 'leather jacket', 'denim jacket']
+      tops: ['hawaiian shirt', 't-shirt', 'shirt', 'sweater'],
+      bottoms: ['skirt', 'jeans', 'pants'],
+      accessories: ['handbag', 'hat', 'scarf', 'belt'],
+      footwear: ['shoes', 'sneakers', 'boots'],
+      outerwear: ['jacket', 'coat', 'blazer']
     };
     
     const selectedItems = [];
@@ -191,12 +250,13 @@ export class SearchService {
     const resultCount = Math.floor(Math.random() * 4) + 6; // 6-9 results
     const results: SearchResult[] = [];
 
-    // Extract the main item type from query terms
-    const mainItem = this.extractMainItemType(queryTerms);
+    // Extract all relevant item types from query terms using improved mapping
+    const relevantItemTypes = this.extractRelevantItemTypes(queryTerms);
     
-    // Generate results focused on the main item type
+    // Generate results focused on the detected item types
     for (let i = 0; i < resultCount; i++) {
-      const result = await this.generateSingleResult(queryTerms, i, mainItem || 'shirt');
+      const itemType = relevantItemTypes[i % relevantItemTypes.length] || 'shirt';
+      const result = await this.generateSingleResult(queryTerms, i, itemType);
       results.push(result);
     }
 
@@ -204,26 +264,37 @@ export class SearchService {
     return results.sort((a, b) => b.similarity - a.similarity);
   }
 
-  private static extractMainItemType(queryTerms: string[]): string | null {
-    const itemTypes = Object.keys(this.ITEM_IMAGE_MAPPING);
+  private static extractRelevantItemTypes(queryTerms: string[]): string[] {
+    const foundTypes = [];
     
-    // Look for exact matches first
+    // Look through all query terms to find matching item types
     for (const term of queryTerms) {
-      if (itemTypes.includes(term)) {
-        return term;
+      // Check exact matches in mapping
+      if (this.ITEM_TYPE_MAPPING[term]) {
+        const mappedType = this.ITEM_TYPE_MAPPING[term];
+        if (!foundTypes.includes(mappedType)) {
+          foundTypes.push(mappedType);
+        }
       }
-    }
-    
-    // Look for partial matches
-    for (const term of queryTerms) {
-      for (const itemType of itemTypes) {
-        if (term.includes(itemType) || itemType.includes(term)) {
-          return itemType;
+      
+      // Check partial matches
+      for (const [key, value] of Object.entries(this.ITEM_TYPE_MAPPING)) {
+        if (term.includes(key) || key.includes(term)) {
+          if (!foundTypes.includes(value)) {
+            foundTypes.push(value);
+          }
         }
       }
     }
     
-    return null;
+    // Return found types or default fallbacks
+    return foundTypes.length > 0 ? foundTypes : ['shirt', 't-shirt', 'dress'];
+  }
+
+  private static extractMainItemType(queryTerms: string[]): string | null {
+    // Use the new mapping system
+    const relevantTypes = this.extractRelevantItemTypes(queryTerms);
+    return relevantTypes.length > 0 ? relevantTypes[0] : null;
   }
 
   private static async generateSingleResult(queryTerms: string[], index: number, itemType: string): Promise<SearchResult> {
@@ -298,6 +369,7 @@ export class SearchService {
       'hat': [20, 80],
       'cap': [15, 50],
       'fedora': [40, 120],
+      'scarf': [25, 85],
       'default': [20, 100]
     };
 
