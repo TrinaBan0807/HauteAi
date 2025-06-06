@@ -151,7 +151,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
               id="brand"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              placeholder="e.g., Nike, Zara, H&M..."
+              placeholder="e.g., Dolce&Gabbana,Saint Laurent , ..."
               className="border-purple-200 focus:border-purple-400"
               disabled={isSearching}
             />
