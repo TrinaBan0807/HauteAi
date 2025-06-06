@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 
 interface ImageSelectorProps {
   imageUrl: string;
-  onAreaSelected: (area: { x: number; y: number; width: number; height: number }) => void;
+  onAreaSelected: (area: { x: number; y: number; width: number; height: number; containerWidth: number; containerHeight: number }) => void;
 }
 
 export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) => {
@@ -58,8 +58,12 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
   };
 
   const confirmSelection = () => {
-    if (selectedArea) {
-      onAreaSelected(selectedArea);
+    if (selectedArea && containerRef.current) {
+      onAreaSelected({
+        ...selectedArea,
+        containerWidth: containerRef.current.clientWidth,
+        containerHeight: containerRef.current.clientHeight,
+      });
     }
   };
 

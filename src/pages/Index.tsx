@@ -12,7 +12,7 @@ const Index = () => {
   const [currentStep, setCurrentStep] = useState<'capture' | 'select' | 'describe' | 'search' | 'custom-search'>('capture');
   const [searchMode, setSearchMode] = useState<'image' | 'text'>('image');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [selectedArea, setSelectedArea] = useState<any>(null);
+  const [selectedArea, setSelectedArea] = useState<{ x: number; y: number; width: number; height: number; containerWidth: number; containerHeight: number } | null>(null);
   const [outfitDescription, setOutfitDescription] = useState<string>('');
 
   const handleImageCaptured = (imageUrl: string) => {
