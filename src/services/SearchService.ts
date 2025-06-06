@@ -14,6 +14,7 @@ interface ImageAnalysis {
   style: string[];
   patterns: string[];
   material: string[];
+  primaryItemType?: string; // Add primary item type detection
 }
 
 export class SearchService {
@@ -163,27 +164,32 @@ export class SearchService {
     // Simulate image processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
+    // Detect primary item type based on selected area analysis
+    const detectedItems = this.detectDiverseFashionItems();
+    const primaryItemType = this.detectPrimaryItemType(detectedItems, selectedArea);
+    
     // Simulate AI image analysis with diverse items
     const analysis: ImageAnalysis = {
       dominantColors: this.extractDominantColors(),
-      detectedItems: this.detectDiverseFashionItems(),
+      detectedItems,
       style: this.analyzeStyle(),
       patterns: this.detectPatterns(),
-      material: this.detectMaterials()
+      material: this.detectMaterials(),
+      primaryItemType
     };
     
     console.log('Image analysis complete:', analysis);
     return analysis;
   }
 
-  static async searchByQuery(query: string): Promise<SearchResult[]> {
-    console.log('Searching for items with query:', query);
+  static async searchByQuery(query: string, filterByItemType?: string): Promise<SearchResult[]> {
+    console.log('Searching for items with query:', query, 'Filter:', filterByItemType);
     
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     const queryTerms = this.extractQueryTerms(query);
-    const results = await this.generateDiverseResults(queryTerms);
+    const results = await this.generateDiverseResults(queryTerms, filterByItemType);
     
     console.log('Search results:', results);
     return results;
@@ -202,8 +208,36 @@ export class SearchService {
     // Combine image analysis with description
     const combinedQuery = this.combineImageAndText(imageAnalysis, description);
     
-    // Search based on combined analysis
-    return await this.searchByQuery(combinedQuery);
+    // Search based on combined analysis, filtered by primary item type
+    return await this.searchByQuery(combinedQuery, imageAnalysis.primaryItemType);
+  }
+
+  private static detectPrimaryItemType(detectedItems: string[], selectedArea?: any): string | undefined {
+    // Simulate advanced image analysis to detect the primary item type
+    // In a real implementation, this would analyze the selected area specifically
+    
+    const itemTypePriority = {
+      'hat': ['hat', 'cap', 'beanie'],
+      'bag': ['handbag', 'bag', 'purse', 'clutch'],
+      'shoes': ['shoes', 'sneakers', 'boots'],
+      'shirt': ['hawaiian shirt', 't-shirt', 'shirt', 'blouse'],
+      'dress': ['dress', 'gown'],
+      'pants': ['jeans', 'pants', 'trousers'],
+      'jacket': ['jacket', 'blazer', 'coat']
+    };
+
+    // Check for high-priority items first (accessories like hats and bags)
+    for (const [category, items] of Object.entries(itemTypePriority)) {
+      for (const item of detectedItems) {
+        if (items.includes(item)) {
+          console.log(`Primary item type detected: ${category} (from ${item})`);
+          return category;
+        }
+      }
+    }
+
+    // If no specific match, return the first detected item
+    return detectedItems[0] ? this.ITEM_TYPE_MAPPING[detectedItems[0]] : undefined;
   }
 
   private static extractDominantColors(): string[] {
@@ -268,12 +302,20 @@ export class SearchService {
     return [...new Set([...descriptionTerms, ...imageTerms])].join(' ');
   }
 
-  private static async generateDiverseResults(queryTerms: string[]): Promise<SearchResult[]> {
+  private static async generateDiverseResults(queryTerms: string[], filterByItemType?: string): Promise<SearchResult[]> {
     const resultCount = Math.floor(Math.random() * 4) + 6; // 6-9 results
     const results: SearchResult[] = [];
 
-    // Extract all relevant item types from query terms using improved mapping
-    const relevantItemTypes = this.extractRelevantItemTypes(queryTerms);
+    let relevantItemTypes: string[];
+    
+    if (filterByItemType) {
+      // If we have a specific item type to filter by, use only that type
+      relevantItemTypes = [filterByItemType];
+      console.log(`Filtering results to show only: ${filterByItemType}`);
+    } else {
+      // Extract all relevant item types from query terms using improved mapping
+      relevantItemTypes = this.extractRelevantItemTypes(queryTerms);
+    }
     
     // Generate results focused on the detected item types
     for (let i = 0; i < resultCount; i++) {

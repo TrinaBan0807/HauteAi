@@ -32,17 +32,21 @@ export const useSearchResults = (selectedImage: string | null, selectedArea: any
       let searchResults: SearchResult[] = [];
 
       if (imageData && desc) {
-        // Combined image and text search
+        // Combined image and text search with item type filtering
         setSearchQuery('Analyzing image and description...');
         searchResults = await SearchService.searchByImageAndDescription(imageData, area, desc);
         setSearchQuery(`Image + Text: "${desc}"`);
       } else if (imageData) {
-        // Image-only search
+        // Image-only search with item type filtering
         setSearchQuery('Analyzing image...');
         const imageAnalysis = await SearchService.analyzeImage(imageData, area);
         const analysisQuery = [...imageAnalysis.detectedItems, ...imageAnalysis.dominantColors].join(' ');
-        searchResults = await SearchService.searchByQuery(analysisQuery);
-        setSearchQuery(`Image Analysis: ${analysisQuery}`);
+        
+        // Filter search results by detected primary item type
+        searchResults = await SearchService.searchByQuery(analysisQuery, imageAnalysis.primaryItemType);
+        
+        const itemTypeText = imageAnalysis.primaryItemType ? ` (${imageAnalysis.primaryItemType} only)` : '';
+        setSearchQuery(`Image Analysis: ${analysisQuery}${itemTypeText}`);
       } else if (desc) {
         // Text-only search
         setSearchQuery(`Text Search: "${desc}"`);
