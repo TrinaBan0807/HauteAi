@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -12,17 +11,18 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
   const [isSelecting, setIsSelecting] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const [currentPos, setCurrentPos] = useState({ x: 0, y: 0 });
-  const [selectedArea, setSelectedArea] = useState<any>(null);
+  const [selectedArea, setSelectedArea] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     setStartPos({ x, y });
     setCurrentPos({ x, y });
     setIsSelecting(true);
@@ -30,30 +30,30 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isSelecting || !containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     setCurrentPos({ x, y });
   };
 
   const handleMouseUp = () => {
     if (!isSelecting) return;
-    
+
     const width = Math.abs(currentPos.x - startPos.x);
     const height = Math.abs(currentPos.y - startPos.y);
-    
+
     if (width > 20 && height > 20) {
       const area = {
         x: Math.min(startPos.x, currentPos.x),
         y: Math.min(startPos.y, currentPos.y),
         width,
-        height
+        height,
       };
       setSelectedArea(area);
     }
-    
+
     setIsSelecting(false);
   };
 
@@ -69,12 +69,12 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
 
   const getSelectionStyle = () => {
     if (!isSelecting && !selectedArea) return {};
-    
+
     const area = selectedArea || {
       x: Math.min(startPos.x, currentPos.x),
       y: Math.min(startPos.y, currentPos.y),
       width: Math.abs(currentPos.x - startPos.x),
-      height: Math.abs(currentPos.y - startPos.y)
+      height: Math.abs(currentPos.y - startPos.y),
     };
 
     return {
@@ -85,10 +85,44 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
     };
   };
 
+  // Draw preview when selectedArea or imageUrl changes
+  useEffect(() => {
+    if (!selectedArea || !imageRef.current || !previewCanvasRef.current) return;
+
+    const img = imageRef.current;
+    const canvas = previewCanvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size for preview (scale it if needed)
+    const previewWidth = 150; // desired preview width
+    const scale = previewWidth / selectedArea.width;
+    const previewHeight = selectedArea.height * scale;
+
+    canvas.width = previewWidth;
+    canvas.height = previewHeight;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the cropped portion of the image onto the canvas
+    ctx.drawImage(
+      img,
+      selectedArea.x,
+      selectedArea.y,
+      selectedArea.width,
+      selectedArea.height,
+      0,
+      0,
+      previewWidth,
+      previewHeight
+    );
+  }, [selectedArea, imageUrl]);
+
   return (
     <Card className="p-6">
       <div className="space-y-4">
-        <div 
+        <div
           ref={containerRef}
           className="relative cursor-crosshair border-2 border-dashed border-gray-300 rounded-lg overflow-hidden"
           onMouseDown={handleMouseDown}
@@ -103,7 +137,7 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
             className="w-full h-auto max-h-96 object-contain"
             draggable={false}
           />
-          
+
           {/* Selection overlay */}
           {(isSelecting || selectedArea) && (
             <div
@@ -111,33 +145,45 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
               style={getSelectionStyle()}
             />
           )}
-          
+
           {/* Instruction overlay */}
           {!selectedArea && !isSelecting && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <div className="text-white text-center p-4">
                 <p className="text-lg font-semibold mb-2">Click and drag to select an item</p>
-                <p className="text-sm opacity-80">Draw a box around the clothing or accessory you want to find</p>
+                <p className="text-sm opacity-80">
+                  Draw a box around the clothing or accessory you want to find
+                </p>
               </div>
             </div>
           )}
         </div>
 
         {selectedArea && (
-          <div className="flex justify-center space-x-4">
-            <Button
-              onClick={confirmSelection}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-            >
-              Use This Selection
-            </Button>
-            <Button
-              onClick={clearSelection}
-              variant="outline"
-              className="border-purple-200 text-purple-600 hover:bg-purple-50"
-            >
-              Clear Selection
-            </Button>
+          <div className="flex flex-col items-center space-y-4">
+            <div>
+              <canvas
+                ref={previewCanvasRef}
+                className="border border-gray-300 rounded-md"
+                style={{ maxWidth: '150px', maxHeight: '150px' }}
+              />
+            </div>
+
+            <div className="flex justify-center space-x-4">
+              <Button
+                onClick={confirmSelection}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+              >
+                Use This Selection
+              </Button>
+              <Button
+                onClick={clearSelection}
+                variant="outline"
+                className="border-purple-200 text-purple-600 hover:bg-purple-50"
+              >
+                Clear Selection
+              </Button>
+            </div>
           </div>
         )}
 
