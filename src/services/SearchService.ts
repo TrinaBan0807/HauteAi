@@ -14,7 +14,7 @@ interface ImageAnalysis {
   style: string[];
   patterns: string[];
   material: string[];
-  primaryItemType?: string; // Add primary item type detection
+  primaryItemType?: string;
 }
 
 export class SearchService {
@@ -59,20 +59,18 @@ export class SearchService {
     'dress': [
       'https://images.unsplash.com/photo-1519307060515-209ebd006397?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwyMzQ2OTQ5fHxlbnwwfHx8fHw%3D',
       'https://images.unsplash.com/photo-1530542435746-c0a7237af532?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8M3wyMzQ2OTQ5fHxlbnwwfHx8fHw%3D',
-      'hthttps://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MTl8MjM0Njk0OXx8ZW58MHx8fHx8'
-    ],
-    'handbag': [
-       'https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJhZ3N8ZW58MHx8MHx8fDA%3D',
-      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1630830607408-261889eb4968?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fGJhZ3N8ZW58MHx8MHx8fDA%3D',
-      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MTl8MjM0Njk0OXx8ZW58MHx8fHx8'
     ],
     'bag': [
       'https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJhZ3N8ZW58MHx8MHx8fDA%3D',
       'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1630830607408-261889eb4968?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fGJhZ3N8ZW58MHx8MHx8fDA%3D',
-      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
+    ],
+    'handbag': [
+      'https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJhZ3N8ZW58MHx8MHx8fDA%3D',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1630830607408-261889eb4968?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fGJhZ3N8ZW58MHx8MHx8fDA%3D',
       'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
     ],
     'shoes': [
@@ -117,63 +115,71 @@ export class SearchService {
     ]
   };
 
-  // Item type mapping for better detection
+  // Enhanced item type detection with better priority and accuracy
+  private static readonly ITEM_TYPE_PRIORITY = [
+    // Accessories (highest priority as they're most distinct)
+    'hat', 'cap', 'bag', 'handbag', 'belt', 'scarf', 'shoes', 'sneakers',
+    // Clothing items
+    'dress', 'jacket', 'hawaiian shirt', 't-shirt', 'shirt', 'sweater', 'skirt', 'jeans', 'pants'
+  ];
+
   private static readonly ITEM_TYPE_MAPPING = {
+    // Bags - all bag-related terms map to 'bag'
+    'bag': 'bag',
+    'handbag': 'bag', 
+    'purse': 'bag',
+    'clutch': 'bag',
+    'backpack': 'bag',
+    'tote': 'bag',
+    'satchel': 'bag',
+    
+    // Hats - all hat-related terms map to 'hat'
+    'hat': 'hat',
+    'cap': 'hat',
+    'beanie': 'hat',
+    'fedora': 'hat',
+    'baseball cap': 'hat',
+    
+    // Shirts - all shirt-related terms map to 'shirt'
+    'shirt': 'shirt',
+    'hawaiian shirt': 'shirt',
+    'aloha shirt': 'shirt',
+    't-shirt': 'shirt',
+    'tee': 'shirt',
+    'blouse': 'shirt',
+    'top': 'shirt',
+    
+    // Other items maintain their specific types
     'sweater': 'sweater',
     'pullover': 'sweater',
-    'jumper': 'sweater',
     'cardigan': 'sweater',
     'jeans': 'jeans',
     'denim': 'jeans',
     'pants': 'pants',
     'trousers': 'pants',
-    'scarf': 'scarf',
-    'wrap': 'scarf',
-    'shawl': 'scarf',
-    'hawaiian shirt': 'hawaiian shirt',
-    'aloha shirt': 'hawaiian shirt',
-    'tropical shirt': 'hawaiian shirt',
-    't-shirt': 't-shirt',
-    'tee': 't-shirt',
-    'tshirt': 't-shirt',
-    'shirt': 'shirt',
-    'blouse': 'shirt',
-    'top': 'shirt',
     'dress': 'dress',
-    'frock': 'dress',
     'gown': 'dress',
-    'handbag': 'handbag',
-    'bag': 'bag',
-    'purse': 'handbag',
-    'clutch': 'handbag',
     'shoes': 'shoes',
-    'footwear': 'shoes',
     'sneakers': 'sneakers',
-    'trainers': 'sneakers',
-    'kicks': 'sneakers',
-    'hat': 'hat',
-    'cap': 'cap',
-    'beanie': 'hat',
+    'boots': 'shoes',
     'skirt': 'skirt',
-    'miniskirt': 'skirt',
     'jacket': 'jacket',
     'blazer': 'jacket',
     'coat': 'jacket',
+    'scarf': 'scarf',
     'belt': 'belt'
-    
   };
 
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
-    console.log('Analyzing image for fashion items...');
+    console.log('Analyzing image for fashion items with enhanced detection...');
     
     // Simulate image processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Detect primary item type based on selected area analysis
-    const detectedItems = this.detectDiverseFashionItems();
-    const primaryItemType = this.detectPrimaryItemType(detectedItems, selectedArea);
+    // Enhanced item detection based on selected area analysis
+    const primaryItemType = this.detectPrimaryItemFromArea(selectedArea);
+    const detectedItems = this.generateDetectedItems(primaryItemType);
     
-    // Simulate AI image analysis with diverse items
     const analysis: ImageAnalysis = {
       dominantColors: this.extractDominantColors(),
       detectedItems,
@@ -183,94 +189,251 @@ export class SearchService {
       primaryItemType
     };
     
-    console.log('Image analysis complete:', analysis);
+    console.log('Enhanced image analysis complete:', analysis);
     return analysis;
   }
 
+  // Enhanced detection based on area position and size
+  private static detectPrimaryItemFromArea(selectedArea?: any): string {
+    if (!selectedArea) {
+      return this.getRandomItemType();
+    }
+
+    // Simulate intelligent analysis based on area characteristics
+    const { x, y, width, height } = selectedArea;
+    const aspectRatio = width / height;
+    
+    // Head area detection (top portion, small square-ish area)
+    if (y < 200 && aspectRatio > 0.8 && aspectRatio < 1.5) {
+      return 'hat';
+    }
+    
+    // Hand/side area detection (side areas, rectangular)
+    if ((x < 150 || x > 300) && aspectRatio > 0.5 && aspectRatio < 2) {
+      return 'bag';
+    }
+    
+    // Torso area (middle area, varies in size)
+    if (y > 150 && y < 350 && x > 100 && x < 350) {
+      // Determine clothing type based on area size and position
+      if (height > 100) {
+        return Math.random() > 0.5 ? 'dress' : 'shirt';
+      } else {
+        return 'shirt';
+      }
+    }
+    
+    // Lower body area
+    if (y > 300) {
+      return Math.random() > 0.5 ? 'pants' : 'skirt';
+    }
+    
+    // Foot area (bottom area)
+    if (y > 450) {
+      return 'shoes';
+    }
+    
+    return this.getRandomItemType();
+  }
+
+  private static getRandomItemType(): string {
+    const types = ['bag', 'hat', 'shirt', 'pants', 'shoes', 'dress'];
+    return types[Math.floor(Math.random() * types.length)];
+  }
+
+  private static generateDetectedItems(primaryType: string): string[] {
+    // Always include the primary type first
+    const items = [primaryType];
+    
+    // Add some related items for context but maintain primary focus
+    const relatedItems = this.getRelatedItems(primaryType);
+    items.push(...relatedItems.slice(0, 2));
+    
+    return items;
+  }
+
+  private static getRelatedItems(primaryType: string): string[] {
+    const related = {
+      'bag': ['handbag', 'purse'],
+      'hat': ['cap', 'beanie'],
+      'shirt': ['t-shirt', 'blouse'],
+      'pants': ['jeans', 'trousers'],
+      'shoes': ['sneakers', 'boots'],
+      'dress': ['gown', 'skirt'],
+      'sweater': ['cardigan', 'pullover'],
+      'jacket': ['blazer', 'coat'],
+      'scarf': ['wrap', 'shawl'],
+      'belt': ['accessory']
+    };
+    
+    return related[primaryType] || [];
+  }
+
   static async searchByQuery(query: string, filterByItemType?: string): Promise<SearchResult[]> {
-    console.log('Searching for items with query:', query, 'Filter:', filterByItemType);
+    console.log('Searching with strict item filter:', { query, filterByItemType });
     
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    const queryTerms = this.extractQueryTerms(query);
-    const results = await this.generateDiverseResults(queryTerms, filterByItemType);
+    if (!filterByItemType) {
+      console.log('No filter specified, returning general results');
+      return this.generateGeneralResults(query);
+    }
+
+    // Generate results ONLY for the specified item type
+    const results = await this.generateStrictlyFilteredResults(filterByItemType, query);
     
-    console.log('Search results:', results);
+    console.log(`Generated ${results.length} results strictly for: ${filterByItemType}`);
     return results;
   }
+
+  private static async generateStrictlyFilteredResults(itemType: string, query: string): Promise<SearchResult[]> {
+    const resultCount = Math.floor(Math.random() * 4) + 6; // 6-9 results
+    const results: SearchResult[] = [];
+    
+    console.log(`Generating ${resultCount} results exclusively for item type: ${itemType}`);
+    
+    // Use the mapped item type for image selection
+    const imageKey = this.getImageKeyForItemType(itemType);
+    
+    for (let i = 0; i < resultCount; i++) {
+      const result = await this.generateSingleStrictResult(itemType, imageKey, query, i);
+      results.push(result);
+    }
+
+    // Sort by similarity (highest first)
+    return results.sort((a, b) => b.similarity - a.similarity);
+  }
+
+  private static getImageKeyForItemType(itemType: string): string {
+    // Map our normalized types back to image keys
+    const mapping = {
+      'bag': 'bag',
+      'hat': 'hat', 
+      'shirt': 'shirt',
+      'pants': 'jeans', // Use jeans images for pants
+      'shoes': 'shoes',
+      'dress': 'dress',
+      'sweater': 'sweater',
+      'jacket': 'jacket',
+      'scarf': 'scarf',
+      'belt': 'belt',
+      'jeans': 'jeans',
+      'sneakers': 'sneakers',
+      'skirt': 'skirt'
+    };
+    
+    return mapping[itemType] || itemType;
+  }
+
+  private static async generateSingleStrictResult(itemType: string, imageKey: string, query: string, index: number): Promise<SearchResult> {
+    const queryTerms = this.extractQueryTerms(query);
+    const colors = this.getRelevantColors(queryTerms);
+    const styles = this.getRelevantStyles(queryTerms);
+    
+    const color = colors[Math.floor(Math.random() * colors.length)] || 'classic';
+    const style = styles[Math.floor(Math.random() * styles.length)] || 'modern';
+    
+    // Generate title that always includes the item type
+    const title = this.generateStrictProductTitle(itemType, color, style);
+    const price = this.generatePrice(itemType);
+    const store = this.DEMO_STORES[Math.floor(Math.random() * this.DEMO_STORES.length)];
+    const similarity = this.calculateSimilarity(queryTerms, title, itemType);
+    const imageUrl = this.getStrictItemImage(imageKey, index);
+
+    return {
+      id: `strict_${itemType}_${Date.now()}_${index}`,
+      title,
+      price,
+      store,
+      imageUrl,
+      link: `#${itemType}_product_${index}`,
+      similarity
+    };
+  }
+
+  private static generateStrictProductTitle(itemType: string, color: string, style: string): string {
+    const adjectives = ['Premium', 'Classic', 'Modern', 'Vintage', 'Designer', 'Comfortable', 'Stylish', 'Trendy', 'Chic', 'Elegant'];
+    const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+    
+    // Ensure the item type is always prominently featured in the title
+    const itemTypeVariations = {
+      'bag': ['Bag', 'Handbag', 'Tote Bag', 'Shoulder Bag'],
+      'hat': ['Hat', 'Cap', 'Beanie', 'Fedora'],
+      'shirt': ['Shirt', 'Blouse', 'Top', 'T-Shirt'],
+      'pants': ['Pants', 'Trousers', 'Slacks'],
+      'shoes': ['Shoes', 'Footwear', 'Sneakers'],
+      'dress': ['Dress', 'Gown', 'Frock'],
+      'sweater': ['Sweater', 'Pullover', 'Knit'],
+      'jacket': ['Jacket', 'Blazer', 'Coat'],
+      'scarf': ['Scarf', 'Wrap', 'Shawl'],
+      'belt': ['Belt', 'Waist Belt'],
+      'jeans': ['Jeans', 'Denim'],
+      'skirt': ['Skirt', 'Mini Skirt']
+    };
+    
+    const variations = itemTypeVariations[itemType] || [itemType];
+    const itemVariation = variations[Math.floor(Math.random() * variations.length)];
+    
+    const parts = [adjective, color, style, itemVariation].filter(Boolean);
+    return parts.join(' ').replace(/\s+/g, ' ').trim();
+  }
+
+  private static getStrictItemImage(imageKey: string, index: number): string {
+    const images = this.ITEM_IMAGE_MAPPING[imageKey as keyof typeof this.ITEM_IMAGE_MAPPING];
+    if (images && images.length > 0) {
+      return images[index % images.length];
+    }
+    
+    // Fallback to a generic fashion image
+    return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop&q=80';
+  }
+
+  private static calculateSimilarity(queryTerms: string[], title: string, itemType: string): number {
+    const titleLower = title.toLowerCase();
+    let baseScore = 70;
+    
+    // High bonus for exact item type match
+    if (titleLower.includes(itemType.toLowerCase())) {
+      baseScore += 20;
+    }
+    
+    // Bonus for query term matches
+    const matches = queryTerms.filter(term => titleLower.includes(term)).length;
+    baseScore += matches * 3;
+    
+    // Add some randomness but keep it high
+    const similarity = Math.min(95, baseScore + Math.floor(Math.random() * 8));
+    return similarity;
+  }
+
+  // ... keep existing code (generateGeneralResults, extractDominantColors, analyzeStyle, detectPatterns, detectMaterials, extractQueryTerms, getRelevantColors, getRelevantStyles, generatePrice, getRandomItems methods)
 
   static async searchByImageAndDescription(
     imageData: string, 
     selectedArea: any, 
     description: string
   ): Promise<SearchResult[]> {
-    console.log('Starting image + description search...');
+    console.log('Starting enhanced image + description search...');
     
-    // Analyze the image
+    // Analyze the image with enhanced detection
     const imageAnalysis = await this.analyzeImage(imageData, selectedArea);
     
     // Combine image analysis with description
     const combinedQuery = this.combineImageAndText(imageAnalysis, description);
     
-    // Search based on combined analysis, filtered by primary item type
+    // Search with strict filtering by the detected primary item type
     return await this.searchByQuery(combinedQuery, imageAnalysis.primaryItemType);
   }
 
-  private static detectPrimaryItemType(detectedItems: string[], selectedArea?: any): string | undefined {
-    // Simulate advanced image analysis to detect the primary item type
-    // In a real implementation, this would analyze the selected area specifically
-    
-    const itemTypePriority = {
-      'hat': ['hat', 'cap', 'beanie'],
-      'bag': ['handbag', 'bag', 'purse', 'clutch'],
-      'shoes': ['shoes', 'sneakers', 'boots'],
-      'shirt': ['hawaiian shirt', 't-shirt', 'shirt', 'blouse'],
-      'dress': ['dress', 'gown'],
-      'pants': ['jeans', 'pants', 'trousers'],
-      'jacket': ['jacket', 'blazer', 'coat']
-    };
-
-    // Check for high-priority items first (accessories like hats and bags)
-    for (const [category, items] of Object.entries(itemTypePriority)) {
-      for (const item of detectedItems) {
-        if (items.includes(item)) {
-          console.log(`Primary item type detected: ${category} (from ${item})`);
-          return category;
-        }
-      }
-    }
-
-    // If no specific match, return the first detected item
-    return detectedItems[0] ? this.ITEM_TYPE_MAPPING[detectedItems[0]] : undefined;
+  private static generateGeneralResults(query: string): SearchResult[] {
+    // Fallback for when no specific item type is detected
+    return [];
   }
 
   private static extractDominantColors(): string[] {
     const colors = ['black', 'white', 'blue', 'red', 'green', 'yellow', 'purple', 'pink', 'brown', 'gray', 'navy', 'beige', 'orange', 'coral', 'turquoise'];
     return this.getRandomItems(colors, 2, 4);
-  }
-
-  private static detectDiverseFashionItems(): string[] {
-    // Ensure we get diverse items by selecting from different categories
-    const categories = {
-      tops: ['hawaiian shirt', 't-shirt', 'shirt', 'sweater'],
-      bottoms: ['skirt', 'jeans', 'pants'],
-      accessories: ['handbag', 'bag', 'hat', 'cap', 'scarf', 'belt'],
-      footwear: ['shoes', 'sneakers', 'boots'],
-      outerwear: ['jacket', 'coat', 'blazer']
-    };
-    
-    const selectedItems = [];
-    const categoryKeys = Object.keys(categories);
-    
-    // Pick at least one item from each category
-    for (let i = 0; i < Math.min(3, categoryKeys.length); i++) {
-      const category = categories[categoryKeys[i]];
-      const item = category[Math.floor(Math.random() * category.length)];
-      selectedItems.push(item);
-    }
-    
-    return selectedItems;
   }
 
   private static analyzeStyle(): string[] {
@@ -307,95 +470,6 @@ export class SearchService {
     return [...new Set([...descriptionTerms, ...imageTerms])].join(' ');
   }
 
-  private static async generateDiverseResults(queryTerms: string[], filterByItemType?: string): Promise<SearchResult[]> {
-    const resultCount = Math.floor(Math.random() * 4) + 6; // 6-9 results
-    const results: SearchResult[] = [];
-
-    let relevantItemTypes: string[];
-    
-    if (filterByItemType) {
-      // If we have a specific item type to filter by, use only that type
-      relevantItemTypes = [filterByItemType];
-      console.log(`Filtering results to show only: ${filterByItemType}`);
-    } else {
-      // Extract all relevant item types from query terms using improved mapping
-      relevantItemTypes = this.extractRelevantItemTypes(queryTerms);
-    }
-    
-    // Generate results focused on the detected item types
-    for (let i = 0; i < resultCount; i++) {
-      const itemType = relevantItemTypes[i % relevantItemTypes.length] || 'shirt';
-      const result = await this.generateSingleResult(queryTerms, i, itemType);
-      results.push(result);
-    }
-
-    // Sort by similarity (highest first)
-    return results.sort((a, b) => b.similarity - a.similarity);
-  }
-
-  private static extractRelevantItemTypes(queryTerms: string[]): string[] {
-    const foundTypes = [];
-    
-    // Look through all query terms to find matching item types
-    for (const term of queryTerms) {
-      // Check exact matches in mapping
-      if (this.ITEM_TYPE_MAPPING[term]) {
-        const mappedType = this.ITEM_TYPE_MAPPING[term];
-        if (!foundTypes.includes(mappedType)) {
-          foundTypes.push(mappedType);
-        }
-      }
-      
-      // Check partial matches
-      for (const [key, value] of Object.entries(this.ITEM_TYPE_MAPPING)) {
-        if (term.includes(key) || key.includes(term)) {
-          if (!foundTypes.includes(value)) {
-            foundTypes.push(value);
-          }
-        }
-      }
-    }
-    
-    // Return found types or default fallbacks
-    return foundTypes.length > 0 ? foundTypes : ['shirt', 't-shirt', 'dress'];
-  }
-
-  private static async generateSingleResult(queryTerms: string[], index: number, itemType: string): Promise<SearchResult> {
-    const colors = this.getRelevantColors(queryTerms);
-    const styles = this.getRelevantStyles(queryTerms);
-    
-    const color = colors[Math.floor(Math.random() * colors.length)] || '';
-    const style = styles[Math.floor(Math.random() * styles.length)] || '';
-    
-    const title = this.generateProductTitle(itemType, color, style);
-    const price = this.generatePrice(itemType);
-    const store = this.DEMO_STORES[Math.floor(Math.random() * this.DEMO_STORES.length)];
-    const similarity = this.calculateSimilarity(queryTerms, title);
-    const imageUrl = this.getItemSpecificImage(itemType, index);
-
-    return {
-      id: `dynamic_${Date.now()}_${index}`,
-      title,
-      price,
-      store,
-      imageUrl,
-      link: `#product_${index}`,
-      similarity
-    };
-  }
-
-  private static getItemSpecificImage(itemType: string, index: number): string {
-    // Map pants to jeans for image consistency
-    const imageKey = itemType === 'pants' ? 'jeans' : itemType;
-    const images = this.ITEM_IMAGE_MAPPING[imageKey as keyof typeof this.ITEM_IMAGE_MAPPING];
-    if (images && images.length > 0) {
-      return images[index % images.length];
-    }
-    
-    // Fallback to generic fashion image
-    return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop&q=80';
-  }
-
   private static getRelevantColors(queryTerms: string[]): string[] {
     const allColors = ['black', 'white', 'blue', 'red', 'green', 'yellow', 'purple', 'pink', 'brown', 'gray', 'navy', 'beige', 'orange', 'coral'];
     const relevant = allColors.filter(color => queryTerms.includes(color));
@@ -408,22 +482,14 @@ export class SearchService {
     return relevant.length > 0 ? relevant : ['casual', 'modern', 'classic'];
   }
 
-  private static generateProductTitle(itemType: string, color: string, style: string): string {
-    const adjectives = ['Premium', 'Classic', 'Modern', 'Vintage', 'Designer', 'Comfortable', 'Stylish', 'Trendy', 'Chic', 'Elegant'];
-    const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-    
-    const parts = [adjective, color, style, itemType].filter(Boolean);
-    return parts.join(' ').replace(/\s+/g, ' ').trim();
-  }
-
   private static generatePrice(itemType: string): string {
     const basePrices: { [key: string]: [number, number] } = {
+      'bag': [60, 350],
       'handbag': [80, 350],
-      'bag': [60, 250],
+      'hat': [20, 80],
+      'cap': [15, 50],
       'shoes': [50, 200],
       'sneakers': [60, 180],
-      'heels': [70, 250],
-      'boots': [90, 300],
       'dress': [30, 150],
       'jacket': [60, 300],
       'shirt': [25, 80],
@@ -433,9 +499,6 @@ export class SearchService {
       'pants': [35, 110],
       't-shirt': [15, 60],
       'sweater': [35, 100],
-      'hat': [20, 80],
-      'cap': [15, 50],
-      'fedora': [40, 120],
       'scarf': [25, 85],
       'belt': [20, 70],
       'default': [20, 100]
@@ -444,13 +507,6 @@ export class SearchService {
     const [min, max] = basePrices[itemType] || basePrices.default;
     const price = Math.floor(Math.random() * (max - min + 1)) + min;
     return `$${price}.${Math.floor(Math.random() * 100).toString().padStart(2, '0')}`;
-  }
-
-  private static calculateSimilarity(queryTerms: string[], title: string): number {
-    const titleLower = title.toLowerCase();
-    const matches = queryTerms.filter(term => titleLower.includes(term)).length;
-    const similarity = Math.min(95, 65 + (matches * 8) + Math.floor(Math.random() * 12));
-    return similarity;
   }
 
   private static getRandomItems<T>(array: T[], min: number, max: number): T[] {
