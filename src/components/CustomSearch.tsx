@@ -74,7 +74,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
   ];
 
   const quickBrands = [
-    'Nike', 'Adidas', 'Zara', 'H&M', 'Uniqlo', 'Gap', 'Levi\'s', 'Puma'
+    'Saint Laurent','Balenciaga','Chloé'
   ];
 
   return (
