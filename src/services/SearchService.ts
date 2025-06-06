@@ -32,7 +32,7 @@ export class SearchService {
     ],
     't-shirt': [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80',
+      'https://unsplash.com/photos/man-in-black-crew-neck-t-shirt-standing-during-daytime-NMYG69BG_Jg',
       'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=400&fit=crop&q=80'
     ],
     'shirt': [
