@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,37 +32,30 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
   // Create cropped image when selectedImage and selectedArea change
   useEffect(() => {
     if (selectedImage && selectedArea) {
+      console.log('Creating cropped image preview...');
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const img = new Image();
       
       img.onload = () => {
-        // Calculate the scale factor between displayed image and actual image
-        const displayedWidth = Math.min(img.naturalWidth, 600); // Assuming max display width
-        const displayedHeight = (img.naturalHeight / img.naturalWidth) * displayedWidth;
-        
-        const scaleX = img.naturalWidth / displayedWidth;
-        const scaleY = img.naturalHeight / displayedHeight;
-        
-        // Scale the selected area to match the actual image dimensions
-        const actualX = selectedArea.x * scaleX;
-        const actualY = selectedArea.y * scaleY;
-        const actualWidth = selectedArea.width * scaleX;
-        const actualHeight = selectedArea.height * scaleY;
-        
-        canvas.width = actualWidth;
-        canvas.height = actualHeight;
+        // Set canvas size to the selected area dimensions
+        canvas.width = selectedArea.width;
+        canvas.height = selectedArea.height;
         
         if (ctx) {
+          // Draw the cropped portion of the image
           ctx.drawImage(
             img,
-            actualX, actualY, actualWidth, actualHeight,
-            0, 0, actualWidth, actualHeight
+            selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height,
+            0, 0, selectedArea.width, selectedArea.height
           );
-          setCroppedImageUrl(canvas.toDataURL('image/jpeg', 0.8));
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          setCroppedImageUrl(dataUrl);
+          console.log('Cropped image created successfully');
         }
       };
       
+      img.crossOrigin = 'anonymous';
       img.src = selectedImage;
     } else {
       setCroppedImageUrl(null);
@@ -136,17 +128,17 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
 
   const renderReferenceItem = () => {
     // Show the cropped image from the selected area
-    if (croppedImageUrl) {
+    if (croppedImageUrl && selectedImage && selectedArea) {
       return (
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
+          <div className="w-32 h-32 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
             <img 
               src={croppedImageUrl}
-              alt="Selected item from your photo"
+              alt="Selected area from your photo"
               className="w-full h-full object-cover"
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1 text-center">Your Selection</p>
+          <p className="text-xs text-gray-500 mt-1 text-center">Selected Area</p>
         </div>
       );
     }
@@ -155,7 +147,7 @@ export const SearchResults = ({ selectedImage, selectedArea, description }: Sear
     if (!selectedImage && description) {
       return (
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center">
+          <div className="w-32 h-32 border-2 border-purple-200 rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center">
             <Search className="w-8 h-8 text-purple-400" />
           </div>
           <p className="text-xs text-gray-500 mt-1 text-center">Text Search</p>
