@@ -154,7 +154,7 @@ export class SearchService {
     'blazer': 'jacket',
     'coat': 'jacket',
     'belt': 'belt'
-    'skirt': 'skirt'
+    
   };
 
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
