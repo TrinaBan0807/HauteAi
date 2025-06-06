@@ -119,7 +119,7 @@ const Index = () => {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
-              Upload any fashion photo and let our AI identify and find similar items from thousands of online stores. 
+              Upload any fashion photo and let our AI identify and find similar items from online stores. 
               Or describe what you're looking for and discover your style, instantly.
             </p>
             
