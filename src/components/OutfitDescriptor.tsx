@@ -163,7 +163,7 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
             id="brand"
             value={brand}
             onChange={(e) => setBrand(e.target.value)}
-            placeholder="e.g., Nike, Zara, H&M..."
+            placeholder="e.g.,Chloé,Balenciaga..."
             className="border-purple-200 focus:border-purple-400"
           />
         </div>
