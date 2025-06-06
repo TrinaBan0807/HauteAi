@@ -61,7 +61,7 @@ export class SearchService {
       'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80'
     ],
     'handbag': [
-      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
+      'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQaRER-zHFxcS6bxoQoGKFiglX6aAjTzruCwZ_UzpBwAQ0j_QZem6wxl8vfEBQRMK6bBBmPFfF94uTEgm5U-Fq1B5Mz6V83IPdwYTqKsIawZwUZwQR4rJGTkg?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
     ],
