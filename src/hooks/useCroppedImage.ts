@@ -1,102 +1,69 @@
-
 import { useState, useEffect } from 'react';
 
-export const useCroppedImage = (selectedImage: string | null, selectedArea: any) => {
+export const useCroppedImage = (selectedImage: string | null, selectedArea: any, containerWidth?: number, containerHeight?: number) => {
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (selectedImage && selectedArea) {
-      console.log('Creating enhanced cropped image preview...', { selectedArea });
+    if (selectedImage && selectedArea && containerWidth && containerHeight) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const img = new Image();
-      
-      img.onload = () => {
-        console.log('Image loaded for enhanced cropping', { 
-          naturalWidth: img.naturalWidth, 
-          naturalHeight: img.naturalHeight,
-          selectedArea 
-        });
 
-        // Calculate display dimensions more accurately
-        const maxDisplayWidth = 400; // Typical image container width
-        const maxDisplayHeight = 300; // Typical image container height
-        
-        const imageAspectRatio = img.naturalWidth / img.naturalHeight;
-        const containerAspectRatio = maxDisplayWidth / maxDisplayHeight;
-        
-        let displayWidth, displayHeight;
-        
-        if (imageAspectRatio > containerAspectRatio) {
-          // Image is wider than container - fit by width
-          displayWidth = Math.min(maxDisplayWidth, img.naturalWidth);
-          displayHeight = displayWidth / imageAspectRatio;
+      img.onload = () => {
+        const naturalWidth = img.naturalWidth;
+        const naturalHeight = img.naturalHeight;
+        // Calculate rendered image size and offset (object-contain logic)
+        const imageAspect = naturalWidth / naturalHeight;
+        const containerAspect = containerWidth / containerHeight;
+        let renderedWidth, renderedHeight, offsetX, offsetY;
+        if (imageAspect > containerAspect) {
+          renderedWidth = containerWidth;
+          renderedHeight = containerWidth / imageAspect;
+          offsetX = 0;
+          offsetY = (containerHeight - renderedHeight) / 2;
         } else {
-          // Image is taller than container - fit by height
-          displayHeight = Math.min(maxDisplayHeight, img.naturalHeight);
-          displayWidth = displayHeight * imageAspectRatio;
+          renderedHeight = containerHeight;
+          renderedWidth = containerHeight * imageAspect;
+          offsetX = (containerWidth - renderedWidth) / 2;
+          offsetY = 0;
         }
-        
-        // Calculate scale factors from display to natural image size
-        const scaleX = img.naturalWidth / displayWidth;
-        const scaleY = img.naturalHeight / displayHeight;
-        
-        console.log('Enhanced scale calculation:', { 
-          scaleX, 
-          scaleY, 
-          displayWidth, 
-          displayHeight,
-          imageAspectRatio,
-          containerAspectRatio
-        });
-        
-        // Calculate actual coordinates in the original image
-        const actualX = Math.max(0, selectedArea.x * scaleX);
-        const actualY = Math.max(0, selectedArea.y * scaleY);
-        const actualWidth = Math.min(selectedArea.width * scaleX, img.naturalWidth - actualX);
-        const actualHeight = Math.min(selectedArea.height * scaleY, img.naturalHeight - actualY);
-        
-        console.log('Enhanced crop area:', { actualX, actualY, actualWidth, actualHeight });
-        
-        // Set canvas size for better preview quality
-        const previewSize = 150;
-        canvas.width = previewSize;
-        canvas.height = previewSize;
-        
+        // Adjust selection coordinates to be relative to the image
+        const relX = selectedArea.x - offsetX;
+        const relY = selectedArea.y - offsetY;
+        // Calculate scale factors
+        const scaleX = naturalWidth / renderedWidth;
+        const scaleY = naturalHeight / renderedHeight;
+        // Convert selection to natural image coordinates
+        const actualX = Math.max(0, relX * scaleX);
+        const actualY = Math.max(0, relY * scaleY);
+        const actualWidth = Math.min(selectedArea.width * scaleX, naturalWidth - actualX);
+        const actualHeight = Math.min(selectedArea.height * scaleY, naturalHeight - actualY);
+        // Set canvas size for preview
+        const previewWidth = 150;
+        const previewHeight = actualHeight > 0 ? (actualHeight / actualWidth) * previewWidth : previewWidth;
+        canvas.width = previewWidth;
+        canvas.height = previewHeight;
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
         if (ctx && actualWidth > 0 && actualHeight > 0) {
-          // Clear canvas
-          ctx.clearRect(0, 0, previewSize, previewSize);
-          
-          // Draw the cropped portion with better quality
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
-          
           ctx.drawImage(
             img,
             actualX, actualY, actualWidth, actualHeight,
-            0, 0, previewSize, previewSize
+            0, 0, previewWidth, previewHeight
           );
-          
           const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
           setCroppedImageUrl(dataUrl);
-          console.log('Enhanced cropped image created successfully');
         } else {
-          console.warn('Invalid crop dimensions, using fallback');
           setCroppedImageUrl(null);
         }
       };
-      
-      img.onerror = () => {
-        console.error('Failed to load image for cropping');
-        setCroppedImageUrl(null);
-      };
-      
+      img.onerror = () => setCroppedImageUrl(null);
       img.crossOrigin = 'anonymous';
       img.src = selectedImage;
     } else {
       setCroppedImageUrl(null);
     }
-  }, [selectedImage, selectedArea]);
-
+  }, [selectedImage, selectedArea, containerWidth, containerHeight]);
   return croppedImageUrl;
 };

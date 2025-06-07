@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 
 interface ImageSelectorProps {
   imageUrl: string;
-  onAreaSelected: (area: { x: number; y: number; width: number; height: number }) => void;
+  onAreaSelected: (area: { x: number; y: number; width: number; height: number; containerWidth: number; containerHeight: number }) => void;
 }
 
 export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) => {
@@ -58,8 +58,12 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
   };
 
   const confirmSelection = () => {
-    if (selectedArea) {
-      onAreaSelected(selectedArea);
+    if (selectedArea && containerRef.current) {
+      onAreaSelected({
+        ...selectedArea,
+        containerWidth: containerRef.current.clientWidth,
+        containerHeight: containerRef.current.clientHeight,
+      });
     }
   };
 
@@ -87,18 +91,60 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
 
   // Draw preview when selectedArea or imageUrl changes
   useEffect(() => {
-    if (!selectedArea || !imageRef.current || !previewCanvasRef.current) return;
+    if (!selectedArea || !imageRef.current || !previewCanvasRef.current || !containerRef.current) return;
 
     const img = imageRef.current;
     const canvas = previewCanvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size for preview (scale it if needed)
-    const previewWidth = 150; // desired preview width
-    const scale = previewWidth / selectedArea.width;
-    const previewHeight = selectedArea.height * scale;
+    // Get natural and displayed image sizes
+    const naturalWidth = img.naturalWidth;
+    const naturalHeight = img.naturalHeight;
+    const containerWidth = containerRef.current.clientWidth;
+    const containerHeight = containerRef.current.clientHeight;
 
+    // Calculate the rendered image size and offset inside the container (object-contain logic)
+    const imageAspect = naturalWidth / naturalHeight;
+    const containerAspect = containerWidth / containerHeight;
+    let renderedWidth, renderedHeight, offsetX, offsetY;
+    if (imageAspect > containerAspect) {
+      // Image is wider than container
+      renderedWidth = containerWidth;
+      renderedHeight = containerWidth / imageAspect;
+      offsetX = 0;
+      offsetY = (containerHeight - renderedHeight) / 2;
+    } else {
+      // Image is taller than container
+      renderedHeight = containerHeight;
+      renderedWidth = containerHeight * imageAspect;
+      offsetX = (containerWidth - renderedWidth) / 2;
+      offsetY = 0;
+    }
+
+    // Adjust selection coordinates to be relative to the image
+    const relX = selectedArea.x - offsetX;
+    const relY = selectedArea.y - offsetY;
+
+    // If selection is outside the image, don't draw
+    if (relX < 0 || relY < 0 || relX + selectedArea.width > renderedWidth || relY + selectedArea.height > renderedHeight) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+
+    // Calculate scale factors
+    const scaleX = naturalWidth / renderedWidth;
+    const scaleY = naturalHeight / renderedHeight;
+
+    // Convert selection to natural image coordinates
+    const actualX = Math.max(0, relX * scaleX);
+    const actualY = Math.max(0, relY * scaleY);
+    const actualWidth = Math.min(selectedArea.width * scaleX, naturalWidth - actualX);
+    const actualHeight = Math.min(selectedArea.height * scaleY, naturalHeight - actualY);
+
+    // Set canvas size for preview (scale it if needed)
+    const previewWidth = 150;
+    const previewHeight = actualHeight > 0 ? (actualHeight / actualWidth) * previewWidth : previewWidth;
     canvas.width = previewWidth;
     canvas.height = previewHeight;
 
@@ -106,17 +152,19 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the cropped portion of the image onto the canvas
-    ctx.drawImage(
-      img,
-      selectedArea.x,
-      selectedArea.y,
-      selectedArea.width,
-      selectedArea.height,
-      0,
-      0,
-      previewWidth,
-      previewHeight
-    );
+    if (actualWidth > 0 && actualHeight > 0) {
+      ctx.drawImage(
+        img,
+        actualX,
+        actualY,
+        actualWidth,
+        actualHeight,
+        0,
+        0,
+        previewWidth,
+        previewHeight
+      );
+    }
   }, [selectedArea, imageUrl]);
 
   return (

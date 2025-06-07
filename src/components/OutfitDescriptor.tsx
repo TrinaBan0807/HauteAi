@@ -1,11 +1,11 @@
-
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Sparkles } from 'lucide-react';
+import { useCroppedImage } from '@/hooks/useCroppedImage';
 
 interface OutfitDescriptorProps {
   selectedImage: string | null;
@@ -20,6 +20,24 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
   const [style, setStyle] = useState('');
   const [brand, setBrand] = useState('');
   const [additionalDetails, setAdditionalDetails] = useState('');
+  const [containerSize, setContainerSize] = useState({ width: 150, height: 150 });
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (previewRef.current) {
+      setContainerSize({
+        width: previewRef.current.offsetWidth,
+        height: previewRef.current.offsetHeight,
+      });
+    }
+  }, [selectedImage, selectedArea]);
+
+  const croppedImageUrl = useCroppedImage(
+    selectedImage,
+    selectedArea,
+    selectedArea?.containerWidth,
+    selectedArea?.containerHeight
+  );
 
   const handleSubmit = () => {
     const description = [
@@ -52,18 +70,17 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
         {/* Preview of selected area */}
         {selectedImage && selectedArea && (
           <div className="text-center">
-            <div className="inline-block border-2 border-purple-200 rounded-lg overflow-hidden">
-              <div 
-                className="bg-gray-100"
-                style={{
-                  width: Math.min(selectedArea.width, 200),
-                  height: Math.min(selectedArea.height, 200),
-                  backgroundImage: `url(${selectedImage})`,
-                  backgroundPosition: `-${selectedArea.x}px -${selectedArea.y}px`,
-                  backgroundSize: 'auto',
-                  backgroundRepeat: 'no-repeat'
-                }}
-              />
+            <div ref={previewRef} className="inline-block border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100" style={{ width: 150, height: 150 }}>
+              {croppedImageUrl ? (
+                <img
+                  src={croppedImageUrl}
+                  alt="Selected item preview"
+                  className="w-full h-full object-cover"
+                  style={{ display: 'block' }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-300">No Preview</div>
+              )}
             </div>
             <p className="text-sm text-gray-600 mt-2">Selected item</p>
           </div>
