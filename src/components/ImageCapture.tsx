@@ -70,7 +70,7 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
       if (!file.type.startsWith('image/')) {
         toast({
           title: "Invalid File",
-          description: "Please select an image file.",
+          description: "Please select an image file..",
           variant: "destructive",
         });
         return;
