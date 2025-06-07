@@ -116,14 +116,7 @@ const Index = () => {
           <div className="text-center mb-20 animate-fade-in">
             <div className="space-y-8">
               {/* Main Script Title */}
-              <div className="space-y-6">
-                <h2 className="text-8xl font-script gradient-text-script animate-luxury-shimmer leading-tight tracking-wide text-shadow-luxury">
-                  HauteAi
-                </h2>
-                <p className="text-2xl font-script-bold gradient-text-luxury tracking-wide text-shadow-luxury">
-                  Your Personal Stylist with Vision & Vogue
-                </p>
-              </div>
+              
               
               {/* Elegant Separator */}
               <div className="flex justify-center items-center space-x-4 my-8">
