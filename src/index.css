@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -123,20 +122,23 @@
     font-family: 'Playfair Display', serif;
     font-style: italic;
     font-weight: 400;
+    color: #000000;
   }
 
   .font-script-bold {
     font-family: 'Playfair Display', serif;
     font-style: italic;
     font-weight: 700;
+    color: #000000;
   }
 
   .font-elegant {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
+    color: #000000;
   }
 
-  /* Enhanced gradient utilities */
+  /* Enhanced gradient utilities - updated to black, white, gray only */
   .gradient-text-luxury {
     background: linear-gradient(135deg, #000000 0%, #374151 25%, #6b7280 50%, #9ca3af 75%, #ffffff 100%);
     -webkit-background-clip: text;
@@ -147,7 +149,7 @@
   }
 
   .gradient-text-script {
-    background: linear-gradient(135deg, #000000 0%, #1f2937 20%, #374151 40%, #6b7280 60%, #9ca3af 80%, #e5e7eb 100%);
+    background: linear-gradient(135deg, #000000 0%, #1f2937 20%, #374151 40%, #6b7280 60%, #9ca3af 80%, #ffffff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -272,11 +274,7 @@
     background: linear-gradient(135deg, #475569 0%, #334155 100%);
   }
 
-  /* Luxury text effects */
-  .text-shadow-luxury {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
-  }
-
+  /* Remove text shadows and luxury effects */
   .letter-spacing-luxury {
     letter-spacing: 0.05em;
   }

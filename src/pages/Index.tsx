@@ -89,7 +89,7 @@ const Index = () => {
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-gray-300 to-white rounded-full shadow-sm"></div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold gradient-text-luxury tracking-wide">
+                <h1 className="text-3xl font-bold text-black tracking-wide">
                   HauteAi
                 </h1>
                 <p className="text-sm text-gray-500 font-light tracking-[0.2em] uppercase">Your Personal Stylist with Vision & Vogue</p>
@@ -115,8 +115,10 @@ const Index = () => {
         {currentStep === 'capture' && (
           <div className="text-center mb-20 animate-fade-in">
             <div className="space-y-8">
-              {/* Main Script Title */}
-              
+              {/* Main Script Title - removed text shadow */}
+              <h1 className="text-8xl font-script text-black leading-tight tracking-wide mb-8">
+                𝐻𝒶𝓊𝓉𝑒𝒜𝒾
+              </h1>
               
               {/* Elegant Separator */}
               <div className="flex justify-center items-center space-x-4 my-8">
@@ -126,13 +128,17 @@ const Index = () => {
               </div>
               
               {/* Secondary Title */}
-              <h3 className="text-6xl font-elegant gradient-text-luxury leading-tight tracking-wide mb-6">
-                Discover Your Perfect Match
+              <h3 className="text-6xl font-script text-black leading-tight tracking-wide mb-6">
+                𝒴𝑜𝓊𝓇 𝒫𝒆𝓇𝓈𝑜𝓃𝒶𝓁 𝒮𝓉𝓎𝓁𝒾𝓈𝓉 𝓌𝒾𝓉𝒽 𝒱𝒾𝓈𝒾𝑜𝓃 & 𝒱𝑜𝑔𝓊𝑒
               </h3>
+              
+              <h2 className="text-5xl font-script text-gray-700 leading-tight tracking-wide mb-6">
+                𝒟𝒾𝓈𝒸𝑜𝓋eve𝓇 𝒴𝑜𝓊𝓇 𝒫𝒆𝓇𝒻𝒆𝒸𝓉 𝑀𝒶𝓉𝒸𝒽
+              </h2>
               
               <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light tracking-wide">
                 Upload any fashion image and discover similar luxury pieces from the world's finest retailers. 
-                <span className="block mt-3 font-script text-2xl gradient-text-script">
+                <span className="block mt-3 font-script text-2xl text-gray-800">
                   Experience precision in fashion discovery.
                 </span>
               </p>
@@ -179,7 +185,7 @@ const Index = () => {
               <Type className="w-4 h-4 text-black" />
               <span className="text-sm font-medium text-black tracking-wider uppercase">Text Search</span>
             </div>
-            <h2 className="text-7xl font-script gradient-text-script animate-luxury-shimmer leading-tight tracking-wide mb-8 text-shadow-luxury">
+            <h2 className="text-7xl font-script text-black leading-tight tracking-wide mb-8">
               Describe Your Ideal Piece
             </h2>
             <div className="flex justify-center mb-8">
