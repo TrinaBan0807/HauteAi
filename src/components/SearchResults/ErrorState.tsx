@@ -10,17 +10,17 @@ interface ErrorStateProps {
 
 export const ErrorState = ({ error, onRetrySearch }: ErrorStateProps) => {
   return (
-    <Card className="p-8">
-      <div className="text-center space-y-4">
-        <Search className="w-16 h-16 text-red-300 mx-auto" />
-        <h3 className="text-lg font-semibold text-gray-800">Search Error</h3>
-        <p className="text-red-600 mb-4">{error}</p>
+    <Card className="p-12 bg-white border-gray-100">
+      <div className="text-center space-y-6">
+        <Search className="w-16 h-16 text-gray-300 mx-auto" />
+        <h3 className="text-xl font-light text-black tracking-wide">Search Unavailable</h3>
+        <p className="text-gray-600 font-light mb-6">{error}</p>
         <Button
           onClick={onRetrySearch}
           variant="outline"
-          className="border-purple-200 text-purple-600 hover:bg-purple-50"
+          className="border-black text-black hover:bg-black hover:text-white font-light text-xs tracking-wider uppercase"
         >
-          <RefreshCw className="w-4 h-4 mr-2" />
+          <RefreshCw className="w-3 h-3 mr-2" />
           Try Again
         </Button>
       </div>

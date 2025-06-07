@@ -43,10 +43,9 @@ export const useSearchResults = (selectedImage: string | null, selectedArea: any
         const analysisQuery = [...imageAnalysis.detectedItems, ...imageAnalysis.dominantColors].join(' ');
         
         // Filter search results by detected primary item type
-        searchResults = await SearchService.searchByQuery(analysisQuery, imageAnalysis.primaryItemType);
+        searchResults = await SearchService.searchByQuery(analysisQuery);
         
-        const itemTypeText = imageAnalysis.primaryItemType ? ` (${imageAnalysis.primaryItemType} only)` : '';
-        setSearchQuery(`Image Analysis: ${analysisQuery}${itemTypeText}`);
+        setSearchQuery(`Image Analysis: ${analysisQuery}`);
       } else if (desc) {
         // Text-only search
         setSearchQuery(`Text Search: "${desc}"`);
