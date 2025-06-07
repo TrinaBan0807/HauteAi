@@ -75,27 +75,27 @@ export const SearchSummaryCard = ({
   };
 
   return (
-    <Card className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100">
-      <div className="flex items-start space-x-4">
+    <Card className="p-6 bg-gray-50 border border-gray-100">
+      <div className="flex items-start space-x-6">
         {renderReferenceItem()}
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-800 mb-1">Search Results</h3>
+          <h3 className="font-light text-gray-900 mb-2 tracking-wide text-lg">Search Results</h3>
           {getSearchTypeIndicator()}
-          <p className="text-sm text-gray-600 mb-2">{description || 'Image-based search'}</p>
+          <p className="text-sm text-gray-600 mb-3 font-light">{description || 'Image-based search'}</p>
           {searchQuery && (
-            <p className="text-xs text-purple-600 font-medium mb-2">
+            <p className="text-xs text-gray-700 font-light mb-3 tracking-wide">
               Query: {searchQuery}
             </p>
           )}
-          <div className="flex items-center space-x-2">
-            <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-              {resultsCount} items found
+          <div className="flex items-center space-x-3">
+            <Badge variant="secondary" className="bg-black text-white font-light text-xs tracking-wider">
+              {resultsCount} ITEMS FOUND
             </Badge>
             <Button
               onClick={onRetrySearch}
               variant="outline"
               size="sm"
-              className="h-6 px-2 text-xs border-purple-200 text-purple-600 hover:bg-purple-50"
+              className="h-8 px-3 text-xs border border-gray-300 text-gray-700 hover:bg-gray-100 font-light tracking-wide uppercase"
             >
               <RefreshCw className="w-3 h-3 mr-1" />
               New Search
