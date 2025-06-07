@@ -3,8 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@300;400;500;600;700;800;900&display=swap');
-
 @layer base {
   :root {
     --background: 255 255 255;
@@ -120,7 +118,43 @@
     font-weight: 600;
   }
 
+  /* Luxury Script Font Class */
+  .font-script {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .font-script-bold {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  .font-elegant {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+  }
+
   /* Enhanced gradient utilities */
+  .gradient-text-luxury {
+    background: linear-gradient(135deg, #000000 0%, #374151 25%, #6b7280 50%, #9ca3af 75%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .gradient-text-script {
+    background: linear-gradient(135deg, #000000 0%, #1f2937 20%, #374151 40%, #6b7280 60%, #9ca3af 80%, #e5e7eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: luxury-shimmer 10s ease infinite;
+  }
+
   .gradient-text-primary {
     background: linear-gradient(135deg, #000000 0%, #374151 50%, #6b7280 100%);
     -webkit-background-clip: text;
@@ -135,6 +169,10 @@
     background-clip: text;
   }
 
+  .gradient-bg-luxury {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 15%, #f1f5f9 30%, #e2e8f0 50%, #cbd5e1 70%, #94a3b8 85%, #64748b 100%);
+  }
+
   .gradient-bg-primary {
     background: linear-gradient(135deg, #000000 0%, #374151 50%, #6b7280 100%);
   }
@@ -143,11 +181,26 @@
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #f1f5f9 75%, #e2e8f0 100%);
   }
 
-  .gradient-border {
-    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 50%, #9ca3af 100%);
+  .gradient-border-luxury {
+    background: linear-gradient(135deg, #000000 0%, #374151 25%, #6b7280 50%, #9ca3af 75%, #e5e7eb 100%);
   }
 
-  /* Animation utilities */
+  /* Enhanced animations */
+  @keyframes luxury-shimmer {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    25% {
+      background-position: 100% 50%;
+    }
+    50% {
+      background-position: 50% 100%;
+    }
+    75% {
+      background-position: 100% 0%;
+    }
+  }
+
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -177,6 +230,10 @@
     animation: gradient-shift 8s ease infinite;
   }
 
+  .animate-luxury-shimmer {
+    animation: luxury-shimmer 10s ease infinite;
+  }
+
   /* Enhanced glassmorphism effects */
   .glass-effect {
     background: rgba(255, 255, 255, 0.25);
@@ -188,6 +245,13 @@
     background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-luxury {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
 
   /* Custom scrollbar */
@@ -206,5 +270,18 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  }
+
+  /* Luxury text effects */
+  .text-shadow-luxury {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .letter-spacing-luxury {
+    letter-spacing: 0.05em;
+  }
+
+  .letter-spacing-wide-luxury {
+    letter-spacing: 0.15em;
   }
 }

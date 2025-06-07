@@ -69,15 +69,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 relative overflow-hidden">
-      {/* Enhanced gradient overlays */}
+      {/* Enhanced luxury gradient overlays */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-black/10 via-gray-400/5 to-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-gray-900/10 via-gray-600/5 to-black/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-br from-white/20 via-gray-200/10 to-gray-400/5 rounded-full blur-2xl"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-black/5 via-gray-400/3 to-white/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-gray-900/8 via-gray-600/4 to-black/3 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/3 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-br from-white/15 via-gray-200/8 to-gray-400/3 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-1/3 right-1/3 transform translate-x-1/2 translate-y-1/2 w-72 h-72 bg-gradient-to-br from-gray-100/20 via-gray-300/10 to-white/15 rounded-full blur-xl"></div>
       </div>
 
-      {/* Enhanced Header */}
-      <div className="bg-gradient-to-r from-white/95 via-gray-50/95 to-white/95 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
+      {/* Enhanced Header with luxury aesthetics */}
+      <div className="glass-luxury sticky top-0 z-50 shadow-sm border-b border-gray-200/30">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -85,10 +86,10 @@ const Index = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-black via-gray-700 to-gray-900 rounded-lg flex items-center justify-center shadow-lg">
                   <Zap className="w-6 h-6 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-gray-300 to-white rounded-full"></div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-gray-300 to-white rounded-full shadow-sm"></div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-black via-gray-600 to-gray-900 bg-clip-text text-transparent tracking-wide">
+                <h1 className="text-3xl font-bold gradient-text-luxury tracking-wide">
                   HauteAi
                 </h1>
                 <p className="text-sm text-gray-500 font-light tracking-[0.2em] uppercase">Your Personal Stylist with Vision & Vogue</p>
@@ -98,7 +99,7 @@ const Index = () => {
               <Button
                 onClick={resetApp}
                 variant="outline"
-                className="border-black/20 text-black hover:bg-gradient-to-r hover:from-black hover:to-gray-800 hover:text-white font-light text-xs tracking-wider uppercase transition-all duration-500 shadow-md hover:shadow-lg"
+                className="border-black/20 text-black hover:bg-gradient-to-r hover:from-black hover:to-gray-800 hover:text-white font-light text-xs tracking-wider uppercase transition-all duration-500 shadow-md hover:shadow-lg glass-effect"
               >
                 <Camera className="w-3 h-3 mr-2" />
                 New Search
@@ -110,35 +111,48 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 relative z-10">
-        {/* Enhanced Hero Section */}
+        {/* Enhanced Hero Section with Script Typography */}
         {currentStep === 'capture' && (
           <div className="text-center mb-20 animate-fade-in">
             <div className="space-y-8">
-              <h2 className="text-7xl font-bold leading-tight tracking-tight">
-                <span className="block bg-gradient-to-r from-black via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                  Discover Your
-                </span>
-                <span className="block bg-gradient-to-r from-gray-900 via-gray-600 to-black bg-clip-text text-transparent font-light">
-                  Perfect Match
-                </span>
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-black via-gray-500 to-gray-900 mx-auto rounded-full"></div>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light tracking-wide">
+              {/* Main Script Title */}
+              <div className="space-y-6">
+                <h2 className="text-8xl font-script gradient-text-script animate-luxury-shimmer leading-tight tracking-wide text-shadow-luxury">
+                  HauteAi
+                </h2>
+                <p className="text-2xl font-script-bold gradient-text-luxury tracking-wide text-shadow-luxury">
+                  Your Personal Stylist with Vision & Vogue
+                </p>
+              </div>
+              
+              {/* Elegant Separator */}
+              <div className="flex justify-center items-center space-x-4 my-8">
+                <div className="w-16 h-px bg-gradient-to-r from-transparent via-black to-transparent"></div>
+                <div className="w-2 h-2 bg-gradient-to-br from-black to-gray-600 rounded-full"></div>
+                <div className="w-16 h-px bg-gradient-to-r from-transparent via-black to-transparent"></div>
+              </div>
+              
+              {/* Secondary Title */}
+              <h3 className="text-6xl font-elegant gradient-text-luxury leading-tight tracking-wide mb-6">
+                Discover Your Perfect Match
+              </h3>
+              
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light tracking-wide">
                 Upload any fashion image and discover similar luxury pieces from the world's finest retailers. 
-                <span className="block mt-2 bg-gradient-to-r from-gray-700 to-gray-500 bg-clip-text text-transparent font-medium">
+                <span className="block mt-3 font-script text-2xl gradient-text-script">
                   Experience precision in fashion discovery.
                 </span>
               </p>
             </div>
             
             {/* Enhanced Search Mode Toggle */}
-            <div className="flex justify-center mb-16 mt-12">
-              <div className="bg-gradient-to-r from-white via-gray-50 to-white border border-gray-300/50 rounded-xl p-2 shadow-xl backdrop-blur-sm">
-                <div className="flex space-x-2">
+            <div className="flex justify-center mb-16 mt-16">
+              <div className="glass-luxury rounded-xl p-3 shadow-xl">
+                <div className="flex space-x-3">
                   <Button
                     onClick={switchToImageSearch}
                     variant={searchMode === 'image' ? 'default' : 'ghost'}
-                    className={`px-10 py-4 rounded-lg transition-all duration-500 font-light text-sm tracking-wider uppercase ${
+                    className={`px-12 py-5 rounded-lg transition-all duration-700 font-light text-sm tracking-wider uppercase ${
                       searchMode === 'image'
                         ? 'bg-gradient-to-r from-black via-gray-800 to-gray-900 text-white shadow-lg'
                         : 'text-gray-600 hover:text-black hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200'
@@ -150,7 +164,7 @@ const Index = () => {
                   <Button
                     onClick={switchToCustomSearch}
                     variant={searchMode === 'text' ? 'default' : 'ghost'}
-                    className={`px-10 py-4 rounded-lg transition-all duration-500 font-light text-sm tracking-wider uppercase ${
+                    className={`px-12 py-5 rounded-lg transition-all duration-700 font-light text-sm tracking-wider uppercase ${
                       searchMode === 'text'
                         ? 'bg-gradient-to-r from-black via-gray-800 to-gray-900 text-white shadow-lg'
                         : 'text-gray-600 hover:text-black hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200'
@@ -168,23 +182,18 @@ const Index = () => {
         {/* Enhanced Custom Search Hero */}
         {currentStep === 'custom-search' && (
           <div className="text-center mb-12 animate-fade-in">
-            <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-gray-100 via-white to-gray-100 px-6 py-3 rounded-xl mb-10 shadow-lg">
+            <div className="inline-flex items-center space-x-3 glass-luxury px-8 py-4 rounded-xl mb-12 shadow-lg">
               <Type className="w-4 h-4 text-black" />
               <span className="text-sm font-medium text-black tracking-wider uppercase">Text Search</span>
             </div>
-            <h2 className="text-6xl font-bold leading-tight tracking-wide mb-8">
-              <span className="block bg-gradient-to-r from-black via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                Describe Your
-              </span>
-              <span className="block bg-gradient-to-r from-gray-900 via-gray-600 to-black bg-clip-text text-transparent font-light">
-                Ideal Piece
-              </span>
+            <h2 className="text-7xl font-script gradient-text-script animate-luxury-shimmer leading-tight tracking-wide mb-8 text-shadow-luxury">
+              Describe Your Ideal Piece
             </h2>
             <div className="flex justify-center mb-8">
               <Button
                 onClick={switchToImageSearch}
                 variant="outline"
-                className="border-black/30 text-black hover:bg-gradient-to-r hover:from-black hover:to-gray-800 hover:text-white font-light text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all duration-500"
+                className="border-black/30 text-black hover:bg-gradient-to-r hover:from-black hover:to-gray-800 hover:text-white font-light text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all duration-500 glass-effect px-8 py-3"
               >
                 <Camera className="w-4 h-4 mr-3" />
                 Switch to Image
@@ -248,30 +257,30 @@ const Index = () => {
             <div className="animate-fade-in">
               <ImageCapture onImageCaptured={handleImageCaptured} />
               
-              {/* Enhanced Features Section */}
-              <div className="mt-24 grid md:grid-cols-3 gap-10">
-                <Card className="p-10 text-center hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 border-gray-200/50 bg-gradient-to-br from-white via-gray-50/30 to-white backdrop-blur-sm">
-                  <div className="w-16 h-16 bg-gradient-to-br from-black via-gray-700 to-gray-900 rounded-xl flex items-center justify-center mx-auto mb-8 shadow-lg">
-                    <Eye className="w-7 h-7 text-white" />
+              {/* Enhanced Features Section with Luxury Design */}
+              <div className="mt-32 grid md:grid-cols-3 gap-12">
+                <Card className="p-12 text-center hover:shadow-2xl transition-all duration-700 hover:-translate-y-3 border-gray-200/30 glass-luxury backdrop-blur-sm group">
+                  <div className="w-20 h-20 bg-gradient-to-br from-black via-gray-700 to-gray-900 rounded-xl flex items-center justify-center mx-auto mb-10 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                    <Eye className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent mb-4 tracking-wide">Precision Recognition</h3>
-                  <p className="text-gray-600 text-base font-light leading-relaxed">Advanced AI identifies luxury items with exceptional accuracy and precision</p>
+                  <h3 className="text-2xl font-elegant gradient-text-luxury mb-6 tracking-wide text-shadow-luxury">Precision Recognition</h3>
+                  <p className="text-gray-600 text-lg font-light leading-relaxed tracking-wide">Advanced AI identifies luxury items with exceptional accuracy and precision</p>
                 </Card>
                 
-                <Card className="p-10 text-center hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 border-gray-200/50 bg-gradient-to-br from-white via-gray-50/30 to-white backdrop-blur-sm">
-                  <div className="w-16 h-16 bg-gradient-to-br from-gray-800 via-gray-600 to-black rounded-xl flex items-center justify-center mx-auto mb-8 shadow-lg">
-                    <Search className="w-7 h-7 text-white" />
+                <Card className="p-12 text-center hover:shadow-2xl transition-all duration-700 hover:-translate-y-3 border-gray-200/30 glass-luxury backdrop-blur-sm group">
+                  <div className="w-20 h-20 bg-gradient-to-br from-gray-800 via-gray-600 to-black rounded-xl flex items-center justify-center mx-auto mb-10 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                    <Search className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent mb-4 tracking-wide">Curated Discovery</h3>
-                  <p className="text-gray-600 text-base font-light leading-relaxed">Find similar pieces from premier luxury retailers worldwide with expert curation</p>
+                  <h3 className="text-2xl font-elegant gradient-text-luxury mb-6 tracking-wide text-shadow-luxury">Curated Discovery</h3>
+                  <p className="text-gray-600 text-lg font-light leading-relaxed tracking-wide">Find similar pieces from premier luxury retailers worldwide with expert curation</p>
                 </Card>
                 
-                <Card className="p-10 text-center hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 border-gray-200/50 bg-gradient-to-br from-white via-gray-50/30 to-white backdrop-blur-sm">
-                  <div className="w-16 h-16 bg-gradient-to-br from-gray-900 via-gray-700 to-black rounded-xl flex items-center justify-center mx-auto mb-8 shadow-lg">
-                    <Sparkles className="w-7 h-7 text-white" />
+                <Card className="p-12 text-center hover:shadow-2xl transition-all duration-700 hover:-translate-y-3 border-gray-200/30 glass-luxury backdrop-blur-sm group">
+                  <div className="w-20 h-20 bg-gradient-to-br from-gray-900 via-gray-700 to-black rounded-xl flex items-center justify-center mx-auto mb-10 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                    <Sparkles className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent mb-4 tracking-wide">Style Intelligence</h3>
-                  <p className="text-gray-600 text-base font-light leading-relaxed">Discover pieces that elevate your personal aesthetic with intelligent recommendations</p>
+                  <h3 className="text-2xl font-elegant gradient-text-luxury mb-6 tracking-wide text-shadow-luxury">Style Intelligence</h3>
+                  <p className="text-gray-600 text-lg font-light leading-relaxed tracking-wide">Discover pieces that elevate your personal aesthetic with intelligent recommendations</p>
                 </Card>
               </div>
             </div>
