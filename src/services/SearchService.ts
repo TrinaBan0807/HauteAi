@@ -264,25 +264,9 @@ export class SearchService {
 
   private static generatePrice(itemType: string): string {
     const basePrices: { [key: string]: [number, number] } = {
-      'handbag': [80, 350],
-      'shoes': [50, 200],
-      'sneakers': [60, 180],
-      'heels': [70, 250],
-      'boots': [90, 300],
-      'dress': [30, 150],
       'jacket': [60, 300],
-      'shirt': [25, 80],
-      'hawaiian shirt': [35, 90],
-      'skirt': [20, 90],
-      'jeans': [40, 120],
-      't-shirt': [15, 60],
       'sweater': [35, 100],
-      'hat': [20, 80],
-      'cap': [15, 50],
-      'fedora': [40, 120],
-      'scarf': [25, 85],
-      'default': [20, 100]
-    };
+       };
 
     const [min, max] = basePrices[itemType] || basePrices.default;
     const price = Math.floor(Math.random() * (max - min + 1)) + min;
