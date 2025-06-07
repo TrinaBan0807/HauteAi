@@ -14,6 +14,7 @@ interface ImageAnalysis {
   style: string[];
   patterns: string[];
   material: string[];
+  primaryItemType?: string; // Add primary item type detection
 }
 
 export class SearchService {
@@ -49,12 +50,22 @@ export class SearchService {
       'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=400&fit=crop&q=80'
     ],
+    'pants': [
+      'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=400&fit=crop&q=80'
+    ],
     'dress': [
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=400&h=400&fit=crop&q=80'
     ],
     'handbag': [
+      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
+    ],
+    'bag': [
       'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop&q=80'
@@ -74,6 +85,11 @@ export class SearchService {
       'https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
     ],
+    'cap': [
+      'https://images.unsplash.com/photo-1485968612651-46e6e622dde?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
+    ],
     'skirt': [
       'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1582142306909-195724d2b26d?w=400&h=400&fit=crop&q=80',
@@ -88,6 +104,11 @@ export class SearchService {
       'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400&h=400&fit=crop&q=80',
       'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&q=80'
+    ],
+    'belt': [
+      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=400&fit=crop&q=80'
     ]
   };
 
@@ -99,8 +120,8 @@ export class SearchService {
     'cardigan': 'sweater',
     'jeans': 'jeans',
     'denim': 'jeans',
-    'pants': 'jeans',
-    'trousers': 'jeans',
+    'pants': 'pants',
+    'trousers': 'pants',
     'scarf': 'scarf',
     'wrap': 'scarf',
     'shawl': 'scarf',
@@ -117,7 +138,7 @@ export class SearchService {
     'frock': 'dress',
     'gown': 'dress',
     'handbag': 'handbag',
-    'bag': 'handbag',
+    'bag': 'bag',
     'purse': 'handbag',
     'clutch': 'handbag',
     'shoes': 'shoes',
@@ -126,13 +147,15 @@ export class SearchService {
     'trainers': 'sneakers',
     'kicks': 'sneakers',
     'hat': 'hat',
-    'cap': 'hat',
+    'cap': 'cap',
     'beanie': 'hat',
     'skirt': 'skirt',
     'miniskirt': 'skirt',
     'jacket': 'jacket',
     'blazer': 'jacket',
-    'coat': 'jacket'
+    'coat': 'jacket',
+    'belt': 'belt'
+    
   };
 
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
@@ -141,27 +164,32 @@ export class SearchService {
     // Simulate image processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
+    // Detect primary item type based on selected area analysis
+    const detectedItems = this.detectDiverseFashionItems();
+    const primaryItemType = this.detectPrimaryItemType(detectedItems, selectedArea);
+    
     // Simulate AI image analysis with diverse items
     const analysis: ImageAnalysis = {
       dominantColors: this.extractDominantColors(),
-      detectedItems: this.detectDiverseFashionItems(),
+      detectedItems,
       style: this.analyzeStyle(),
       patterns: this.detectPatterns(),
-      material: this.detectMaterials()
+      material: this.detectMaterials(),
+      primaryItemType
     };
     
     console.log('Image analysis complete:', analysis);
     return analysis;
   }
 
-  static async searchByQuery(query: string): Promise<SearchResult[]> {
-    console.log('Searching for items with query:', query);
+  static async searchByQuery(query: string, filterByItemType?: string): Promise<SearchResult[]> {
+    console.log('Searching for items with query:', query, 'Filter:', filterByItemType);
     
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     const queryTerms = this.extractQueryTerms(query);
-    const results = await this.generateDiverseResults(queryTerms);
+    const results = await this.generateDiverseResults(queryTerms, filterByItemType);
     
     console.log('Search results:', results);
     return results;
@@ -180,8 +208,36 @@ export class SearchService {
     // Combine image analysis with description
     const combinedQuery = this.combineImageAndText(imageAnalysis, description);
     
-    // Search based on combined analysis
-    return await this.searchByQuery(combinedQuery);
+    // Search based on combined analysis, filtered by primary item type
+    return await this.searchByQuery(combinedQuery, imageAnalysis.primaryItemType);
+  }
+
+  private static detectPrimaryItemType(detectedItems: string[], selectedArea?: any): string | undefined {
+    // Simulate advanced image analysis to detect the primary item type
+    // In a real implementation, this would analyze the selected area specifically
+    
+    const itemTypePriority = {
+      'hat': ['hat', 'cap', 'beanie'],
+      'bag': ['handbag', 'bag', 'purse', 'clutch'],
+      'shoes': ['shoes', 'sneakers', 'boots'],
+      'shirt': ['hawaiian shirt', 't-shirt', 'shirt', 'blouse'],
+      'dress': ['dress', 'gown'],
+      'pants': ['jeans', 'pants', 'trousers'],
+      'jacket': ['jacket', 'blazer', 'coat']
+    };
+
+    // Check for high-priority items first (accessories like hats and bags)
+    for (const [category, items] of Object.entries(itemTypePriority)) {
+      for (const item of detectedItems) {
+        if (items.includes(item)) {
+          console.log(`Primary item type detected: ${category} (from ${item})`);
+          return category;
+        }
+      }
+    }
+
+    // If no specific match, return the first detected item
+    return detectedItems[0] ? this.ITEM_TYPE_MAPPING[detectedItems[0]] : undefined;
   }
 
   private static extractDominantColors(): string[] {
@@ -194,7 +250,7 @@ export class SearchService {
     const categories = {
       tops: ['hawaiian shirt', 't-shirt', 'shirt', 'sweater'],
       bottoms: ['skirt', 'jeans', 'pants'],
-      accessories: ['handbag', 'hat', 'scarf', 'belt'],
+      accessories: ['handbag', 'bag', 'hat', 'cap', 'scarf', 'belt'],
       footwear: ['shoes', 'sneakers', 'boots'],
       outerwear: ['jacket', 'coat', 'blazer']
     };
@@ -246,12 +302,20 @@ export class SearchService {
     return [...new Set([...descriptionTerms, ...imageTerms])].join(' ');
   }
 
-  private static async generateDiverseResults(queryTerms: string[]): Promise<SearchResult[]> {
+  private static async generateDiverseResults(queryTerms: string[], filterByItemType?: string): Promise<SearchResult[]> {
     const resultCount = Math.floor(Math.random() * 4) + 6; // 6-9 results
     const results: SearchResult[] = [];
 
-    // Extract all relevant item types from query terms using improved mapping
-    const relevantItemTypes = this.extractRelevantItemTypes(queryTerms);
+    let relevantItemTypes: string[];
+    
+    if (filterByItemType) {
+      // If we have a specific item type to filter by, use only that type
+      relevantItemTypes = [filterByItemType];
+      console.log(`Filtering results to show only: ${filterByItemType}`);
+    } else {
+      // Extract all relevant item types from query terms using improved mapping
+      relevantItemTypes = this.extractRelevantItemTypes(queryTerms);
+    }
     
     // Generate results focused on the detected item types
     for (let i = 0; i < resultCount; i++) {
@@ -291,12 +355,6 @@ export class SearchService {
     return foundTypes.length > 0 ? foundTypes : ['shirt', 't-shirt', 'dress'];
   }
 
-  private static extractMainItemType(queryTerms: string[]): string | null {
-    // Use the new mapping system
-    const relevantTypes = this.extractRelevantItemTypes(queryTerms);
-    return relevantTypes.length > 0 ? relevantTypes[0] : null;
-  }
-
   private static async generateSingleResult(queryTerms: string[], index: number, itemType: string): Promise<SearchResult> {
     const colors = this.getRelevantColors(queryTerms);
     const styles = this.getRelevantStyles(queryTerms);
@@ -322,7 +380,9 @@ export class SearchService {
   }
 
   private static getItemSpecificImage(itemType: string, index: number): string {
-    const images = this.ITEM_IMAGE_MAPPING[itemType as keyof typeof this.ITEM_IMAGE_MAPPING];
+    // Map pants to jeans for image consistency
+    const imageKey = itemType === 'pants' ? 'jeans' : itemType;
+    const images = this.ITEM_IMAGE_MAPPING[imageKey as keyof typeof this.ITEM_IMAGE_MAPPING];
     if (images && images.length > 0) {
       return images[index % images.length];
     }
@@ -354,6 +414,7 @@ export class SearchService {
   private static generatePrice(itemType: string): string {
     const basePrices: { [key: string]: [number, number] } = {
       'handbag': [80, 350],
+      'bag': [60, 250],
       'shoes': [50, 200],
       'sneakers': [60, 180],
       'heels': [70, 250],
@@ -364,12 +425,14 @@ export class SearchService {
       'hawaiian shirt': [35, 90],
       'skirt': [20, 90],
       'jeans': [40, 120],
+      'pants': [35, 110],
       't-shirt': [15, 60],
       'sweater': [35, 100],
       'hat': [20, 80],
       'cap': [15, 50],
       'fedora': [40, 120],
       'scarf': [25, 85],
+      'belt': [20, 70],
       'default': [20, 100]
     };
 

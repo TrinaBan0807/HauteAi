@@ -7,13 +7,13 @@ interface LoadingStateProps {
 
 export const LoadingState = ({ searchQuery }: LoadingStateProps) => {
   return (
-    <Card className="p-12 bg-white border-gray-100">
-      <div className="text-center space-y-6">
-        <div className="w-16 h-16 border-2 border-gray-200 border-t-black rounded-full animate-spin mx-auto"></div>
-        <h3 className="text-xl font-light text-black tracking-wide">Searching luxury collections...</h3>
-        <p className="text-gray-600 font-light">Curating your perfect matches from premier retailers</p>
-        <div className="text-sm text-gray-500 font-light tracking-wide">
-          {searchQuery}
+    <Card className="p-8">
+      <div className="text-center space-y-4">
+        <div className="animate-spin w-12 h-12 border-4 border-purple-200 border-t-purple-500 rounded-full mx-auto"></div>
+        <h3 className="text-lg font-semibold text-gray-800">Searching fashion items...</h3>
+        <p className="text-gray-600">Processing your request and finding similar items</p>
+        <div className="text-sm text-purple-600 font-medium">
+          Status: {searchQuery}
         </div>
       </div>
     </Card>

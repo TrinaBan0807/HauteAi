@@ -9,20 +9,20 @@ interface EmptyStateProps {
 
 export const EmptyState = ({ onRetrySearch }: EmptyStateProps) => {
   return (
-    <Card className="p-12 bg-white border-gray-100">
-      <div className="text-center space-y-6">
+    <Card className="p-8">
+      <div className="text-center space-y-4">
         <Search className="w-16 h-16 text-gray-300 mx-auto" />
-        <h3 className="text-xl font-light text-black tracking-wide">No Matches Found</h3>
-        <p className="text-gray-600 font-light mb-6">
-          Refine your description or try selecting a different area of the image
+        <h3 className="text-lg font-semibold text-gray-800">No results found</h3>
+        <p className="text-gray-600 mb-4">
+          Try adjusting your description or selecting a different part of the image
         </p>
         <Button
           onClick={onRetrySearch}
           variant="outline"
-          className="border-black text-black hover:bg-black hover:text-white font-light text-xs tracking-wider uppercase"
+          className="border-purple-200 text-purple-600 hover:bg-purple-50"
         >
-          <RefreshCw className="w-3 h-3 mr-2" />
-          Refine Search
+          <RefreshCw className="w-4 h-4 mr-2" />
+          Try Different Search
         </Button>
       </div>
     </Card>

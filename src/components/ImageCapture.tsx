@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { Camera, Upload, Image, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -69,7 +70,7 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
       if (!file.type.startsWith('image/')) {
         toast({
           title: "Invalid File",
-          description: "Please select an image file..",
+          description: "Please select an image file.",
           variant: "destructive",
         });
         return;
@@ -85,31 +86,31 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
   };
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       {!isCapturing ? (
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Camera Option */}
-          <Card className="group relative overflow-hidden border border-gray-200/50 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 glass-subtle">
-            <div className="absolute inset-0 bg-gradient-to-br from-black/3 to-gray-900/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative p-10 text-center space-y-8">
+          <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="relative p-8 text-center space-y-6">
               <div className="relative">
-                <div className="w-24 h-24 gradient-bg-primary rounded-full flex items-center justify-center mx-auto shadow-sm group-hover:scale-105 transition-transform duration-300">
-                  <Camera className="w-12 h-12 text-white" />
+                <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Camera className="w-10 h-10 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-8 h-8 bg-gradient-to-br from-white to-gray-100 rounded-full flex items-center justify-center shadow-sm">
-                  <Sparkles className="w-4 h-4 text-black" />
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white" />
                 </div>
               </div>
-              <div className="space-y-4">
-                <h3 className="text-2xl font-light text-gray-900 tracking-wide">Capture Photo</h3>
-                <p className="text-gray-600 leading-relaxed font-light text-sm">
-                  Use your camera to instantly discover similar luxury fashion pieces
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-gray-800">Take Photo</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Capture fashion items in real-time with your camera for instant AI analysis
                 </p>
               </div>
               <Button 
                 onClick={startCamera}
                 size="lg"
-                className="w-full btn-elegant py-4 font-light tracking-wide uppercase text-sm"
+                className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
               >
                 <Camera className="w-5 h-5 mr-3" />
                 Start Camera
@@ -118,27 +119,28 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
           </Card>
 
           {/* Upload Option */}
-          <Card className="group relative overflow-hidden border border-gray-200/50 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 glass-subtle">
-            <div className="absolute inset-0 bg-gradient-to-br from-black/3 to-gray-900/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative p-10 text-center space-y-8">
+          <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="relative p-8 text-center space-y-6">
               <div className="relative">
-                <div className="w-24 h-24 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center mx-auto shadow-sm group-hover:scale-105 transition-transform duration-300">
-                  <Upload className="w-12 h-12 text-white" />
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Upload className="w-10 h-10 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-8 h-8 bg-gradient-to-br from-white to-gray-100 rounded-full flex items-center justify-center shadow-sm">
-                  <Zap className="w-4 h-4 text-black" />
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+                  <Zap className="w-3 h-3 text-white" />
                 </div>
               </div>
-              <div className="space-y-4">
-                <h3 className="text-2xl font-light text-gray-900 tracking-wide">Upload Image</h3>
-                <p className="text-gray-600 leading-relaxed font-light text-sm">
-                  Select an existing photo to find matching designer pieces
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-gray-800">Upload Image</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Select an existing photo from your device to discover similar fashion items
                 </p>
               </div>
               <Button 
                 onClick={() => fileInputRef.current?.click()}
+                variant="outline"
                 size="lg"
-                className="w-full btn-outline-elegant py-4 font-light tracking-wide uppercase text-sm"
+                className="w-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-semibold py-4 rounded-xl transition-all duration-300 group-hover:scale-105"
               >
                 <Upload className="w-5 h-5 mr-3" />
                 Choose File
@@ -154,14 +156,14 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
           </Card>
         </div>
       ) : (
-        <Card className="max-w-4xl mx-auto overflow-hidden glass-luxury shadow-lg border border-gray-200/30">
-          <div className="p-10 space-y-8">
-            <div className="text-center space-y-3">
-              <h3 className="text-xl font-light text-gray-900 tracking-wide">Camera Active</h3>
-              <p className="text-gray-600 font-light">Position your item within the frame</p>
+        <Card className="max-w-4xl mx-auto overflow-hidden bg-gradient-to-br from-gray-900 to-black shadow-2xl border-0">
+          <div className="p-8 space-y-6">
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-semibold text-white">Camera Active</h3>
+              <p className="text-gray-300">Position your fashion item in the frame</p>
             </div>
             
-            <div className="relative rounded-lg overflow-hidden shadow-md">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <video
                 ref={videoRef}
                 autoPlay
@@ -170,26 +172,27 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
               />
               
               {/* Overlay guide */}
-              <div className="absolute inset-8 border border-black/30 pointer-events-none">
-                <div className="absolute top-4 left-4 text-black text-sm bg-white/90 px-3 py-1 rounded">
+              <div className="absolute inset-4 border-2 border-white/50 border-dashed rounded-xl pointer-events-none">
+                <div className="absolute top-4 left-4 text-white text-sm bg-black/50 px-2 py-1 rounded">
                   Position item here
                 </div>
               </div>
             </div>
             
-            <div className="flex justify-center space-x-6">
+            <div className="flex justify-center space-x-4">
               <Button
                 onClick={capturePhoto}
                 size="lg"
-                className="btn-elegant px-10 py-3 font-light tracking-wide uppercase text-sm"
+                className="bg-white text-black hover:bg-gray-100 font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <Image className="w-5 h-5 mr-3" />
                 Capture Photo
               </Button>
               <Button
                 onClick={stopCamera}
+                variant="outline"
                 size="lg"
-                className="btn-outline-elegant px-10 py-3 font-light tracking-wide uppercase text-sm"
+                className="border-2 border-white text-white hover:bg-white hover:text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300"
               >
                 Cancel
               </Button>
