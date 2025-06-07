@@ -3,7 +3,7 @@ People struggle to recreate fashion looks they love or find similar styles and p
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/99fdd4e7-07ae-40f6-8ecc-5c397f9d632c
+**URL**: https://haute-bghxkvdx2-trinaban0807s-projects.vercel.app
 
 ## What technologies are used for this project?
 
