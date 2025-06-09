@@ -78,12 +78,12 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
   ];
 
   return (
-    <Card className="p-6 max-w-3xl mx-auto">
+    <Card className="p-6 max-w-3xl mx-auto border-gray-100">
       <div className="text-center mb-6">
-        <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <Search className="w-8 h-8 text-white" />
+        <div className="w-16 h-16 saks-gold-gradient rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <Search className="w-8 h-8 text-black" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Dynamic Fashion Search</h2>
+        <h2 className="text-2xl font-bold text-black mb-2">Dynamic Fashion Search</h2>
         <p className="text-gray-600">Describe what you're looking for and we'll search dynamically</p>
       </div>
 
@@ -92,13 +92,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
         <div className="space-y-4">
           {/* Item Type */}
           <div className="space-y-2">
-            <Label htmlFor="itemType" className="text-sm font-medium">What are you looking for?</Label>
+            <Label htmlFor="itemType" className="text-sm font-medium text-black">What are you looking for?</Label>
             <Input
               id="itemType"
               value={itemType}
               onChange={(e) => setItemType(e.target.value)}
               placeholder="e.g., T-shirt, Dress, Shoes..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -109,7 +109,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setItemType(item)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   {item}
                 </Button>
@@ -119,13 +119,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
 
           {/* Color */}
           <div className="space-y-2">
-            <Label htmlFor="color" className="text-sm font-medium">Color</Label>
+            <Label htmlFor="color" className="text-sm font-medium text-black">Color</Label>
             <Input
               id="color"
               value={color}
               onChange={(e) => setColor(e.target.value)}
               placeholder="e.g., Navy blue, Bright red..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -136,7 +136,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setColor(colorOption)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   {colorOption}
                 </Button>
@@ -146,13 +146,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
 
           {/* Brand */}
           <div className="space-y-2">
-            <Label htmlFor="brand" className="text-sm font-medium">Brand (optional)</Label>
+            <Label htmlFor="brand" className="text-sm font-medium text-black">Brand (optional)</Label>
             <Input
               id="brand"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
               placeholder="e.g., Dolce&Gabbana,Saint Laurent , ..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -163,7 +163,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setBrand(brandOption)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   {brandOption}
                 </Button>
@@ -173,13 +173,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
 
           {/* Style */}
           <div className="space-y-2">
-            <Label htmlFor="style" className="text-sm font-medium">Style</Label>
+            <Label htmlFor="style" className="text-sm font-medium text-black">Style</Label>
             <Input
               id="style"
               value={style}
               onChange={(e) => setStyle(e.target.value)}
               placeholder="e.g., Casual, Formal, Vintage..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -190,7 +190,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setStyle(styleOption)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   {styleOption}
                 </Button>
@@ -203,13 +203,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
         <div className="space-y-4">
           {/* Price Range */}
           <div className="space-y-2">
-            <Label htmlFor="priceRange" className="text-sm font-medium">Price Range (optional)</Label>
+            <Label htmlFor="priceRange" className="text-sm font-medium text-black">Price Range (optional)</Label>
             <Input
               id="priceRange"
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
               placeholder="e.g., $50, $100..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -220,7 +220,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setPriceRange(price)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   Under {price}
                 </Button>
@@ -230,13 +230,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
 
           {/* Size */}
           <div className="space-y-2">
-            <Label htmlFor="size" className="text-sm font-medium">Size (optional)</Label>
+            <Label htmlFor="size" className="text-sm font-medium text-black">Size (optional)</Label>
             <Input
               id="size"
               value={size}
               onChange={(e) => setSize(e.target.value)}
               placeholder="e.g., M, L, XL, 8, 10..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -247,7 +247,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setSize(sizeOption)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   {sizeOption}
                 </Button>
@@ -257,13 +257,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
 
           {/* Material */}
           <div className="space-y-2">
-            <Label htmlFor="material" className="text-sm font-medium">Material (optional)</Label>
+            <Label htmlFor="material" className="text-sm font-medium text-black">Material (optional)</Label>
             <Input
               id="material"
               value={material}
               onChange={(e) => setMaterial(e.target.value)}
               placeholder="e.g., Cotton, Denim, Leather..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
             />
             <div className="flex flex-wrap gap-1">
@@ -274,7 +274,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
                   size="sm"
                   onClick={() => setMaterial(materialOption)}
                   disabled={isSearching}
-                  className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs h-7"
+                  className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs h-7"
                 >
                   {materialOption}
                 </Button>
@@ -284,13 +284,13 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
 
           {/* Additional Details */}
           <div className="space-y-2">
-            <Label htmlFor="details" className="text-sm font-medium">Additional Details</Label>
+            <Label htmlFor="details" className="text-sm font-medium text-black">Additional Details</Label>
             <Textarea
               id="details"
               value={additionalDetails}
               onChange={(e) => setAdditionalDetails(e.target.value)}
               placeholder="Any other details like patterns, occasion, fit..."
-              className="border-purple-200 focus:border-purple-400"
+              className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
               disabled={isSearching}
               rows={3}
             />
@@ -302,7 +302,7 @@ export const CustomSearch = ({ onSearchComplete }: CustomSearchProps) => {
         <Button
           onClick={handleSearch}
           disabled={(!itemType && !additionalDetails) || isSearching}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3 disabled:opacity-50"
+          className="w-full saks-gradient hover:opacity-90 text-white py-3 disabled:opacity-50"
         >
           {isSearching ? (
             <>

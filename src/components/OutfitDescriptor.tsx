@@ -65,12 +65,12 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
   ];
 
   return (
-    <Card className="p-6 max-w-2xl mx-auto">
+    <Card className="p-6 max-w-2xl mx-auto border-gray-100">
       <div className="space-y-6">
         {/* Preview of selected area */}
         {selectedImage && selectedArea && (
           <div className="text-center">
-            <div ref={previewRef} className="inline-block border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100" style={{ width: 150, height: 150 }}>
+            <div ref={previewRef} className="inline-block border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50" style={{ width: 150, height: 150 }}>
               {croppedImageUrl ? (
                 <img
                   src={croppedImageUrl}
@@ -88,13 +88,13 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
 
         {/* Item Type */}
         <div className="space-y-2">
-          <Label htmlFor="itemType" className="text-sm font-medium">What type of item is this?</Label>
+          <Label htmlFor="itemType" className="text-sm font-medium text-black">What type of item is this?</Label>
           <Input
             id="itemType"
             value={itemType}
             onChange={(e) => setItemType(e.target.value)}
             placeholder="e.g., T-shirt, Dress, Shoes..."
-            className="border-purple-200 focus:border-purple-400"
+            className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {quickItems.map((item) => (
@@ -103,7 +103,7 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
                 variant="outline"
                 size="sm"
                 onClick={() => setItemType(item)}
-                className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs"
+                className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs"
               >
                 {item}
               </Button>
@@ -113,13 +113,13 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
 
         {/* Color */}
         <div className="space-y-2">
-          <Label htmlFor="color" className="text-sm font-medium">Color</Label>
+          <Label htmlFor="color" className="text-sm font-medium text-black">Color</Label>
           <Input
             id="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
             placeholder="e.g., Navy blue, Bright red..."
-            className="border-purple-200 focus:border-purple-400"
+            className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {quickColors.map((colorOption) => (
@@ -128,7 +128,7 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
                 variant="outline"
                 size="sm"
                 onClick={() => setColor(colorOption)}
-                className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs"
+                className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs"
               >
                 {colorOption}
               </Button>
@@ -138,25 +138,25 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
 
         {/* Material */}
         <div className="space-y-2">
-          <Label htmlFor="material" className="text-sm font-medium">Material (optional)</Label>
+          <Label htmlFor="material" className="text-sm font-medium text-black">Material (optional)</Label>
           <Input
             id="material"
             value={material}
             onChange={(e) => setMaterial(e.target.value)}
             placeholder="e.g., Cotton, Denim, Leather..."
-            className="border-purple-200 focus:border-purple-400"
+            className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
           />
         </div>
 
         {/* Style */}
         <div className="space-y-2">
-          <Label htmlFor="style" className="text-sm font-medium">Style</Label>
+          <Label htmlFor="style" className="text-sm font-medium text-black">Style</Label>
           <Input
             id="style"
             value={style}
             onChange={(e) => setStyle(e.target.value)}
             placeholder="e.g., Casual, Formal, Vintage..."
-            className="border-purple-200 focus:border-purple-400"
+            className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {quickStyles.map((styleOption) => (
@@ -165,7 +165,7 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
                 variant="outline"
                 size="sm"
                 onClick={() => setStyle(styleOption)}
-                className="border-purple-200 text-purple-600 hover:bg-purple-50 text-xs"
+                className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 text-xs"
               >
                 {styleOption}
               </Button>
@@ -175,32 +175,32 @@ export const OutfitDescriptor = ({ selectedImage, selectedArea, onDescriptionCom
 
         {/* Brand */}
         <div className="space-y-2">
-          <Label htmlFor="brand" className="text-sm font-medium">Brand (optional)</Label>
+          <Label htmlFor="brand" className="text-sm font-medium text-black">Brand (optional)</Label>
           <Input
             id="brand"
             value={brand}
             onChange={(e) => setBrand(e.target.value)}
             placeholder="e.g.,Chloé,Balenciaga..."
-            className="border-purple-200 focus:border-purple-400"
+            className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
           />
         </div>
 
         {/* Additional Details */}
         <div className="space-y-2">
-          <Label htmlFor="details" className="text-sm font-medium">Additional Details (optional)</Label>
+          <Label htmlFor="details" className="text-sm font-medium text-black">Additional Details (optional)</Label>
           <Textarea
             id="details"
             value={additionalDetails}
             onChange={(e) => setAdditionalDetails(e.target.value)}
             placeholder="Any other details that might help find similar items..."
-            className="border-purple-200 focus:border-purple-400"
+            className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
             rows={3}
           />
         </div>
 
         <Button
           onClick={handleSubmit}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+          className="w-full saks-gradient hover:opacity-90 text-white"
         >
           <Sparkles className="w-4 h-4 mr-2" />
           Search for Similar Items

@@ -1,4 +1,3 @@
-
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,7 @@ export const SearchSummaryCard = ({
     if (croppedImageUrl && selectedImage && selectedArea) {
       return (
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gray-100 shadow-md">
+          <div className="w-24 h-24 border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50 shadow-md">
             <img 
               src={croppedImageUrl}
               alt="Selected item from your photo"
@@ -48,8 +47,8 @@ export const SearchSummaryCard = ({
     if (!selectedImage && description) {
       return (
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 border-2 border-purple-200 rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 shadow-md flex items-center justify-center">
-            <Search className="w-8 h-8 text-purple-400" />
+          <div className="w-24 h-24 border-2 border-gray-200 rounded-lg overflow-hidden bg-gradient-to-br from-gray-50 to-yellow-50 shadow-md flex items-center justify-center">
+            <Search className="w-8 h-8 text-gray-400" />
           </div>
           <p className="text-xs text-gray-500 mt-1 text-center">Text Search</p>
         </div>
@@ -75,27 +74,27 @@ export const SearchSummaryCard = ({
   };
 
   return (
-    <Card className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100">
+    <Card className="p-4 bg-gradient-to-r from-gray-50 to-yellow-50 border-gray-100">
       <div className="flex items-start space-x-4">
         {renderReferenceItem()}
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-800 mb-1">Search Results</h3>
+          <h3 className="font-semibold text-black mb-1">Search Results</h3>
           {getSearchTypeIndicator()}
           <p className="text-sm text-gray-600 mb-2">{description || 'Image-based search'}</p>
           {searchQuery && (
-            <p className="text-xs text-purple-600 font-medium mb-2">
+            <p className="text-xs text-black font-medium mb-2">
               Query: {searchQuery}
             </p>
           )}
           <div className="flex items-center space-x-2">
-            <Badge variant="secondary" className="bg-purple-100 text-purple-700">
+            <Badge variant="secondary" className="bg-yellow-100 text-black">
               {resultsCount} items found
             </Badge>
             <Button
               onClick={onRetrySearch}
               variant="outline"
               size="sm"
-              className="h-6 px-2 text-xs border-purple-200 text-purple-600 hover:bg-purple-50"
+              className="h-6 px-2 text-xs border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400"
             >
               <RefreshCw className="w-3 h-3 mr-1" />
               New Search

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,7 +22,7 @@ interface SearchResultCardProps {
 
 export const SearchResultCard = ({ result, isFavorite, onToggleFavorite }: SearchResultCardProps) => {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group border-gray-100">
       <div className="relative">
         <img
           src={result.imageUrl}
@@ -47,20 +46,20 @@ export const SearchResultCard = ({ result, isFavorite, onToggleFavorite }: Searc
           />
         </button>
         <Badge 
-          className="absolute top-2 left-2 bg-purple-500 text-white"
+          className="absolute top-2 left-2 bg-black text-white"
         >
           {result.similarity}% match
         </Badge>
       </div>
       <div className="p-4 space-y-3">
-        <h3 className="font-semibold text-gray-800 line-clamp-2">{result.title}</h3>
+        <h3 className="font-semibold text-black line-clamp-2">{result.title}</h3>
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-purple-600">{result.price}</span>
+          <span className="text-lg font-bold text-black">{result.price}</span>
           <span className="text-sm text-gray-500">{result.store}</span>
         </div>
         <Button
           variant="outline"
-          className="w-full border-purple-200 text-purple-600 hover:bg-purple-50"
+          className="w-full border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400"
           onClick={() => window.open(result.link, '_blank')}
         >
           <ExternalLink className="w-4 h-4 mr-2" />

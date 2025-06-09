@@ -168,7 +168,7 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
   }, [selectedArea, imageUrl]);
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 border-gray-100">
       <div className="space-y-4">
         <div
           ref={containerRef}
@@ -189,7 +189,7 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
           {/* Selection overlay */}
           {(isSelecting || selectedArea) && (
             <div
-              className="absolute border-2 border-purple-500 bg-purple-500/20"
+              className="absolute border-2 border-yellow-500 bg-yellow-500/20"
               style={getSelectionStyle()}
             />
           )}
@@ -220,14 +220,14 @@ export const ImageSelector = ({ imageUrl, onAreaSelected }: ImageSelectorProps) 
             <div className="flex justify-center space-x-4">
               <Button
                 onClick={confirmSelection}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                className="saks-gradient hover:opacity-90 text-white"
               >
                 Use This Selection
               </Button>
               <Button
                 onClick={clearSelection}
                 variant="outline"
-                className="border-purple-200 text-purple-600 hover:bg-purple-50"
+                className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400"
               >
                 Clear Selection
               </Button>

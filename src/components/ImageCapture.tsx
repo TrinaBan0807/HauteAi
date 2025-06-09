@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { Camera, Upload, Image, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -91,18 +90,18 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Camera Option */}
           <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-yellow-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative p-8 text-center space-y-6">
               <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <div className="w-20 h-20 saks-gradient rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <Camera className="w-10 h-10 text-white" />
                 </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-3 h-3 text-white" />
+                <div className="absolute -top-2 -right-2 w-6 h-6 saks-gold-gradient rounded-full flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-black" />
                 </div>
               </div>
               <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-800">Take Photo</h3>
+                <h3 className="text-2xl font-bold text-black">Take Photo</h3>
                 <p className="text-gray-600 leading-relaxed">
                   Capture fashion items in real-time with your camera for instant AI analysis
                 </p>
@@ -110,7 +109,7 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
               <Button 
                 onClick={startCamera}
                 size="lg"
-                className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
+                className="w-full saks-gradient hover:opacity-90 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
               >
                 <Camera className="w-5 h-5 mr-3" />
                 Start Camera
@@ -120,18 +119,18 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
 
           {/* Upload Option */}
           <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative p-8 text-center space-y-6">
               <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <Upload className="w-10 h-10 text-white" />
+                <div className="w-20 h-20 saks-gold-gradient rounded-3xl flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Upload className="w-10 h-10 text-black" />
                 </div>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
                   <Zap className="w-3 h-3 text-white" />
                 </div>
               </div>
               <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-800">Upload Image</h3>
+                <h3 className="text-2xl font-bold text-black">Upload Image</h3>
                 <p className="text-gray-600 leading-relaxed">
                   Select an existing photo from your device to discover similar fashion items
                 </p>
@@ -140,7 +139,7 @@ export const ImageCapture = ({ onImageCaptured }: ImageCaptureProps) => {
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
                 size="lg"
-                className="w-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-semibold py-4 rounded-xl transition-all duration-300 group-hover:scale-105"
+                className="w-full border-2 border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 font-semibold py-4 rounded-xl transition-all duration-300 group-hover:scale-105"
               >
                 <Upload className="w-5 h-5 mr-3" />
                 Choose File
