@@ -66,7 +66,7 @@ export class SearchService {
   }
 
   private static extractDominantColors(): string[] {
-    const colors = ['black', 'white', 'blue', 'red'];
+    const colors = ['black', 'blue'];
     return this.getRandomItems(colors, 2, 4);
   }
 
