@@ -18,77 +18,79 @@ interface ImageAnalysis {
 
 export class SearchService {
   private static readonly DEMO_STORES = [
-    'Fashion Store', 'Style Hub', 'Eco Fashion', 'Dress Boutique',
-    'Fashion Forward', 'Shoe Palace', 'Luxury Brands', 'Everyday Wear',
-    'Trendy Closet', 'Modern Wear', 'Urban Vogue', 'Chic Finds'
+    'Fashion Store', 'Style Hub', 'Eco Fashion', 'Dress Boutique', 
+    'Fashion Forward', 'Shoe Palace', 'Athletic Gear', 'Luxury Brands', 
+    'Everyday Wear', 'Trendy Closet', 'Vintage Finds', 'Modern Wear'
   ];
 
   private static readonly ITEM_IMAGE_MAPPING = {
     'jacket': [
-      'https://plus.unsplash.com/premium_photo-1675186049563-000f7ac02c44?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8amFja2V0c3xlbnwwfHwwfHx8MA%3D%3D',
-      'https://images.unsplash.com/photo-1577660002965-04865592fc60?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGphY2tldHN8ZW58MHx8MHx8fDA%3D',
-      'https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGphY2tldHN8ZW58MHx8MHx8fDA%3D',
-    
-    ],
-    'handbag': [
-	'https://plus.unsplash.com/premium_photo-1723826753083-2309f7203ab1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1682745230951-8a5aa9a474a0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aGFuZGJhZ3xlbnwwfHwwfHx8MA%3D%3D',
-	  'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGFuZGJhZ3xlbnwwfHwwfHx8MA%3D%3D'
-      
-    ],
-    'shoes': [
-      'https://images.unsplash.com/photo-1528701800489-20e4fda1c5c2',
-      'https://images.unsplash.com/photo-1600185365483-26d8c9e54a63',
-      'https://images.unsplash.com/photo-1575537302964-96cd47fdd0f7',
-      'https://images.unsplash.com/photo-1519741491158-2b2f59f2aab7'
+      'https://images.unsplash.com/photo-1519758340474-40fa8cba6584?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1525457136159-8878648a7ad0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjB8fGphY2tldHxlbnwwfHwwfHx8MA%3D%3D',
+      'https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8amFja2V0fGVufDB8fDB8fHww',
+      'https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fGphY2tldHxlbnwwfHwwfHx8MA%3D%3D',
+      'https://images.unsplash.com/photo-1578948856697-db91d246b7b1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGphY2tldHxlbnwwfHwwfHx8MA%3D%3D',
+      'https://images.unsplash.com/photo-1555583743-991174c11425?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDl8fGphY2tldHxlbnwwfHwwfHx8MA%3D%3D'
     ]
   };
 
   private static readonly ITEM_TYPE_MAPPING = {
+    'sweater': 'jacket',
     'jacket': 'jacket',
-    'coat': 'jacket',
     'blazer': 'jacket',
-    'handbag': 'handbag',
-    'bag': 'handbag',
-    'purse': 'handbag',
-    'shoes': 'shoes',
-    'sneakers': 'shoes',
-    'boots': 'shoes'
+    'coat': 'jacket'
   };
 
   static async analyzeImage(imageData: string, selectedArea?: any): Promise<ImageAnalysis> {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const allTypes = ['jacket', 'handbag', 'shoes'];
-    const detected = [allTypes[Math.floor(Math.random() * allTypes.length)]];
+
     return {
-      dominantColors: this.getRandomItems(['black', 'white', 'blue', 'red'], 2, 4),
-      detectedItems: detected,
-      style: this.getRandomItems(['casual', 'modern', 'classic'], 1, 2),
-      patterns: this.getRandomItems(['solid', 'striped'], 0, 2),
-      material: this.getRandomItems(['leather', 'wool', 'denim'], 0, 2),
+      dominantColors: this.extractDominantColors(),
+      detectedItems: ['jacket'],
+      style: this.analyzeStyle(),
+      patterns: this.detectPatterns(),
+      material: this.detectMaterials()
     };
   }
 
   static async searchByQuery(query: string): Promise<SearchResult[]> {
-    const type = this.ITEM_TYPE_MAPPING[query.toLowerCase()];
-    if (!type) return [];
-    return this.generateDiverseResults([type]);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const results = await this.generateDiverseResults(['jacket']);
+    return results;
   }
 
   static async searchByImageAndDescription(imageData: string, selectedArea: any, description: string): Promise<SearchResult[]> {
-    const analysis = await this.analyzeImage(imageData, selectedArea);
-    const itemType = analysis.detectedItems[0];
-    if (!['jacket', 'handbag', 'shoes'].includes(itemType)) return [];
-    return this.searchByQuery(itemType);
+    const imageAnalysis = await this.analyzeImage(imageData, selectedArea);
+    return await this.searchByQuery('jacket');
+  }
+
+  private static extractDominantColors(): string[] {
+    const colors = ['black', 'white', 'blue', 'red'];
+    return this.getRandomItems(colors, 2, 4);
+  }
+
+  private static analyzeStyle(): string[] {
+    const styles = ['casual', 'modern', 'classic'];
+    return this.getRandomItems(styles, 1, 2);
+  }
+
+  private static detectPatterns(): string[] {
+    const patterns = ['solid', 'striped'];
+    return this.getRandomItems(patterns, 0, 2);
+  }
+
+  private static detectMaterials(): string[] {
+    const materials = ['leather', 'wool', 'denim'];
+    return this.getRandomItems(materials, 0, 2);
   }
 
   private static async generateDiverseResults(queryTerms: string[]): Promise<SearchResult[]> {
-    const type = queryTerms[0];
     const resultCount = Math.floor(Math.random() * 4) + 6;
     const results: SearchResult[] = [];
 
     for (let i = 0; i < resultCount; i++) {
-      const result = await this.generateSingleResult(queryTerms, i, type);
+      const result = await this.generateSingleResult(queryTerms, i, 'jacket');
       results.push(result);
     }
 
@@ -99,9 +101,9 @@ export class SearchService {
     const color = ['black', 'white', 'blue', 'red'][Math.floor(Math.random() * 4)];
     const style = ['casual', 'modern', 'classic'][Math.floor(Math.random() * 3)];
     const title = this.generateProductTitle(itemType, color, style);
-    const price = this.generatePrice();
+    const price = this.generatePrice(itemType);
     const store = this.DEMO_STORES[Math.floor(Math.random() * this.DEMO_STORES.length)];
-    const similarity = this.calculateSimilarity(queryTerms, title);
+    const similarity = this.calculateSimilarity(['jacket'], title);
     const imageUrl = this.getItemSpecificImage(itemType, index);
 
     return {
@@ -126,11 +128,11 @@ export class SearchService {
   private static generateProductTitle(itemType: string, color: string, style: string): string {
     const adjectives = ['Premium', 'Classic', 'Modern', 'Designer'];
     const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-    return `${adjective} ${color} ${style} ${itemType}`;
+    return `${adjective} ${color} ${style} ${itemType}`.trim();
   }
 
-  private static generatePrice(): string {
-    const [min, max] = [50, 300];
+  private static generatePrice(itemType: string): string {
+    const [min, max] = [60, 300];
     const price = Math.floor(Math.random() * (max - min + 1)) + min;
     return `$${price}.${Math.floor(Math.random() * 100).toString().padStart(2, '0')}`;
   }
