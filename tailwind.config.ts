@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'display': ['Playfair Display', 'Georgia', 'serif'],
+				'body': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -69,6 +72,10 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
@@ -89,7 +96,7 @@ export default {
 				'fade-in': {
 					from: {
 						opacity: '0',
-						transform: 'translateY(20px)'
+						transform: 'translateY(30px)'
 					},
 					to: {
 						opacity: '1',
@@ -99,7 +106,7 @@ export default {
 				'slide-up': {
 					from: {
 						opacity: '0',
-						transform: 'translateY(30px)'
+						transform: 'translateY(40px)'
 					},
 					to: {
 						opacity: '1',
@@ -109,7 +116,7 @@ export default {
 				'scale-in': {
 					from: {
 						opacity: '0',
-						transform: 'scale(0.95)'
+						transform: 'scale(0.9)'
 					},
 					to: {
 						opacity: '1',
@@ -121,26 +128,43 @@ export default {
 						transform: 'translateY(0px)'
 					},
 					'50%': {
-						transform: 'translateY(-10px)'
+						transform: 'translateY(-20px)'
 					}
 				},
 				'glow': {
 					'0%, 100%': {
-						boxShadow: '0 0 20px rgba(168, 85, 247, 0.4)'
+						boxShadow: '0 0 20px rgba(255, 215, 0, 0.4)'
 					},
 					'50%': {
-						boxShadow: '0 0 30px rgba(168, 85, 247, 0.6)'
+						boxShadow: '0 0 40px rgba(255, 215, 0, 0.8)'
+					}
+				},
+				'glow-pulse': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px rgba(255, 215, 0, 0.3)'
+					},
+					'50%': {
+						boxShadow: '0 0 40px rgba(255, 215, 0, 0.6)'
 					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.6s ease-out',
-				'slide-up': 'slide-up 0.4s ease-out',
-				'scale-in': 'scale-in 0.3s ease-out',
+				'fade-in': 'fade-in 0.8s ease-out',
+				'slide-up': 'slide-up 0.6s ease-out',
+				'scale-in': 'scale-in 0.4s ease-out',
 				'float': 'float 3s ease-in-out infinite',
-				'glow': 'glow 2s ease-in-out infinite alternate'
+				'glow': 'glow 2s ease-in-out infinite alternate',
+				'glow-pulse': 'glow-pulse 3s ease-in-out infinite'
+			},
+			spacing: {
+				'18': '4.5rem',
+				'88': '22rem',
+				'128': '32rem',
+			},
+			borderWidth: {
+				'3': '3px',
 			}
 		}
 	},

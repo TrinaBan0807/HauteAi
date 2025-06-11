@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type } from 'lucide-react';
+import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
 import { ImageSelector } from '@/components/ImageSelector';
 import { SearchResults } from '@/components/SearchResults';
@@ -68,38 +68,43 @@ const Index = () => {
   const currentSteps = searchMode === 'text' ? customSteps : steps;
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Elegant background elements */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-yellow-50/30 relative overflow-hidden">
+      {/* Enhanced background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-yellow-400/10 to-yellow-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-black/5 to-yellow-400/5 rounded-full blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-yellow-400/20 via-yellow-500/10 to-orange-400/20 rounded-full blur-3xl animate-float-slow"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-black/10 via-gray-900/5 to-yellow-400/10 rounded-full blur-3xl animate-float-slow" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-yellow-400/5 to-transparent rounded-full blur-3xl"></div>
       </div>
 
-      {/* Header */}
-      <div className="bg-white/95 backdrop-blur-lg border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
+      {/* Luxury Header */}
+      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50 shadow-luxury">
+        <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="w-12 h-12 saks-gradient rounded-2xl flex items-center justify-center shadow-lg">
-                  <Zap className="w-6 h-6 text-white" />
+            <div className="flex items-center space-x-6">
+              <div className="relative group">
+                <div className="w-16 h-16 saks-gradient rounded-3xl flex items-center justify-center shadow-gold hover-lift">
+                  <Crown className="w-8 h-8 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 saks-gold-gradient rounded-full animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-5 h-5 saks-gold-gradient rounded-full animate-glow-pulse flex items-center justify-center">
+                  <Gem className="w-2.5 h-2.5 text-black" />
+                </div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold saks-text-gradient">
+                <h1 className="text-4xl font-display font-bold saks-text-gradient text-shadow-luxury">
                   HauteAi
                 </h1>
-                <p className="text-sm text-gray-600 font-medium">Your Personal Stylist with Vision & Vogue</p>
+                <p className="text-sm text-gray-600 font-medium font-body tracking-wide">
+                  Your Personal Stylist with Vision & Vogue
+                </p>
               </div>
             </div>
             {(currentStep !== 'capture' && currentStep !== 'custom-search') && (
               <Button
                 onClick={resetApp}
                 variant="outline"
-                className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 transition-all duration-300 hover:scale-105"
+                className="border-2 border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 transition-all duration-300 hover:scale-105 font-medium px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl"
               >
-                <Camera className="w-4 h-4 mr-2" />
+                <Camera className="w-5 h-5 mr-2" />
                 New Search
               </Button>
             )}
@@ -108,47 +113,54 @@ const Index = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 relative z-10">
-        {/* Hero Section - only show on capture step */}
+      <div className="container mx-auto px-6 py-12 relative z-10">
+        {/* Enhanced Hero Section */}
         {currentStep === 'capture' && (
-          <div className="text-center mb-12 animate-fade-in">
-            <h2 className="text-5xl font-bold text-black mb-6 leading-tight">
+          <div className="text-center mb-16 animate-fade-in">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-100 to-yellow-50 px-6 py-3 rounded-full mb-8 border border-yellow-200/50 shadow-lg">
+              <Star className="w-4 h-4 text-yellow-600" />
+              <span className="text-sm font-semibold text-yellow-800 font-body">Premium Fashion Discovery</span>
+              <Star className="w-4 h-4 text-yellow-600" />
+            </div>
+            
+            <h2 className="text-7xl font-display font-bold text-black mb-8 leading-tight text-shadow-luxury">
               Find Your Perfect
-              <span className="saks-text-gradient block">
+              <span className="saks-text-gradient block mt-2">
                 Fashion Match
               </span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
-              Upload any fashion photo and let our AI identify and find similar items from online stores. 
-              Or describe what you're looking for and discover your style, instantly.
+            
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-12 font-body">
+              Upload any fashion photo and let our advanced AI identify and find similar items from premium retailers worldwide. 
+              Or describe your dream piece and discover your perfect style, instantly.
             </p>
             
-            {/* Search Mode Toggle */}
-            <div className="flex justify-center mb-8">
-              <div className="bg-gray-50 rounded-2xl p-2 border border-gray-100 shadow-lg">
-                <div className="flex space-x-2">
+            {/* Enhanced Search Mode Toggle */}
+            <div className="flex justify-center mb-12">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-3 border border-gray-200/50 shadow-luxury">
+                <div className="flex space-x-3">
                   <Button
                     onClick={switchToImageSearch}
                     variant={searchMode === 'image' ? 'default' : 'ghost'}
-                    className={`px-6 py-3 rounded-xl transition-all duration-300 ${
+                    className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium ${
                       searchMode === 'image'
-                        ? 'saks-gradient text-white shadow-lg'
-                        : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                        ? 'saks-gradient text-white shadow-gold hover:shadow-xl'
+                        : 'text-gray-700 hover:text-black hover:bg-gray-100/80'
                     }`}
                   >
-                    <Camera className="w-4 h-4 mr-2" />
+                    <Camera className="w-5 h-5 mr-3" />
                     Search by Image
                   </Button>
                   <Button
                     onClick={switchToCustomSearch}
                     variant={searchMode === 'text' ? 'default' : 'ghost'}
-                    className={`px-6 py-3 rounded-xl transition-all duration-300 ${
+                    className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium ${
                       searchMode === 'text'
-                        ? 'saks-gradient text-white shadow-lg'
-                        : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                        ? 'saks-gradient text-white shadow-gold hover:shadow-xl'
+                        : 'text-gray-700 hover:text-black hover:bg-gray-100/80'
                     }`}
                   >
-                    <Type className="w-4 h-4 mr-2" />
+                    <Type className="w-5 h-5 mr-3" />
                     Search by Description
                   </Button>
                 </div>
@@ -157,26 +169,28 @@ const Index = () => {
           </div>
         )}
 
-        {/* Custom Search Hero */}
+        {/* Enhanced Custom Search Hero */}
         {currentStep === 'custom-search' && (
-          <div className="text-center mb-8 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full mb-6">
-              <Type className="w-4 h-4 text-black" />
-              <span className="text-sm font-semibold text-black">Text-Based Search</span>
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-50 px-6 py-3 rounded-full mb-8 border border-blue-200/50 shadow-lg">
+              <Type className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-semibold text-blue-800 font-body">Text-Based Discovery</span>
             </div>
-            <h2 className="text-4xl font-bold text-black mb-4 leading-tight">
+            
+            <h2 className="text-6xl font-display font-bold text-black mb-6 leading-tight text-shadow-luxury">
               Describe Your
-              <span className="saks-text-gradient block">
+              <span className="saks-text-gradient block mt-2">
                 Perfect Item
               </span>
             </h2>
-            <div className="flex justify-center mb-6">
+            
+            <div className="flex justify-center mb-8">
               <Button
                 onClick={switchToImageSearch}
                 variant="outline"
-                className="border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400"
+                className="border-2 border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 px-6 py-3 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <Camera className="w-4 h-4 mr-2" />
+                <Camera className="w-5 h-5 mr-2" />
                 Switch to Image Search
               </Button>
             </div>
@@ -185,13 +199,13 @@ const Index = () => {
 
         {/* Enhanced Progress Indicator */}
         {(currentStep !== 'capture' && currentStep !== 'custom-search') && (
-          <div className="mb-12">
-            <div className="max-w-4xl mx-auto">
+          <div className="mb-16">
+            <div className="max-w-5xl mx-auto">
               <div className="flex items-center justify-between relative">
-                {/* Progress line */}
-                <div className="absolute top-6 left-0 right-0 h-1 bg-gray-200 rounded-full">
+                {/* Enhanced progress line */}
+                <div className="absolute top-8 left-0 right-0 h-2 bg-gray-200 rounded-full shadow-inner">
                   <div 
-                    className="h-full saks-gradient rounded-full transition-all duration-700 ease-out"
+                    className="h-full saks-gradient rounded-full transition-all duration-1000 ease-out shadow-gold"
                     style={{
                       width: `${(currentSteps.findIndex(s => s.id === currentStep) / (currentSteps.length - 1)) * 100}%`
                     }}
@@ -205,22 +219,22 @@ const Index = () => {
                   
                   return (
                     <div key={step.id} className="flex flex-col items-center relative z-10">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 shadow-luxury ${
                         isActive 
-                          ? 'saks-gradient text-white shadow-lg scale-110'
+                          ? 'saks-gradient text-white shadow-gold scale-110 animate-glow-pulse'
                           : isCompleted
-                          ? 'bg-yellow-100 text-black scale-105'
-                          : 'bg-white text-gray-400 border-2 border-gray-200'
+                          ? 'bg-gradient-to-br from-yellow-100 to-yellow-200 text-yellow-800 scale-105 shadow-lg'
+                          : 'bg-white text-gray-400 border-3 border-gray-200 shadow-md'
                       }`}>
-                        <StepIcon className="w-5 h-5" />
+                        <StepIcon className="w-6 h-6" />
                       </div>
-                      <div className="mt-3 text-center">
-                        <p className={`text-sm font-semibold ${
-                          isActive ? 'text-black' : isCompleted ? 'text-black' : 'text-gray-400'
+                      <div className="mt-4 text-center">
+                        <p className={`text-base font-bold font-display ${
+                          isActive ? 'text-black' : isCompleted ? 'text-gray-800' : 'text-gray-400'
                         }`}>
                           {step.title}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1 max-w-20">
+                        <p className="text-sm text-gray-500 mt-1 max-w-24 font-body">
                           {step.description}
                         </p>
                       </div>
@@ -233,35 +247,35 @@ const Index = () => {
         )}
 
         {/* Step Content */}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {currentStep === 'capture' && (
             <div className="animate-fade-in">
               <ImageCapture onImageCaptured={handleImageCaptured} />
               
-              {/* Features Section */}
-              <div className="mt-16 grid md:grid-cols-3 gap-8">
-                <Card className="p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-gray-100">
-                  <div className="w-12 h-12 saks-gradient rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Eye className="w-6 h-6 text-white" />
+              {/* Enhanced Features Section */}
+              <div className="mt-20 grid md:grid-cols-3 gap-10">
+                <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg">
+                  <div className="w-16 h-16 saks-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold">
+                    <Eye className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-black mb-2">Smart Recognition</h3>
-                  <p className="text-gray-600 text-sm">Advanced AI identifies clothing items with 95% accuracy</p>
+                  <h3 className="text-xl font-display font-bold text-black mb-4">Smart Recognition</h3>
+                  <p className="text-gray-600 font-body leading-relaxed">Advanced AI identifies clothing items with 95% accuracy using computer vision</p>
                 </Card>
                 
-                <Card className="p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-gray-100">
-                  <div className="w-12 h-12 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-6 h-6 text-black" />
+                <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg">
+                  <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold">
+                    <Search className="w-8 h-8 text-black" />
                   </div>
-                  <h3 className="text-lg font-semibold text-black mb-2">Instant Search</h3>
-                  <p className="text-gray-600 text-sm">Find similar items from thousands of online stores</p>
+                  <h3 className="text-xl font-display font-bold text-black mb-4">Instant Discovery</h3>
+                  <p className="text-gray-600 font-body leading-relaxed">Find similar items from thousands of premium fashion retailers worldwide</p>
                 </Card>
                 
-                <Card className="p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-gray-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-black rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="w-6 h-6 text-white" />
+                <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Sparkles className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-black mb-2">Style Matching</h3>
-                  <p className="text-gray-600 text-sm">Discover items that match your unique style preferences</p>
+                  <h3 className="text-xl font-display font-bold text-black mb-4">Style Matching</h3>
+                  <p className="text-gray-600 font-body leading-relaxed">Discover items that perfectly match your unique style preferences</p>
                 </Card>
               </div>
             </div>
@@ -275,11 +289,11 @@ const Index = () => {
 
           {currentStep === 'select' && capturedImage && (
             <div className="animate-fade-in">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-black mb-3">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-display font-bold text-black mb-4 text-shadow-luxury">
                   Select Your Item
                 </h2>
-                <p className="text-gray-700 text-lg">
+                <p className="text-gray-700 text-xl font-body">
                   Draw a box around the fashion item you want to find
                 </p>
               </div>
@@ -292,11 +306,11 @@ const Index = () => {
 
           {currentStep === 'describe' && (
             <div className="animate-fade-in">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-black mb-3">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-display font-bold text-black mb-4 text-shadow-luxury">
                   Describe Your Item
                 </h2>
-                <p className="text-gray-700 text-lg">
+                <p className="text-gray-700 text-xl font-body">
                   Add details to improve search accuracy and find the perfect match
                 </p>
               </div>
@@ -310,12 +324,12 @@ const Index = () => {
 
           {currentStep === 'search' && (
             <div className="animate-fade-in">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-black mb-3">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-display font-bold text-black mb-4 text-shadow-luxury">
                   Your Fashion Matches
                 </h2>
-                <p className="text-gray-700 text-lg">
-                  Discover similar items from top fashion retailers
+                <p className="text-gray-700 text-xl font-body">
+                  Discover similar items from top fashion retailers worldwide
                 </p>
               </div>
               <SearchResults 
