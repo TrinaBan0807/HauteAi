@@ -394,10 +394,10 @@ const Index = () => {
                 </Card>
                 
                 <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Sparkles className="w-8 h-8 text-white group-hover:animate-bounce" />
+                  <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <Sparkles className="w-8 h-8 text-black group-hover:animate-bounce" />
                   </div>
-                  <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-purple-700 transition-colors duration-300">Style Matching</h3>
+                  <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Style Matching</h3>
                   <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Discover items that perfectly match your unique style preferences</p>
                 </Card>
               </div>
