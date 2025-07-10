@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem, ArrowRight, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
@@ -7,6 +8,7 @@ import { OutfitDescriptor } from '@/components/OutfitDescriptor';
 import { CustomSearch } from '@/components/CustomSearch';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useAudio } from '@/hooks/useAudio';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState<'capture' | 'select' | 'describe' | 'search' | 'custom-search'>('capture');
@@ -19,6 +21,8 @@ const Index = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const { playHoverSound, playClickSound } = useAudio();
+
   // Interactive mouse tracking
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -28,6 +32,20 @@ const Index = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Audio-enabled hover handler
+  const handleAudioHover = () => {
+    if (soundEnabled) {
+      playHoverSound();
+    }
+  };
+
+  // Audio-enabled click handler
+  const handleAudioClick = () => {
+    if (soundEnabled) {
+      playClickSound();
+    }
+  };
 
   // Confetti effect for successful actions
   const triggerConfetti = () => {
@@ -39,28 +57,28 @@ const Index = () => {
     setCapturedImage(imageUrl);
     setCurrentStep('select');
     triggerConfetti();
-    if (soundEnabled) {
-      // Play success sound (would be actual audio in real implementation)
-      console.log('🎵 Success sound played');
-    }
+    handleAudioClick();
   };
 
   const handleAreaSelected = (area: any) => {
     setSelectedArea(area);
     setCurrentStep('describe');
     triggerConfetti();
+    handleAudioClick();
   };
 
   const handleDescriptionComplete = (description: string) => {
     setOutfitDescription(description);
     setCurrentStep('search');
     triggerConfetti();
+    handleAudioClick();
   };
 
   const handleCustomSearch = (searchQuery: string) => {
     setOutfitDescription(searchQuery);
     setCurrentStep('search');
     triggerConfetti();
+    handleAudioClick();
   };
 
   const resetApp = () => {
@@ -69,16 +87,19 @@ const Index = () => {
     setCapturedImage(null);
     setSelectedArea(null);
     setOutfitDescription('');
+    handleAudioClick();
   };
 
   const switchToCustomSearch = () => {
     setSearchMode('text');
     setCurrentStep('custom-search');
+    handleAudioClick();
   };
 
   const switchToImageSearch = () => {
     setSearchMode('image');
     setCurrentStep('capture');
+    handleAudioClick();
   };
 
   const steps = [
@@ -167,7 +188,14 @@ const Index = () => {
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
-              <div className="relative group cursor-pointer" onClick={() => setIsPlaying(!isPlaying)}>
+              <div 
+                className="relative group cursor-pointer" 
+                onClick={() => {
+                  setIsPlaying(!isPlaying);
+                  handleAudioClick();
+                }}
+                onMouseEnter={handleAudioHover}
+              >
                 <div className="w-16 h-16 saks-gradient rounded-3xl flex items-center justify-center shadow-gold hover-lift transition-all duration-300 hover:scale-110">
                   <Crown className="w-8 h-8 text-white" />
                 </div>
@@ -192,7 +220,11 @@ const Index = () => {
             <div className="flex items-center space-x-4">
               {/* Sound toggle */}
               <Button
-                onClick={() => setSoundEnabled(!soundEnabled)}
+                onClick={() => {
+                  setSoundEnabled(!soundEnabled);
+                  handleAudioClick();
+                }}
+                onMouseEnter={handleAudioHover}
                 variant="ghost"
                 size="icon"
                 className="w-10 h-10 rounded-full hover:bg-yellow-100 transition-all duration-300"
@@ -203,6 +235,7 @@ const Index = () => {
               {(currentStep !== 'capture' && currentStep !== 'custom-search') && (
                 <Button
                   onClick={resetApp}
+                  onMouseEnter={handleAudioHover}
                   variant="outline"
                   className="border-2 border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 transition-all duration-300 hover:scale-105 font-medium px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl group"
                 >
@@ -220,7 +253,10 @@ const Index = () => {
         {/* Enhanced Hero Section with interactive elements */}
         {currentStep === 'capture' && (
           <div className="text-center mb-16 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-100 to-yellow-50 px-6 py-3 rounded-full mb-8 border border-yellow-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105">
+            <div 
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-100 to-yellow-50 px-6 py-3 rounded-full mb-8 border border-yellow-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+              onMouseEnter={handleAudioHover}
+            >
               <Star className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '3s' }} />
               <span className="text-sm font-semibold text-yellow-800 font-body">Premium Fashion Discovery</span>
               <Star className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
@@ -244,6 +280,7 @@ const Index = () => {
                 <div className="flex space-x-3">
                   <Button
                     onClick={switchToImageSearch}
+                    onMouseEnter={handleAudioHover}
                     variant={searchMode === 'image' ? 'default' : 'ghost'}
                     className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium group ${
                       searchMode === 'image'
@@ -256,6 +293,7 @@ const Index = () => {
                   </Button>
                   <Button
                     onClick={switchToCustomSearch}
+                    onMouseEnter={handleAudioHover}
                     variant={searchMode === 'text' ? 'default' : 'ghost'}
                     className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium group ${
                       searchMode === 'text'
@@ -274,10 +312,11 @@ const Index = () => {
             <div className="flex justify-center">
               <Button
                 onClick={() => {
-                  // Demo functionality
                   console.log('Demo started');
                   triggerConfetti();
+                  handleAudioClick();
                 }}
+                onMouseEnter={handleAudioHover}
                 variant="outline"
                 className="border-2 border-yellow-400 text-yellow-700 hover:bg-yellow-50 px-8 py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
@@ -292,7 +331,10 @@ const Index = () => {
         {/* Enhanced Custom Search Hero */}
         {currentStep === 'custom-search' && (
           <div className="text-center mb-12 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-50 px-6 py-3 rounded-full mb-8 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105">
+            <div 
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-50 px-6 py-3 rounded-full mb-8 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+              onMouseEnter={handleAudioHover}
+            >
               <Type className="w-4 h-4 text-blue-600 animate-pulse" />
               <span className="text-sm font-semibold text-blue-800 font-body">Text-Based Discovery</span>
             </div>
@@ -307,6 +349,7 @@ const Index = () => {
             <div className="flex justify-center mb-8">
               <Button
                 onClick={switchToImageSearch}
+                onMouseEnter={handleAudioHover}
                 variant="outline"
                 className="border-2 border-gray-200 text-black hover:bg-gray-50 hover:border-yellow-400 px-6 py-3 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
@@ -341,7 +384,11 @@ const Index = () => {
                   const StepIcon = step.icon;
                   
                   return (
-                    <div key={step.id} className="flex flex-col items-center relative z-10 group cursor-pointer">
+                    <div 
+                      key={step.id} 
+                      className="flex flex-col items-center relative z-10 group cursor-pointer"
+                      onMouseEnter={handleAudioHover}
+                    >
                       <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 shadow-luxury hover:scale-110 ${
                         isActive 
                           ? 'saks-gradient text-white shadow-gold scale-110 animate-glow-pulse'
@@ -377,7 +424,10 @@ const Index = () => {
               
               {/* Enhanced Features Section with interactive cards */}
               <div className="mt-20 grid md:grid-cols-3 gap-10">
-                <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90">
+                <Card 
+                  className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
+                  onMouseEnter={handleAudioHover}
+                >
                   <div className="w-16 h-16 saks-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold group-hover:scale-110 transition-transform duration-300">
                     <Eye className="w-8 h-8 text-white group-hover:animate-pulse" />
                   </div>
@@ -385,7 +435,10 @@ const Index = () => {
                   <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Advanced AI identifies clothing items with 95% accuracy using computer vision</p>
                 </Card>
                 
-                <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90">
+                <Card 
+                  className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
+                  onMouseEnter={handleAudioHover}
+                >
                   <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold group-hover:scale-110 transition-transform duration-300">
                     <Search className="w-8 h-8 text-black group-hover:animate-spin" style={{ animationDuration: '2s' }} />
                   </div>
@@ -393,7 +446,10 @@ const Index = () => {
                   <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Find similar items from thousands of premium fashion retailers worldwide</p>
                 </Card>
                 
-                <Card className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90">
+                <Card 
+                  className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
+                  onMouseEnter={handleAudioHover}
+                >
                   <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <Sparkles className="w-8 h-8 text-black group-hover:animate-bounce" />
                   </div>
