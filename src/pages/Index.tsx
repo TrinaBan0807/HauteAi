@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem, ArrowRight, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
@@ -9,6 +8,7 @@ import { CustomSearch } from '@/components/CustomSearch';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAudio } from '@/hooks/useAudio';
+import { InteractiveVideo } from '@/components/InteractiveVideo';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState<'capture' | 'select' | 'describe' | 'search' | 'custom-search'>('capture');
@@ -166,6 +166,38 @@ const Index = () => {
     );
   };
 
+  const handleVideoNavigation = (section: string) => {
+    switch (section) {
+      case 'capture':
+        setCurrentStep('capture');
+        setSearchMode('image');
+        break;
+      case 'select':
+        // Only navigate if we have a captured image
+        if (capturedImage) {
+          setCurrentStep('select');
+        } else {
+          setCurrentStep('capture');
+        }
+        break;
+      case 'describe':
+        // Only navigate if we have selected area
+        if (selectedArea) {
+          setCurrentStep('describe');
+        } else {
+          setCurrentStep('capture');
+        }
+        break;
+      case 'search':
+        setCurrentStep('search');
+        break;
+      default:
+        setCurrentStep('capture');
+    }
+    triggerConfetti();
+    handleAudioClick();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-yellow-50/30 relative overflow-hidden">
       <CursorFollower />
@@ -252,78 +284,150 @@ const Index = () => {
       <div className="container mx-auto px-6 py-12 relative z-10">
         {/* Enhanced Hero Section with interactive elements */}
         {currentStep === 'capture' && (
-          <div className="text-center mb-16 animate-fade-in">
-            <div 
-              className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-100 to-yellow-50 px-6 py-3 rounded-full mb-8 border border-yellow-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
-              onMouseEnter={handleAudioHover}
-            >
-              <Star className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '3s' }} />
-              <span className="text-sm font-semibold text-yellow-800 font-body">Premium Fashion Discovery</span>
-              <Star className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
-            </div>
-            
-            <h2 className="text-7xl font-display font-bold text-black mb-8 leading-tight text-shadow-luxury hover:scale-105 transition-transform duration-500 cursor-default">
-              Find Your Perfect
-              <span className="saks-text-gradient block mt-2 animate-glow-pulse">
-                Fashion Match
-              </span>
-            </h2>
-            
-            <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-12 font-body hover:text-gray-900 transition-colors duration-300">
-              Upload any fashion photo and let our advanced AI identify and find similar items from premium retailers worldwide. 
-              Or describe your dream piece and discover your perfect style, instantly.
-            </p>
-            
-            {/* Enhanced Search Mode Toggle with animations */}
-            <div className="flex justify-center mb-12">
-              <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-3 border border-gray-200/50 shadow-luxury hover:shadow-2xl transition-all duration-500">
-                <div className="flex space-x-3">
-                  <Button
-                    onClick={switchToImageSearch}
-                    onMouseEnter={handleAudioHover}
-                    variant={searchMode === 'image' ? 'default' : 'ghost'}
-                    className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium group ${
-                      searchMode === 'image'
-                        ? 'saks-gradient text-white shadow-gold hover:shadow-xl'
-                        : 'text-gray-700 hover:text-black hover:bg-gray-100/80'
-                    }`}
-                  >
-                    <Camera className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
-                    Search by Image
-                  </Button>
-                  <Button
-                    onClick={switchToCustomSearch}
-                    onMouseEnter={handleAudioHover}
-                    variant={searchMode === 'text' ? 'default' : 'ghost'}
-                    className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium group ${
-                      searchMode === 'text'
-                        ? 'saks-gradient text-white shadow-gold hover:shadow-xl'
-                        : 'text-gray-700 hover:text-black hover:bg-gray-100/80'
-                    }`}
-                  >
-                    <Type className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
-                    Search by Description
-                  </Button>
+          <div className="animate-fade-in">
+            {/* Hero content */}
+            <div className="text-center mb-16 animate-fade-in">
+              <div 
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-100 to-yellow-50 px-6 py-3 rounded-full mb-8 border border-yellow-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+                onMouseEnter={handleAudioHover}
+              >
+                <Star className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '3s' }} />
+                <span className="text-sm font-semibold text-yellow-800 font-body">Premium Fashion Discovery</span>
+                <Star className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
+              </div>
+              
+              <h2 className="text-7xl font-display font-bold text-black mb-8 leading-tight text-shadow-luxury hover:scale-105 transition-transform duration-500 cursor-default">
+                Find Your Perfect
+                <span className="saks-text-gradient block mt-2 animate-glow-pulse">
+                  Fashion Match
+                </span>
+              </h2>
+              
+              <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-12 font-body hover:text-gray-900 transition-colors duration-300">
+                Upload any fashion photo and let our advanced AI identify and find similar items from premium retailers worldwide. 
+                Or describe your dream piece and discover your perfect style, instantly.
+              </p>
+              
+              {/* Enhanced Search Mode Toggle with animations */}
+              <div className="flex justify-center mb-12">
+                <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-3 border border-gray-200/50 shadow-luxury hover:shadow-2xl transition-all duration-500">
+                  <div className="flex space-x-3">
+                    <Button
+                      onClick={switchToImageSearch}
+                      onMouseEnter={handleAudioHover}
+                      variant={searchMode === 'image' ? 'default' : 'ghost'}
+                      className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium group ${
+                        searchMode === 'image'
+                          ? 'saks-gradient text-white shadow-gold hover:shadow-xl'
+                          : 'text-gray-700 hover:text-black hover:bg-gray-100/80'
+                      }`}
+                    >
+                      <Camera className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                      Search by Image
+                    </Button>
+                    <Button
+                      onClick={switchToCustomSearch}
+                      onMouseEnter={handleAudioHover}
+                      variant={searchMode === 'text' ? 'default' : 'ghost'}
+                      className={`px-8 py-4 rounded-2xl transition-all duration-300 font-medium group ${
+                        searchMode === 'text'
+                          ? 'saks-gradient text-white shadow-gold hover:shadow-xl'
+                          : 'text-gray-700 hover:text-black hover:bg-gray-100/80'
+                      }`}
+                    >
+                      <Type className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                      Search by Description
+                    </Button>
+                  </div>
                 </div>
+              </div>
+
+              {/* Interactive demo button */}
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => {
+                    console.log('Demo started');
+                    triggerConfetti();
+                    handleAudioClick();
+                  }}
+                  onMouseEnter={handleAudioHover}
+                  variant="outline"
+                  className="border-2 border-yellow-400 text-yellow-700 hover:bg-yellow-50 px-8 py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 group"
+                >
+                  <Play className="w-5 h-5 mr-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  Try Interactive Demo
+                  <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
               </div>
             </div>
 
-            {/* Interactive demo button */}
-            <div className="flex justify-center">
-              <Button
-                onClick={() => {
-                  console.log('Demo started');
-                  triggerConfetti();
-                  handleAudioClick();
-                }}
+            {/* Interactive Video Section */}
+            <div className="mb-20">
+              <div className="text-center mb-12">
+                <div 
+                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-blue-50 px-6 py-3 rounded-full mb-8 border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+                  onMouseEnter={handleAudioHover}
+                >
+                  <Play className="w-4 h-4 text-purple-600 animate-pulse" />
+                  <span className="text-sm font-semibold text-purple-800 font-body">Interactive Demo</span>
+                </div>
+                
+                <h3 className="text-4xl font-display font-bold text-black mb-4 leading-tight text-shadow-luxury">
+                  Watch & Navigate
+                  <span className="saks-text-gradient block mt-2">
+                    Your Fashion Journey
+                  </span>
+                </h3>
+                
+                <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8 font-body">
+                  Watch our interactive demo and click on different sections to explore the features in real-time.
+                </p>
+              </div>
+
+              <InteractiveVideo 
+                onNavigate={handleVideoNavigation}
+                onAudioHover={handleAudioHover}
+                onAudioClick={handleAudioClick}
+                soundEnabled={soundEnabled}
+              />
+            </div>
+
+            <ImageCapture onImageCaptured={handleImageCaptured} />
+            
+            {/* Enhanced Features Section with interactive cards */}
+            <div className="mt-20 grid md:grid-cols-3 gap-10">
+              <Card 
+                className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
                 onMouseEnter={handleAudioHover}
-                variant="outline"
-                className="border-2 border-yellow-400 text-yellow-700 hover:bg-yellow-50 px-8 py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
-                <Play className="w-5 h-5 mr-3 group-hover:translate-x-1 transition-transform duration-300" />
-                Try Interactive Demo
-                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
+                <div className="w-16 h-16 saks-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold group-hover:scale-110 transition-transform duration-300">
+                  <Eye className="w-8 h-8 text-white group-hover:animate-pulse" />
+                </div>
+                <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Smart Recognition</h3>
+                <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Advanced AI identifies clothing items with 95% accuracy using computer vision</p>
+              </Card>
+              
+              <Card 
+                className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
+                onMouseEnter={handleAudioHover}
+              >
+                <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold group-hover:scale-110 transition-transform duration-300">
+                  <Search className="w-8 h-8 text-black group-hover:animate-spin" style={{ animationDuration: '2s' }} />
+                </div>
+                <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Instant Discovery</h3>
+                <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Find similar items from thousands of premium fashion retailers worldwide</p>
+              </Card>
+              
+              <Card 
+                className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
+                onMouseEnter={handleAudioHover}
+              >
+                <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Sparkles className="w-8 h-8 text-black group-hover:animate-bounce" />
+                </div>
+                <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Style Matching</h3>
+                <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Discover items that perfectly match your unique style preferences</p>
+              </Card>
             </div>
           </div>
         )}
