@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem, ArrowRight, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem, ArrowRight, Play, Pause, Volume2, VolumeX, ExternalLink } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
 import { ImageSelector } from '@/components/ImageSelector';
 import { SearchResults } from '@/components/SearchResults';
@@ -8,7 +8,6 @@ import { CustomSearch } from '@/components/CustomSearch';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAudio } from '@/hooks/useAudio';
-import { InteractiveVideo } from '@/components/InteractiveVideo';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState<'capture' | 'select' | 'describe' | 'search' | 'custom-search'>('capture');
@@ -361,7 +360,7 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Interactive Video Section */}
+            {/* Interactive Video Link Section */}
             <div className="mb-20">
               <div className="text-center mb-12">
                 <div 
@@ -380,16 +379,67 @@ const Index = () => {
                 </h3>
                 
                 <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8 font-body">
-                  Watch our interactive demo and click on different sections to explore the features in real-time.
+                  Explore our interactive demo to see how HauteAi works across different fashion discovery methods.
                 </p>
               </div>
 
-              <InteractiveVideo 
-                onNavigate={handleVideoNavigation}
-                onAudioHover={handleAudioHover}
-                onAudioClick={handleAudioClick}
-                soundEnabled={soundEnabled}
-              />
+              {/* Interactive Video Hyperlink */}
+              <Card className="max-w-4xl mx-auto overflow-hidden shadow-luxury bg-white/90 backdrop-blur-lg border-0">
+                <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <Play className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <h4 className="text-xl font-bold mb-2">Interactive Fashion Demo</h4>
+                    <p className="text-sm opacity-80 mb-6">Click the links below to explore different sections</p>
+                    
+                    {/* Navigation Links */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                      <Button
+                        onClick={() => handleVideoNavigation('capture')}
+                        onMouseEnter={handleAudioHover}
+                        variant="outline"
+                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
+                      >
+                        <Camera className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="text-sm font-medium">Image Capture</span>
+                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
+                      </Button>
+                      
+                      <Button
+                        onClick={() => handleVideoNavigation('select')}
+                        onMouseEnter={handleAudioHover}
+                        variant="outline"
+                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
+                      >
+                        <Target className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="text-sm font-medium">Item Selection</span>
+                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
+                      </Button>
+                      
+                      <Button
+                        onClick={() => handleVideoNavigation('describe')}
+                        onMouseEnter={handleAudioHover}
+                        variant="outline"
+                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
+                      >
+                        <Eye className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="text-sm font-medium">AI Description</span>
+                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
+                      </Button>
+                      
+                      <Button
+                        onClick={() => handleVideoNavigation('search')}
+                        onMouseEnter={handleAudioHover}
+                        variant="outline"
+                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
+                      >
+                        <Search className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="text-sm font-medium">Smart Search</span>
+                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </Card>
             </div>
 
             <ImageCapture onImageCaptured={handleImageCaptured} />
