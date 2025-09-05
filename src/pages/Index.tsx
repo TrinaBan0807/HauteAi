@@ -572,47 +572,6 @@ const Index = () => {
 
         {/* Step Content */}
         <div className="max-w-7xl mx-auto">
-          {currentStep === 'capture' && (
-            <div className="animate-fade-in">
-              <ImageCapture onImageCaptured={handleImageCaptured} />
-              
-              {/* Enhanced Features Section with interactive cards */}
-              <div className="mt-20 grid md:grid-cols-3 gap-10">
-                <Card 
-                  className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
-                  onMouseEnter={handleAudioHover}
-                >
-                  <div className="w-16 h-16 saks-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold group-hover:scale-110 transition-transform duration-300">
-                    <Eye className="w-8 h-8 text-white group-hover:animate-pulse" />
-                  </div>
-                  <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Smart Recognition</h3>
-                  <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Advanced AI identifies clothing items with 95% accuracy using computer vision</p>
-                </Card>
-                
-                <Card 
-                  className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
-                  onMouseEnter={handleAudioHover}
-                >
-                  <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-gold group-hover:scale-110 transition-transform duration-300">
-                    <Search className="w-8 h-8 text-black group-hover:animate-spin" style={{ animationDuration: '2s' }} />
-                  </div>
-                  <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Instant Discovery</h3>
-                  <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Find similar items from thousands of premium fashion retailers worldwide</p>
-                </Card>
-                
-                <Card 
-                  className="p-8 text-center hover-lift border-0 shadow-luxury bg-white/80 backdrop-blur-lg group cursor-pointer transition-all duration-500 hover:bg-white/90"
-                  onMouseEnter={handleAudioHover}
-                >
-                  <div className="w-16 h-16 saks-gold-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Sparkles className="w-8 h-8 text-black group-hover:animate-bounce" />
-                  </div>
-                  <h3 className="text-xl font-display font-bold text-black mb-4 group-hover:text-yellow-700 transition-colors duration-300">Style Matching</h3>
-                  <p className="text-gray-600 font-body leading-relaxed group-hover:text-gray-800 transition-colors duration-300">Discover items that perfectly match your unique style preferences</p>
-                </Card>
-              </div>
-            </div>
-          )}
 
           {currentStep === 'custom-search' && (
             <div className="animate-fade-in">
