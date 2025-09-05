@@ -1,8 +1,10 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Camera, Search, Eye, Target } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Camera, Search, Eye, Target, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ChatbotGreeting } from './ChatbotGreeting';
+import { useAudio } from '@/hooks/useAudio';
 
 interface InteractiveVideoProps {
   onNavigate: (section: string) => void;
@@ -16,7 +18,11 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const { playHoverSound, playClickSound } = useAudio();
 
   const navigationPoints = [
     { 
@@ -71,6 +77,23 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
     };
   }, []);
 
+  // Initialize background music
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3;
+      audioRef.current.loop = true;
+    }
+  }, []);
+
+  // Auto-start subtle background music
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      toggleBackgroundMusic();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -93,9 +116,49 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
     onAudioClick?.();
   };
 
+  const toggleBackgroundMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isMusicPlaying) {
+      audio.pause();
+    } else {
+      // Create subtle background music using Web Audio API
+      if (!audio.src) {
+        // For demo purposes, we'll create a simple ambient sound
+        // In production, you'd load an actual audio file
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
+        oscillator.type = 'sine';
+        gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+        
+        oscillator.start();
+        setTimeout(() => oscillator.stop(), 30000); // Stop after 30 seconds
+      } else {
+        audio.play();
+      }
+    }
+    setIsMusicPlaying(!isMusicPlaying);
+    playClickSound();
+  };
+
   const handleNavigate = (section: string) => {
     onNavigate(section);
     onAudioClick?.();
+    playClickSound();
+  };
+
+  const handleHover = () => {
+    onAudioHover?.();
+    if (soundEnabled) {
+      playHoverSound();
+    }
   };
 
   const getVisiblePoints = () => {
@@ -111,8 +174,23 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <Card className="overflow-hidden shadow-luxury bg-white/90 backdrop-blur-lg border-0">
+    <div className="max-w-4xl mx-auto relative">
+      {/* Background Audio Element */}
+      <audio ref={audioRef} preload="none">
+        <source src="/ambient-music.mp3" type="audio/mpeg" />
+      </audio>
+
+      {/* Music Control Button */}
+      <Button
+        onClick={toggleBackgroundMusic}
+        onMouseEnter={handleHover}
+        className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-lg text-white hover:bg-white/30 border border-white/20 transition-all duration-300"
+        size="icon"
+      >
+        <Music className={`w-5 h-5 ${isMusicPlaying ? 'animate-pulse' : ''}`} />
+      </Button>
+
+      <Card className="overflow-hidden shadow-luxury bg-white/90 backdrop-blur-lg border-0 interactive-card">
         <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-black">
           {/* Video Element */}
           <video
@@ -138,8 +216,8 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
               >
                 <Button
                   onClick={() => handleNavigate(point.section)}
-                  onMouseEnter={onAudioHover}
-                  className="relative group bg-white/90 backdrop-blur-lg text-black hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-yellow-400/50 hover:border-yellow-400"
+                  onMouseEnter={handleHover}
+                  className="relative group bg-white/90 backdrop-blur-lg text-saks-black hover:bg-white hover:scale-110 transition-all duration-300 shadow-luxury hover:shadow-gold border-2 border-saks-gold/50 hover:border-saks-gold animate-glow-pulse"
                   size="lg"
                 >
                   <IconComponent className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
@@ -148,8 +226,9 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
                     <div className="text-xs opacity-80">{point.description}</div>
                   </div>
                   
-                  {/* Pulse animation */}
-                  <div className="absolute inset-0 rounded-lg bg-yellow-400/20 animate-ping group-hover:animate-none"></div>
+                  {/* Enhanced pulse animation */}
+                  <div className="absolute inset-0 rounded-lg bg-saks-gold/20 pulse-ring group-hover:animate-none"></div>
+                  <div className="absolute inset-0 rounded-lg bg-saks-gold/10 animate-ping group-hover:animate-none"></div>
                 </Button>
               </div>
             );
@@ -160,17 +239,17 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
             <div className="flex items-center space-x-4">
               <Button
                 onClick={togglePlay}
-                onMouseEnter={onAudioHover}
+                onMouseEnter={handleHover}
                 variant="ghost"
                 size="icon"
-                className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-lg text-white hover:bg-white/30 transition-all duration-300"
+                className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-lg text-white hover:bg-white/30 transition-all duration-300 hover-lift"
               >
                 {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
               </Button>
 
-              <div className="flex-1 bg-white/20 rounded-full h-2 overflow-hidden">
+              <div className="flex-1 bg-white/20 rounded-full h-2 overflow-hidden cursor-pointer hover:h-3 transition-all duration-300">
                 <div 
-                  className="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-300"
+                  className="h-full saks-gold-gradient transition-all duration-300 animate-shimmer"
                   style={{ width: `${(currentTime / duration) * 100}%` }}
                 />
               </div>
@@ -181,10 +260,10 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
 
               <Button
                 onClick={toggleMute}
-                onMouseEnter={onAudioHover}
+                onMouseEnter={handleHover}
                 variant="ghost"
                 size="icon"
-                className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-lg text-white hover:bg-white/30 transition-all duration-300"
+                className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-lg text-white hover:bg-white/30 transition-all duration-300 hover-lift"
               >
                 {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
               </Button>
@@ -203,9 +282,9 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
           )}
         </div>
 
-        {/* Section Navigation */}
-        <div className="p-6 bg-gradient-to-r from-white to-gray-50">
-          <h3 className="text-lg font-bold text-black mb-4">Quick Navigation</h3>
+        {/* Enhanced Section Navigation */}
+        <div className="p-6 saks-gradient">
+          <h3 className="text-lg font-display font-bold text-saks-white mb-4 text-center">Quick Navigation</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {navigationPoints.map((point) => {
               const IconComponent = point.icon;
@@ -213,19 +292,30 @@ export const InteractiveVideo = ({ onNavigate, onAudioHover, onAudioClick, sound
                 <Button
                   key={point.section}
                   onClick={() => handleNavigate(point.section)}
-                  onMouseEnter={onAudioHover}
+                  onMouseEnter={handleHover}
                   variant="outline"
-                  className="flex flex-col items-center p-4 h-auto border-2 border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 group"
+                  className="flex flex-col items-center p-4 h-auto bg-white/10 backdrop-blur-lg border-2 border-saks-gold/30 hover:border-saks-gold hover:bg-saks-gold/20 text-saks-white hover:text-saks-black transition-all duration-300 group interactive-card"
                 >
-                  <IconComponent className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                  <IconComponent className="w-6 h-6 mb-2 group-hover:scale-110 group-hover:animate-wiggle transition-all duration-300" />
                   <span className="text-sm font-medium">{point.title}</span>
-                  <span className="text-xs text-gray-500 mt-1">{point.description}</span>
+                  <span className="text-xs opacity-80 mt-1">{point.description}</span>
                 </Button>
               );
             })}
           </div>
         </div>
       </Card>
+
+      {/* Chatbot Greeting Component */}
+      {showChatbot && (
+        <ChatbotGreeting 
+          onClose={() => setShowChatbot(false)}
+          onUserResponse={(response) => {
+            console.log('User response:', response);
+            // Handle user responses here
+          }}
+        />
+      )}
     </div>
   );
 };
