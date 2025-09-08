@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem, ArrowRight, Play, Pause, Volume2, VolumeX, ExternalLink } from 'lucide-react';
+import { Camera, Upload, Search, Sparkles, Zap, Eye, Target, Type, Star, Crown, Gem, ArrowRight, Play, Pause, Volume2, VolumeX, ExternalLink, MessageCircle } from 'lucide-react';
 import { ImageCapture } from '@/components/ImageCapture';
 import { ImageSelector } from '@/components/ImageSelector';
 import { SearchResults } from '@/components/SearchResults';
 import { OutfitDescriptor } from '@/components/OutfitDescriptor';
 import { CustomSearch } from '@/components/CustomSearch';
+import { ChatbotGreeting } from '@/components/ChatbotGreeting';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAudio } from '@/hooks/useAudio';
@@ -360,86 +361,30 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Interactive Video Link Section */}
+            {/* Chatbot Assistant Section */}
             <div className="mb-20">
               <div className="text-center mb-12">
                 <div 
-                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-blue-50 px-6 py-3 rounded-full mb-8 border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-50 px-6 py-3 rounded-full mb-8 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
                   onMouseEnter={handleAudioHover}
                 >
-                  <Play className="w-4 h-4 text-purple-600 animate-pulse" />
-                  <span className="text-sm font-semibold text-purple-800 font-body">Interactive Demo</span>
+                  <MessageCircle className="w-4 h-4 text-blue-600 animate-pulse" />
+                  <span className="text-sm font-semibold text-blue-800 font-body">AI Assistant</span>
                 </div>
                 
                 <h3 className="text-4xl font-display font-bold text-black mb-4 leading-tight text-shadow-luxury">
-                  Watch & Navigate
+                  Chat with Your
                   <span className="saks-text-gradient block mt-2">
-                    Your Fashion Journey
+                    Fashion Assistant
                   </span>
                 </h3>
                 
                 <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8 font-body">
-                  Explore our interactive demo to see how HauteAi works across different fashion discovery methods.
+                  Get personalized fashion advice and discover new styles with our intelligent AI assistant.
                 </p>
               </div>
-
-              {/* Interactive Video Hyperlink */}
-              <Card className="max-w-4xl mx-auto overflow-hidden shadow-luxury bg-white/90 backdrop-blur-lg border-0">
-                <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <Play className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <h4 className="text-xl font-bold mb-2">Interactive Fashion Demo</h4>
-                    <p className="text-sm opacity-80 mb-6">Click the links below to explore different sections</p>
-                    
-                    {/* Navigation Links */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-                      <Button
-                        onClick={() => handleVideoNavigation('capture')}
-                        onMouseEnter={handleAudioHover}
-                        variant="outline"
-                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
-                      >
-                        <Camera className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="text-sm font-medium">Image Capture</span>
-                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
-                      </Button>
-                      
-                      <Button
-                        onClick={() => handleVideoNavigation('select')}
-                        onMouseEnter={handleAudioHover}
-                        variant="outline"
-                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
-                      >
-                        <Target className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="text-sm font-medium">Item Selection</span>
-                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
-                      </Button>
-                      
-                      <Button
-                        onClick={() => handleVideoNavigation('describe')}
-                        onMouseEnter={handleAudioHover}
-                        variant="outline"
-                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
-                      >
-                        <Eye className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="text-sm font-medium">AI Description</span>
-                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
-                      </Button>
-                      
-                      <Button
-                        onClick={() => handleVideoNavigation('search')}
-                        onMouseEnter={handleAudioHover}
-                        variant="outline"
-                        className="flex flex-col items-center p-4 h-auto bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
-                      >
-                        <Search className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="text-sm font-medium">Smart Search</span>
-                        <ExternalLink className="w-3 h-3 mt-1 opacity-60" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              
+              <ChatbotGreeting />
             </div>
 
             <ImageCapture onImageCaptured={handleImageCaptured} />
